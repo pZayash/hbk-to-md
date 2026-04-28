@@ -1,8 +1,15 @@
 """Тесты нормализации имён файлов."""
+from pathlib import Path
+
+import pytest
+
 from convert import (
     LANG_PREFIX,
     archive_path_to_filename,
     disambiguate,
+    quick_extract_title,
+    quick_scan_titles,
+    title_to_filename,
     truncate_filename,
 )
 
@@ -84,3 +91,79 @@ def test_disambiguate_no_extension():
     out, was = disambiguate("bar", {"bar"})
     assert out == "bar-2"
     assert was is True
+
+
+# ---------- title_to_filename -------------------------------------------
+
+def test_title_to_filename_basic():
+    assert title_to_filename("Глобальный контекст.ВозможностьЧтенияXML") == "Глобальный_контекст.ВозможностьЧтенияXML.md"
+
+
+def test_title_to_filename_simple():
+    assert title_to_filename("Глобальный контекст") == "Глобальный_контекст.md"
+
+
+def test_title_to_filename_lang_prefix():
+    assert title_to_filename("Строка", prefix=LANG_PREFIX) == "lang__Строка.md"
+
+
+def test_title_to_filename_strips_unsafe_chars():
+    assert title_to_filename('foo/bar:baz*qux?"<>|') == "foobarbazqux.md"
+
+
+def test_title_to_filename_strips_leading_trailing_dots_underscores():
+    assert title_to_filename("._test_.") == "test.md"
+
+
+def test_title_to_filename_empty_returns_empty():
+    assert title_to_filename("") == ""
+
+
+def test_title_to_filename_only_unsafe_returns_empty():
+    assert title_to_filename('/:*?"<>|') == ""
+
+
+# ---------- quick_extract_title / quick_scan_titles ----------------------
+
+_SAMPLE_H1_HTML = b"""\
+<html><head><meta charset="utf-8"></head><body>
+<h1 class="V8SH_pagetitle">\xd0\x93\xd0\xbb\xd0\xbe\xd0\xb1\xd0\xb0\xd0\xbb\xd1\x8c\xd0\xbd\xd1\x8b\xd0\xb9 \xd0\xba\xd0\xbe\xd0\xbd\xd1\x82\xd0\xb5\xd0\xba\xd1\x81\xd1\x82.\xd0\x92\xd0\xbe\xd0\xb7\xd0\xbc\xd0\xbe\xd0\xb6\xd0\xbd\xd0\xbe\xd1\x81\xd1\x82\xd1\x8c\xd0\xa7\xd1\x82\xd0\xb5\xd0\xbd\xd0\xb8\xd1\x8fXML</h1>
+</body></html>
+"""
+
+_NO_H1_HTML = b"<html><body><p>no heading</p></body></html>"
+
+
+def test_quick_extract_title_found(tmp_path: Path):
+    f = tmp_path / "page.html"
+    f.write_bytes(_SAMPLE_H1_HTML)
+    title = quick_extract_title(f)
+    assert title == "Глобальный контекст.ВозможностьЧтенияXML"
+
+
+def test_quick_extract_title_decodes_html_entities(tmp_path: Path):
+    html = b"<html><body><h1 class=\"V8SH_pagetitle\">&lt;\xd0\x98\xd0\xbc\xd1\x8f\xd0\xbe\xd0\xb1\xd1\x8a\xd0\xb5\xd0\xba\xd1\x82\xd0\xb0&gt;</h1></body></html>"
+    f = tmp_path / "page.html"
+    f.write_bytes(html)
+    title = quick_extract_title(f)
+    assert title == "<Имяобъекта>"
+    assert "&lt;" not in title
+
+
+def test_quick_extract_title_missing(tmp_path: Path):
+    f = tmp_path / "page.html"
+    f.write_bytes(_NO_H1_HTML)
+    assert quick_extract_title(f) == ""
+
+
+def test_quick_scan_titles_keys_are_lowercase(tmp_path: Path):
+    (tmp_path / "Page.html").write_bytes(_SAMPLE_H1_HTML)
+    result = quick_scan_titles(tmp_path)
+    assert "page.html" in result
+    assert result["page.html"] == "Глобальный контекст.ВозможностьЧтенияXML"
+
+
+def test_quick_scan_titles_missing_h1_maps_empty(tmp_path: Path):
+    (tmp_path / "noh1.html").write_bytes(_NO_H1_HTML)
+    result = quick_scan_titles(tmp_path)
+    assert result.get("noh1.html") == ""

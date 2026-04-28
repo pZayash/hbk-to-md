@@ -1,7 +1,6 @@
-"""Тесты парсинга HTML, переписывания ссылок, frontmatter."""
+"""Тесты парсинга HTML и переписывания ссылок."""
 from convert import (
     LANG_PREFIX,
-    build_frontmatter,
     extract_availability,
     extract_titles,
     parse_html,
@@ -177,32 +176,9 @@ def test_to_markdown_removes_methodical_info():
     assert "1centerprise.com/devlinks" not in md
 
 
-def test_frontmatter_full():
-    fm = build_frontmatter({
-        "title_ru": "Глобальный контекст.ВозможностьЧтенияXML",
-        "title_en": "Global context.CanReadXML",
-        "source_path": "objects/Global context/methods/catalog1566/CanReadXML1628.html",
-        "hbk_source": "shcntx_ru",
-        "hbk_version": "8.3.25.1445",
-        "availability": "8.0",
-    })
-    assert fm.startswith("---\n")
-    assert 'title_ru: "Глобальный контекст.ВозможностьЧтенияXML"' in fm
-    assert 'availability: "8.0"' in fm
-    assert fm.rstrip().endswith("---")
+def test_to_markdown_output_has_no_frontmatter_block():
+    from convert import to_markdown
 
-
-def test_frontmatter_no_availability():
-    fm = build_frontmatter({
-        "title_ru": "X",
-        "title_en": "",
-        "source_path": "p",
-        "hbk_source": "shcntx_ru",
-        "hbk_version": "8.3.25.1445",
-    })
-    assert "availability" not in fm
-
-
-def test_frontmatter_quote_escape():
-    fm = build_frontmatter({"title_ru": 'has "quote" inside', "source_path": "p"})
-    assert r'\"quote\"' in fm
+    soup = parse_html("<html><body><h1>Заголовок</h1><p>Текст</p></body></html>")
+    md = to_markdown(soup)
+    assert not md.startswith("---\n")

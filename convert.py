@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html as html_module
 import json
 import posixpath
 import re
@@ -31,6 +32,19 @@ BREADCRUMB_SEPARATOR = " › "
 ALPHA_GROUP_THRESHOLD = 50
 INDEX_PREFIX = "_index"
 BREADCRUMB_MARKER = "**↑** [Главная]"
+PROGRESS_EVERY = 500
+
+STAGE_EXTRACT_SHCNTX = "extract_shcntx"
+STAGE_SCAN_TITLES_SHCNTX = "scan_titles_shcntx"
+STAGE_BUILD_INDEX_SHCNTX = "build_index_shcntx"
+STAGE_EXTRACT_SHLANG = "extract_shlang"
+STAGE_SCAN_TITLES_SHLANG = "scan_titles_shlang"
+STAGE_BUILD_INDEX_SHLANG = "build_index_shlang"
+STAGE_CONVERT_SHCNTX = "convert_shcntx"
+STAGE_CONVERT_SHLANG = "convert_shlang"
+STAGE_BUILD_TOC = "build_toc"
+STAGE_INJECT_BREADCRUMBS = "inject_breadcrumbs"
+STAGE_WRITE_LOGS = "write_logs"
 
 SEGMENT_TITLES = {
     "methods": "Методы",
@@ -41,13 +55,45 @@ SEGMENT_TITLES = {
     "tables": "Таблицы",
     "lang": "Встроенный язык 1С",
     "Global context": "Глобальный контекст",
+    "fields": "Поля",
+    "params": "Параметры",
+    "formparams": "Параметры формы",
 }
+SEGMENT_NAMES = set(SEGMENT_TITLES.keys())
 
 V8HELP_RE = re.compile(r"^v8help://(SyntaxHelperContext|SyntaxHelperLanguage)/(.+?)(?:#(.+))?$", re.IGNORECASE)
 BROKEN_HREF_RE = re.compile(r'href\s*=\s*http[^\s"\'>]*\?[A-Za-z]+\s*=\s*"', re.IGNORECASE)
 VERSION_FROM_PATH_RE = re.compile(r"[/\\\\]1cv8[/\\\\](\d+\.\d+\.\d+\.\d+)[/\\\\]bin[/\\\\]", re.IGNORECASE)
 AVAILABILITY_RE = re.compile(r"(8\.\d+(?:\.\d+)?)")
 PAGETITLE_SPLIT_RE = re.compile(r"^(.*)\s*\(([^()]*)\)\s*$")
+
+_H1_RE = re.compile(
+    r'<h1[^>]*class=["\']V8SH_pagetitle["\'][^>]*>(.*?)</h1>',
+    re.DOTALL | re.IGNORECASE,
+)
+_UNSAFE_CHARS = re.compile(r'[/\\:*?"<>|]')
+
+
+def _format_log_value(value: object) -> str:
+    text = str(value)
+    return text.replace(" ", "_")
+
+
+def log_event(event: str, **fields: object) -> None:
+    payload = [f"event={_format_log_value(event)}"]
+    for key, value in fields.items():
+        payload.append(f"{key}={_format_log_value(value)}")
+    print("[hbk-to-md] " + " ".join(payload), flush=True)
+
+
+def run_stage(stage: str, action, *args, **kwargs):
+    log_event("stage_start", stage=stage)
+    started_at = time.perf_counter()
+    try:
+        return action(*args, **kwargs)
+    finally:
+        elapsed_sec = round(time.perf_counter() - started_at, 3)
+        log_event("stage_end", stage=stage, elapsed_sec=elapsed_sec)
 
 
 # ---------- Распаковка ---------------------------------------------------
@@ -108,6 +154,31 @@ def archive_path_to_filename(rel_path: str, prefix: str = "") -> str:
     if prefix and not name.startswith(prefix):
         name = prefix + name
     return name
+
+
+def quick_extract_title(path: Path) -> str:
+    raw = path.read_bytes()[:4096]
+    text = raw.decode("utf-8-sig", errors="replace")
+    m = _H1_RE.search(text)
+    if not m:
+        return ""
+    return html_module.unescape(re.sub(r"<[^>]+>", "", m.group(1)).strip())
+
+
+def quick_scan_titles(extracted_dir: Path) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for html_path in iter_html(extracted_dir):
+        rel = html_path.relative_to(extracted_dir).as_posix()
+        result[rel.lower()] = quick_extract_title(html_path)
+    return result
+
+
+def title_to_filename(title: str, prefix: str = "") -> str:
+    name = _UNSAFE_CHARS.sub("", title).replace(" ", "_").strip("._")
+    if not name:
+        return ""
+    stem = (prefix + name) if prefix else name
+    return stem + ".md"
 
 
 def truncate_filename(name: str, source_path: str) -> tuple[str, bool]:
@@ -238,6 +309,11 @@ METHODOLOGICAL_LINE_RE = re.compile(
 )
 
 
+def escape_markdown_link_text(text: str) -> str:
+    """Экранировать символы, которые ломают текст обычной MD-ссылки."""
+    return text.replace("\\", r"\\").replace("[", r"\[").replace("]", r"\]")
+
+
 def _escape_angles_in_link_text(md: str) -> str:
     """Экранировать `<`/`>` в тексте `[...]` MD-ссылок: иначе Obsidian
     парсит `<word>` как HTML-тег и ломает разметку линка.
@@ -275,27 +351,8 @@ def cleanup_markdown_noise(md: str) -> str:
     return "\n".join(cleaned).strip() + "\n"
 
 
-def yaml_escape(value: str) -> str:
-    return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
-
-
-def build_frontmatter(meta: dict) -> str:
-    order = ("title_ru", "title_en", "source_path", "hbk_source", "hbk_version", "availability")
-    lines = ["---"]
-    for key in order:
-        if key not in meta:
-            continue
-        val = meta[key]
-        if val is None:
-            continue
-        lines.append(f"{key}: {yaml_escape(str(val))}")
-    lines.append("---")
-    lines.append("")
-    return "\n".join(lines)
-
-
-def write_md(out_dir: Path, filename: str, frontmatter: str, body: str) -> None:
-    (out_dir / filename).write_text(frontmatter + body.strip() + "\n", encoding="utf-8")
+def write_md(out_dir: Path, filename: str, body: str) -> None:
+    (out_dir / filename).write_text(body.strip() + "\n", encoding="utf-8")
 
 
 # ---------- Pipeline ---------------------------------------------------
@@ -349,7 +406,11 @@ def iter_html(extracted_dir: Path) -> Iterable[Path]:
             yield p
 
 
-def build_archive_index(extracted_dir: Path, prefix: str) -> dict[str, str]:
+def build_archive_index(
+    extracted_dir: Path,
+    prefix: str,
+    title_map: dict[str, str] | None = None,
+) -> dict[str, str]:
     """Карта lookup-key → target_filename (без обрезки/disambig).
 
     Для shcntx (prefix=""): ключ = rel_path.lower() (например, 'objects/x/y.html').
@@ -359,7 +420,13 @@ def build_archive_index(extracted_dir: Path, prefix: str) -> dict[str, str]:
     index: dict[str, str] = {}
     for html in iter_html(extracted_dir):
         rel = html.relative_to(extracted_dir).as_posix()
-        target = archive_path_to_filename(rel, prefix=prefix)
+        target = ""
+        if title_map is not None:
+            title = title_map.get(rel.lower(), "")
+            if title:
+                target = title_to_filename(title, prefix=prefix)
+        if not target:
+            target = archive_path_to_filename(rel, prefix=prefix)
         index[rel.lower()] = target
         if prefix == LANG_PREFIX:
             stem = rel.rsplit(".", 1)[0]
@@ -381,7 +448,7 @@ def convert_one(
     pages_meta: dict[str, dict],
     archive_lookup_final: dict[str, str],
 ) -> None:
-    target = archive_path_to_filename(rel_path, prefix=prefix)
+    target = archive_index.get(rel_path.lower()) or archive_path_to_filename(rel_path, prefix=prefix)
     final_name, was_truncated = truncate_filename(target, rel_path)
     if was_truncated:
         logs["truncated"].append((rel_path, final_name))
@@ -422,7 +489,7 @@ def convert_one(
     heading = title_ru or title_en
     if heading:
         body = f"# {heading}\n\n" + body.lstrip()
-    write_md(out_dir, final_name, "", body)
+    write_md(out_dir, final_name, body)
     pages_meta[final_name] = fm
     rel_lower = rel_path.lower()
     archive_lookup_final[rel_lower] = final_name
@@ -437,6 +504,7 @@ def _convert_archive(
     extracted_dir: Path,
     out_dir: Path,
     prefix: str,
+    stage: str,
     hbk_source: str,
     hbk_version: str,
     archive_index: dict[str, str],
@@ -446,7 +514,37 @@ def _convert_archive(
     pages_meta: dict[str, dict],
     archive_lookup_final: dict[str, str],
 ) -> None:
-    for html_path in iter_html(extracted_dir):
+    pages = list(iter_html(extracted_dir))
+    total = len(pages)
+    started_at = time.perf_counter()
+    processed = 0
+    last_progress_done = -1
+
+    def emit_progress(force: bool = False) -> None:
+        nonlocal last_progress_done
+        if not force and processed % PROGRESS_EVERY != 0:
+            return
+        if processed == last_progress_done and not force:
+            return
+        elapsed_sec = max(0.0, time.perf_counter() - started_at)
+        pct = round((processed / total) * 100, 2) if total else 100.0
+        rate_fps = round(processed / elapsed_sec, 2) if elapsed_sec > 0 else 0.0
+        eta_sec: float | str = "na"
+        if rate_fps > 0 and total >= processed:
+            eta_sec = round((total - processed) / rate_fps, 2)
+        log_event(
+            "progress",
+            stage=stage,
+            done=processed,
+            total=total,
+            pct=pct,
+            elapsed_sec=round(elapsed_sec, 2),
+            rate_fps=rate_fps,
+            eta_sec=eta_sec,
+        )
+        last_progress_done = processed
+
+    for html_path in pages:
         rel = html_path.relative_to(extracted_dir).as_posix()
         stats.total += 1
         try:
@@ -468,6 +566,11 @@ def _convert_archive(
         except Exception as exc:
             stats.failed += 1
             logs["errors"].append((rel, repr(exc)))
+        finally:
+            processed += 1
+            emit_progress()
+
+    emit_progress(force=True)
 
 
 # ---------- Pipeline post-processing -----------------------------------
@@ -598,16 +701,6 @@ def index_filename_for(prefix: str) -> str:
     return f"{INDEX_PREFIX}__{stem}.md"
 
 
-def parent_index_for(prefix: str) -> str | None:
-    if not prefix:
-        return None
-    parts = [p for p in prefix.split("/") if p]
-    if len(parts) <= 1:
-        return f"{INDEX_PREFIX}.md"
-    parent_prefix = "/".join(parts[:-1])
-    return index_filename_for(parent_prefix)
-
-
 def walk_parents(prefix: str) -> list[str]:
     parts = [p for p in prefix.split("/") if p]
     result: list[str] = []
@@ -627,10 +720,66 @@ def collect_prefix_map(root: TreeNode) -> dict[str, TreeNode]:
     return out
 
 
+def stem_for(node: TreeNode, prefix_map: dict[str, "TreeNode"]) -> str:
+    if not node.title or node.title == node.segment:
+        return ""
+    parts = [p for p in node.prefix.split("/") if p]
+    for i in range(len(parts) - 1, 0, -1):
+        ancestor = prefix_map.get("/".join(parts[:i]))
+        if (
+            ancestor
+            and ancestor.title
+            and ancestor.title != ancestor.segment
+            and ancestor.segment not in SEGMENT_NAMES
+        ):
+            return ancestor.title + "__" + node.title
+    return node.title
+
+
+def build_index_name_map(
+    root: TreeNode,
+    prefix_map: dict[str, TreeNode],
+    archive_index: dict[str, str],
+) -> dict[str, str]:
+    index_name_map: dict[str, str] = {}
+    used_names: set[str] = {"_index.md"} | set(archive_index.values())
+    stack = [root]
+    while stack:
+        node = stack.pop()
+        stack.extend(node.children.values())
+        if node.prefix == "" or not node.children or node.content_filename:
+            continue
+        depth = len([p for p in node.prefix.split("/") if p])
+        if depth == 1:
+            title_file = title_to_filename(node.title, prefix="")
+            if title_file:
+                stem_part = title_file[:-3]
+                candidate = f"_index__{stem_part}.md"
+            else:
+                candidate = index_filename_for(node.prefix)
+        else:
+            stem = stem_for(node, prefix_map)
+            if stem:
+                candidate = title_to_filename(stem, prefix="")
+                if not candidate:
+                    candidate = index_filename_for(node.prefix)
+                else:
+                    stem_part = candidate[:-3]
+                    if len(stem_part) > 246:
+                        stem_part = stem_part[:246]
+                    candidate = stem_part + ".md"
+            else:
+                candidate = index_filename_for(node.prefix)
+        filename, _ = disambiguate(candidate, used_names)
+        used_names.add(filename)
+        index_name_map[node.prefix] = filename
+    return index_name_map
+
+
 def resolve_breadcrumb_target(
     prefix: str,
     archive_index: dict[str, str],
-    index_filenames: set[str],
+    index_name_map: dict[str, str],
     prefix_map: dict[str, TreeNode],
 ) -> tuple[str, str] | None:
     key_html = prefix.lower() + ".html"
@@ -640,8 +789,8 @@ def resolve_breadcrumb_target(
         node = prefix_map.get(prefix)
         title = node.title if node and node.title else prefix.split("/")[-1]
         return content, title
-    idx = index_filename_for(prefix)
-    if idx in index_filenames:
+    idx = index_name_map.get(prefix)
+    if idx:
         node = prefix_map.get(prefix)
         title = node.title if node and node.title else SEGMENT_TITLES.get(prefix.split("/")[-1], prefix.split("/")[-1])
         return idx, title
@@ -651,16 +800,16 @@ def resolve_breadcrumb_target(
 def render_breadcrumb(
     prefix: str,
     archive_index: dict[str, str],
-    index_filenames: set[str],
+    index_name_map: dict[str, str],
     prefix_map: dict[str, TreeNode],
 ) -> str:
     parts = [f"{BREADCRUMB_MARKER}({INDEX_PREFIX}.md)"]
     for parent_prefix in walk_parents(prefix):
-        resolved = resolve_breadcrumb_target(parent_prefix, archive_index, index_filenames, prefix_map)
+        resolved = resolve_breadcrumb_target(parent_prefix, archive_index, index_name_map, prefix_map)
         if not resolved:
             continue
         filename, title = resolved
-        parts.append(f"[{title}]({filename})")
+        parts.append(f"[{escape_markdown_link_text(title)}]({filename})")
     return BREADCRUMB_SEPARATOR.join(parts)
 
 
@@ -670,7 +819,7 @@ def _sort_nodes(nodes: list[TreeNode]) -> list[TreeNode]:
 
 def _render_links_with_groups(items: list[tuple[str, str]]) -> list[str]:
     if len(items) <= ALPHA_GROUP_THRESHOLD:
-        return [f"- [{title}]({target})" for title, target in items]
+        return [f"- [{escape_markdown_link_text(title)}]({target})" for title, target in items]
     grouped: dict[str, list[tuple[str, str]]] = {}
     for title, target in items:
         head = (title[:1] if title else "#").upper()
@@ -680,7 +829,7 @@ def _render_links_with_groups(items: list[tuple[str, str]]) -> list[str]:
         lines.append(f"### {letter}")
         lines.append("")
         for title, target in grouped[letter]:
-            lines.append(f"- [{title}]({target})")
+            lines.append(f"- [{escape_markdown_link_text(title)}]({target})")
         lines.append("")
     if lines and lines[-1] == "":
         lines.pop()
@@ -691,17 +840,10 @@ def render_index(
     node: TreeNode,
     parent_index: str | None,
     archive_index: dict[str, str],
-    index_filenames: set[str],
+    index_name_map: dict[str, str],
     prefix_map: dict[str, TreeNode],
 ) -> str:
-    lines = [
-        "---",
-        "type: index",
-        f"source_prefix: {yaml_escape(node.prefix)}",
-    ]
-    if parent_index:
-        lines.append(f"parent_index: {yaml_escape(parent_index)}")
-    lines.extend(["---", "", f"# {node.title}", ""])
+    lines = [f"# {node.title}", ""]
     if node.content_filename:
         lines.append(f"[Содержание страницы раздела →]({node.content_filename})")
         lines.append("")
@@ -714,7 +856,7 @@ def render_index(
         subsection_items = []
         for c in subsections:
             label = simplify_table_section_title(c.title) if use_table_simplify else c.title
-            target = c.content_filename if c.content_filename else index_filename_for(c.prefix)
+            target = c.content_filename if c.content_filename else index_name_map.get(c.prefix, "")
             subsection_items.append((f"{label} ({c.page_count} страниц)", target))
         lines.extend(_render_links_with_groups(subsection_items))
         lines.append("")
@@ -727,9 +869,7 @@ def render_index(
             page_items.append((title, c.content_filename or ""))
         lines.extend(_render_links_with_groups(page_items))
         lines.append("")
-    lines.append("---")
-    lines.append("")
-    lines.append(render_breadcrumb(node.prefix, archive_index, index_filenames, prefix_map))
+    lines.append(render_breadcrumb(node.prefix, archive_index, index_name_map, prefix_map))
     lines.append("")
     return "\n".join(lines)
 
@@ -738,15 +878,10 @@ def render_root_index(
     tree: TreeNode,
     hbk_version: str,
     total_pages: int,
+    index_name_map: dict[str, str],
     source_counts: dict[str, int] | None = None,
 ) -> str:
     lines = [
-        "---",
-        "type: index-root",
-        f"hbk_version: {yaml_escape(hbk_version)}",
-        f"total_pages: {total_pages}",
-        "---",
-        "",
         f"# Vault: 1С:Предприятие {hbk_version} — справка",
         "",
         f"Всего страниц: **{total_pages}**",
@@ -759,7 +894,8 @@ def render_root_index(
         lines.insert(9, f"По архивам: {details}")
         lines.insert(10, "")
     for child in _sort_nodes([c for c in tree.children.values() if c.page_count > 0]):
-        lines.append(f"- [{child.title} ({child.page_count} страниц)]({index_filename_for(child.prefix)})")
+        title = escape_markdown_link_text(f"{child.title} ({child.page_count} страниц)")
+        lines.append(f"- [{title}]({index_name_map.get(child.prefix, '')})")
     lines.append("")
     return "\n".join(lines)
 
@@ -768,9 +904,10 @@ def write_all_indexes(
     tree: TreeNode,
     out_dir: Path,
     archive_index: dict[str, str],
+    index_name_map: dict[str, str],
 ) -> tuple[int, set[str]]:
     count = 0
-    index_filenames: set[str] = {f"{INDEX_PREFIX}.md"}
+    index_filenames: set[str] = {f"{INDEX_PREFIX}.md"} | set(index_name_map.values())
     prefix_map = collect_prefix_map(tree)
     stack = [tree]
     while stack:
@@ -778,11 +915,12 @@ def write_all_indexes(
         stack.extend(node.children.values())
         if node.prefix == "" or not node.children or node.content_filename:
             continue
-        filename = index_filename_for(node.prefix)
-        parent_index = parent_index_for(node.prefix)
-        body = render_index(node, parent_index, archive_index, index_filenames, prefix_map)
-        write_md(out_dir, filename, "", body)
-        index_filenames.add(filename)
+        filename = index_name_map[node.prefix]
+        parts = [p for p in node.prefix.split("/") if p]
+        parent_prefix = "/".join(parts[:-1])
+        parent_index = f"{INDEX_PREFIX}.md" if not parent_prefix else index_name_map.get(parent_prefix)
+        body = render_index(node, parent_index, archive_index, index_name_map, prefix_map)
+        write_md(out_dir, filename, body)
         count += 1
     return count, index_filenames
 
@@ -790,29 +928,24 @@ def write_all_indexes(
 def inject_breadcrumb_into_content(filepath: Path, breadcrumb: str) -> bool:
     text = filepath.read_text(encoding="utf-8")
     text_wo_breadcrumb = re.sub(r"(?m)^\*\*↑\*\* \[Главная\].*\n\n?", "", text, count=1).lstrip("\n")
-    if text_wo_breadcrumb.startswith("---\n"):
-        lines = text_wo_breadcrumb.splitlines()
-        fm_end = None
-        for i in range(1, len(lines)):
-            if lines[i].strip() == "---":
-                fm_end = i
-                break
-        if fm_end is not None:
-            insert_at = fm_end + 1
-            body_lines = lines[insert_at:]
-            new_lines = lines[:insert_at] + [breadcrumb, ""] + body_lines
-            new_text = "\n".join(new_lines).rstrip() + "\n"
-        else:
-            new_text = f"{breadcrumb}\n\n{text_wo_breadcrumb.rstrip()}\n"
+    lines = text_wo_breadcrumb.splitlines()
+    h1_idx = next((j for j, l in enumerate(lines) if l.startswith("# ")), None)
+    if h1_idx is not None:
+        skip = h1_idx + 1
+        while skip < len(lines) and not lines[skip]:
+            skip += 1
+        new_lines = lines[:h1_idx + 1] + ["", breadcrumb, ""] + lines[skip:]
+        new_text = "\n".join(new_lines).rstrip() + "\n"
     else:
         new_text = f"{breadcrumb}\n\n{text_wo_breadcrumb.rstrip()}\n"
+
     if new_text == text:
         return False
     filepath.write_text(new_text, encoding="utf-8")
     return True
 
 
-def render_inline_toc(node: TreeNode) -> str:
+def render_inline_toc(node: TreeNode, index_name_map: dict[str, str]) -> str:
     subsections = _sort_nodes([c for c in node.children.values() if c.children])
     pages = _sort_nodes([c for c in node.children.values() if (not c.children and c.content_filename)])
     if not subsections and not pages:
@@ -825,7 +958,7 @@ def render_inline_toc(node: TreeNode) -> str:
         subsection_items = []
         for c in subsections:
             label = simplify_table_section_title(c.title) if use_table_simplify else c.title
-            target = c.content_filename if c.content_filename else index_filename_for(c.prefix)
+            target = c.content_filename if c.content_filename else index_name_map.get(c.prefix, "")
             subsection_items.append((f"{label} ({c.page_count} страниц)", target))
         lines.extend(_render_links_with_groups(subsection_items))
         lines.append("")
@@ -854,7 +987,7 @@ def inject_all_breadcrumbs(
     tree: TreeNode,
     out_dir: Path,
     archive_index: dict[str, str],
-    index_filenames: set[str],
+    index_name_map: dict[str, str],
 ) -> int:
     updated = 0
     prefix_map = collect_prefix_map(tree)
@@ -868,9 +1001,9 @@ def inject_all_breadcrumbs(
         if not filepath.exists():
             continue
         if node.children:
-            toc = render_inline_toc(node)
+            toc = render_inline_toc(node, index_name_map)
             inject_inline_toc_into_content(filepath, toc)
-        breadcrumb = render_breadcrumb(node.prefix, archive_index, index_filenames, prefix_map)
+        breadcrumb = render_breadcrumb(node.prefix, archive_index, index_name_map, prefix_map)
         if inject_breadcrumb_into_content(filepath, breadcrumb):
             updated += 1
     return updated
@@ -882,11 +1015,13 @@ def build_toc(
     pages_meta: dict[str, dict],
     hbk_version: str,
     total_pages: int,
-) -> tuple[TreeNode, set[str], int]:
+) -> tuple[TreeNode, dict[str, str], int]:
     tree = build_hierarchy(archive_index, pages_meta)
     propagate_titles(tree, pages_meta)
     compute_page_counts(tree)
-    index_count, index_filenames = write_all_indexes(tree, out_dir, archive_index)
+    prefix_map = collect_prefix_map(tree)
+    index_name_map = build_index_name_map(tree, prefix_map, archive_index)
+    index_count, _ = write_all_indexes(tree, out_dir, archive_index, index_name_map)
     source_counts: dict[str, int] = {}
     for meta in pages_meta.values():
         src = str(meta.get("hbk_source") or "")
@@ -896,14 +1031,13 @@ def build_toc(
     write_md(
         out_dir,
         f"{INDEX_PREFIX}.md",
-        "",
-        render_root_index(tree, hbk_version, total_pages, source_counts=source_counts),
+        render_root_index(tree, hbk_version, total_pages, index_name_map, source_counts=source_counts),
     )
-    return tree, index_filenames, index_count + 1
+    return tree, index_name_map, index_count + 1
 
 
-def inject_breadcrumbs(out_dir: Path, archive_index: dict[str, str], tree: TreeNode, index_filenames: set[str]) -> int:
-    return inject_all_breadcrumbs(tree, out_dir, archive_index, index_filenames)
+def inject_breadcrumbs(out_dir: Path, archive_index: dict[str, str], tree: TreeNode, index_name_map: dict[str, str]) -> int:
+    return inject_all_breadcrumbs(tree, out_dir, archive_index, index_name_map)
 
 
 def write_logs(out_dir: Path, logs: dict[str, list], stats: Stats, params: dict) -> None:
@@ -966,47 +1100,76 @@ def main(argv: list[str] | None = None) -> int:
         ctx_dir = tmp_root / "shcntx"
         lang_dir = tmp_root / "shlang"
 
-        print(f"[hbk-to-md] extract {args.hbk.name}", flush=True)
-        extract_hbk(args.hbk, ctx_dir)
-        archive_index = build_archive_index(ctx_dir, prefix="")
+        run_stage(STAGE_EXTRACT_SHCNTX, extract_hbk, args.hbk, ctx_dir)
+        ctx_titles = run_stage(STAGE_SCAN_TITLES_SHCNTX, quick_scan_titles, ctx_dir)
+        archive_index = run_stage(STAGE_BUILD_INDEX_SHCNTX, build_archive_index, ctx_dir, "", ctx_titles)
         if args.lang_hbk:
-            print(f"[hbk-to-md] extract {args.lang_hbk.name}", flush=True)
-            extract_hbk(args.lang_hbk, lang_dir)
-            archive_index.update(build_archive_index(lang_dir, prefix=LANG_PREFIX))
+            run_stage(STAGE_EXTRACT_SHLANG, extract_hbk, args.lang_hbk, lang_dir)
+            lang_titles = run_stage(STAGE_SCAN_TITLES_SHLANG, quick_scan_titles, lang_dir)
+            lang_index = run_stage(STAGE_BUILD_INDEX_SHLANG, build_archive_index, lang_dir, LANG_PREFIX, lang_titles)
+            archive_index.update(lang_index)
 
-        print(f"[hbk-to-md] convert shcntx_ru", flush=True)
-        _convert_archive(
-            ctx_dir, out_dir, prefix="", hbk_source=SHCNTX_NAME, hbk_version=hbk_version,
-            archive_index=archive_index, used_names=used_names, logs=logs, stats=stats,
-            pages_meta=pages_meta, archive_lookup_final=archive_lookup_final,
+        run_stage(
+            STAGE_CONVERT_SHCNTX,
+            _convert_archive,
+            ctx_dir,
+            out_dir,
+            "",
+            STAGE_CONVERT_SHCNTX,
+            SHCNTX_NAME,
+            hbk_version,
+            archive_index,
+            used_names,
+            logs,
+            stats,
+            pages_meta,
+            archive_lookup_final,
         )
 
         if args.lang_hbk:
-            print(f"[hbk-to-md] convert shlang_ru", flush=True)
-            _convert_archive(
-                lang_dir, out_dir, prefix=LANG_PREFIX, hbk_source=SHLANG_NAME, hbk_version=hbk_version,
-                archive_index=archive_index, used_names=used_names, logs=logs, stats=stats,
-                pages_meta=pages_meta, archive_lookup_final=archive_lookup_final,
+            run_stage(
+                STAGE_CONVERT_SHLANG,
+                _convert_archive,
+                lang_dir,
+                out_dir,
+                LANG_PREFIX,
+                STAGE_CONVERT_SHLANG,
+                SHLANG_NAME,
+                hbk_version,
+                archive_index,
+                used_names,
+                logs,
+                stats,
+                pages_meta,
+                archive_lookup_final,
             )
 
-    tree, index_filenames, index_count = build_toc(
-        out_dir=out_dir,
-        archive_index=archive_lookup_final,
-        pages_meta=pages_meta,
-        hbk_version=hbk_version,
-        total_pages=stats.converted,
+    tree, index_name_map, index_count = run_stage(
+        STAGE_BUILD_TOC,
+        build_toc,
+        out_dir,
+        archive_lookup_final,
+        pages_meta,
+        hbk_version,
+        stats.converted,
     )
     stats.index_files_generated = index_count
-    stats.breadcrumbs_added = inject_breadcrumbs(out_dir, archive_lookup_final, tree, index_filenames)
+    stats.breadcrumbs_added = run_stage(
+        STAGE_INJECT_BREADCRUMBS, inject_breadcrumbs, out_dir, archive_lookup_final, tree, index_name_map
+    )
 
-    write_logs(out_dir, logs, stats, params)
-    print(
-        f"[hbk-to-md] done: total={stats.total} converted={stats.converted} "
-        f"failed={stats.failed} truncated={stats.truncated} "
-        f"collisions={stats.collisions} unresolved={stats.unresolved} "
-        f"index_files={stats.index_files_generated} breadcrumbs={stats.breadcrumbs_added} "
-        f"duration={stats.as_dict()['duration_sec']}s",
-        flush=True,
+    run_stage(STAGE_WRITE_LOGS, write_logs, out_dir, logs, stats, params)
+    log_event(
+        "run_end",
+        total=stats.total,
+        converted=stats.converted,
+        failed=stats.failed,
+        truncated=stats.truncated,
+        collisions=stats.collisions,
+        unresolved=stats.unresolved,
+        index_files=stats.index_files_generated,
+        breadcrumbs=stats.breadcrumbs_added,
+        duration_sec=stats.as_dict()["duration_sec"],
     )
     return 0 if stats.failed == 0 else 1
 

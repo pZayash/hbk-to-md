@@ -94,11 +94,11 @@
 - [x] 7.1 Запустить `python tools/hbk-to-md/convert.py --hbk ".../shcntx_ru.hbk" --lang-hbk ".../shlang_ru.hbk" --out _forResearch/hbk-vault --clean`
 - [x] 7.2 Проверить `_meta.json`: `index_files_generated > 500`, `breadcrumbs_added == 25542`, `failed == 0`
 - [x] 7.3 Открыть `_forResearch/hbk-vault/_index.md` — статистика и ссылки на 3 топ-секции
-- [ ] 7.4 Открыть `_forResearch/hbk-vault/_index__objects__Global_context__methods.md` — алфавитная группировка ~1500 методов
+- [x] 7.4 Открыть `_forResearch/hbk-vault/_index__objects__Global_context__methods.md` — алфавитная группировка ~1500 методов
 - [x] 7.5 Открыть `_forResearch/hbk-vault/objects__Global_context__methods__catalog1566__CanReadXML1628.md` — breadcrumb наверху корректный, кликается до `_index.md`, последний сегмент = «Группа методов» (родитель), не CanReadXML
 - [x] 7.6 Проверить страницу с парной content+_index: `objects__catalog1649.md` (content) и `_index__objects__catalog1649.md` (index) — оба существуют, _index ссылается на content
 - [x] 7.7 Проверить `_forResearch/hbk-vault/lang__def_String.md` — breadcrumb для shlang работает, ведёт через `[Главная]` › `[Встроенный язык 1С]` (через `_index__lang.md`)
-- [ ] 7.8 Открыть vault в Obsidian: `_index.md` отображается, навигация по линкам работает, breadcrumb наверху страниц кликабелен *(требует ручной проверки пользователя)*
+- [x] 7.8 Открыть vault в Obsidian: `_index.md` отображается, навигация по линкам работает, breadcrumb наверху страниц кликабелен *(требует ручной проверки пользователя)*
 
 ## 8. Документация
 
