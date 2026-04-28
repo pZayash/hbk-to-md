@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pytest tests/ -v)",
+      "Read(//c/!Pavl0/**)",
+      "Bash(powershell -Command \"Get-ChildItem -Path 'C:\\\\Program Files\\\\1cv8' -Filter 'shcntx_ru.hbk' -Recurse -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName\")",
+      "Read(//c/tmp/hbk-test-out/**)",
+      "Bash(python -m pytest tests/ -q)",
+      "Bash(python c:/\\\\!Pavl0/GitHub/pzayash/hbk-to-md/convert.py --hbk \"C:/Program Files/1cv8/8.3.27.1786/bin/shcntx_ru.hbk\" --lang-hbk \"C:/Program Files/1cv8/8.3.27.1786/bin/shlang_ru.hbk\" --out c:/\\\\!Pavl0/GitHub/pzayash/hbk-to-md/vault --clean)",
+      "Bash(python -m pytest tests/test_filename.py -q)",
+      "Bash(powershell -Command \"Get-Process python -ErrorAction SilentlyContinue | Select-Object Id, CPU, WorkingSet, StartTime | Format-Table\")",
+      "Bash(python -m pytest tests/ -x -q)",
+      "Bash(grep -oP '[^_]+\\(?=\\\\.md$\\)')",
+      "Read(//c/Program Files/1cv8/**)",
+      "Read(//c/Program Files \\(x86\\)/1cv8/**)",
+      "Bash(python convert.py --hbk '/c/Program Files/1cv8/8.3.27.1786/bin/shcntx_ru.hbk' --out vault/ --clean)"
+    ],
+    "additionalDirectories": [
+      "C:\\!Pavl0\\GitHub\\pzayash\\hbk-to-md\\.claude"
+    ]
+  }
+}
