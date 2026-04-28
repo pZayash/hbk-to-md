@@ -1,0 +1,137 @@
+# Расширение поля формы для поля ввода
+
+**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Интерфейс](Интерфейс_(управляемый).md) › [Поле формы](Поле_формы.md)
+
+Доступен, начиная с версии 8.2.
+
+Свойства:
+
+[АвтоВыборНезаполненного (AutoChoiceIncomplete)](Расширение_поля_формы_для_поля_ввода.АвтоВыборНезаполненного_(Form_field_extension_for_a_text_box.AutoChoiceIncomplete).md)  
+[АвтоИзменениеРегистраПриВводеТекста (AutoCapitalizationOnTextInput)](Расширение_поля_формы_для_поля_ввода.АвтоИзменениеРегистраПриВводеТекста_(Form_field_extension_for_a_text_box.AutoCapitalizationOnTextInput).md)  
+[АвтоИсправлениеПриВводеТекста (AutoCorrectionOnTextInput)](Расширение_поля_формы_для_поля_ввода.АвтоИсправлениеПриВводеТекста_(Form_field_extension_for_a_text_box.AutoCorrectionOnTextInput).md)  
+[АвтоМаксимальнаяВысота (AutoMaxHeight)](Расширение_поля_формы_для_поля_ввода.АвтоМаксимальнаяВысота_(Form_field_extension_for_a_text_box.AutoMaxHeight).md)  
+[АвтоМаксимальнаяШирина (AutoMaxWidth)](Расширение_поля_формы_для_поля_ввода.АвтоМаксимальнаяШирина_(Form_field_extension_for_a_text_box.AutoMaxWidth).md)  
+[АвтоОтметкаНезаполненного (AutoMarkIncomplete)](Расширение_поля_формы_для_поля_ввода.АвтоОтметкаНезаполненного_(Form_field_extension_for_a_text_box.AutoMarkIncomplete).md)  
+[АвтоОтображениеКнопкиОткрытия (AutoShowOpenButton)](Расширение_поля_формы_для_поля_ввода.АвтоОтображениеКнопкиОткрытия_(Form_field_extension_for_a_text_box.AutoShowOpenButton).md)  
+[АвтоОтображениеКнопкиОчистки (AutoShowClearButton)](Расширение_поля_формы_для_поля_ввода.АвтоОтображениеКнопкиОчистки_(Form_field_extension_for_a_text_box.AutoShowClearButton).md)  
+[АвтоПереносСтрок (Wrap)](Расширение_поля_формы_для_поля_ввода.АвтоПереносСтрок_(Form_field_extension_for_a_text_box.Wrap).md)  
+[БыстрыйВыбор (QuickChoice)](Расширение_поля_формы_для_поля_ввода.БыстрыйВыбор_(Form_field_extension_for_a_text_box.QuickChoice).md)  
+[ВариантУправленияВысотой (HeightControlVariant)](Расширение_поля_формы_для_поля_ввода.ВариантУправленияВысотой_(Form_field_extension_for_a_text_box.HeightControlVariant).md)  
+[ВыбиратьТип (ChooseType)](Расширение_поля_формы_для_поля_ввода.ВыбиратьТип_(Form_field_extension_for_a_text_box.ChooseType).md)  
+[ВыборГруппИЭлементов (ChoiceFoldersAndItems)](Расширение_поля_формы_для_поля_ввода.ВыборГруппИЭлементов_(Form_field_extension_for_a_text_box.ChoiceFoldersAndItems).md)  
+[ВыделенныйТекст (SelectedText)](Расширение_поля_формы_для_поля_ввода.ВыделенныйТекст_(Form_field_extension_for_a_text_box.SelectedText).md)  
+[ВыделятьОтрицательные (MarkNegatives)](Расширение_поля_формы_для_поля_ввода.ВыделятьОтрицательные_(Form_field_extension_for_a_text_box.MarkNegatives).md)  
+[Высота (Height)](Расширение_поля_формы_для_поля_ввода.Высота_(Form_field_extension_for_a_text_box.Height).md)  
+[ВысотаСпискаВыбора (ChoiceListHeight)](Расширение_поля_формы_для_поля_ввода.ВысотаСпискаВыбора_(Form_field_extension_for_a_text_box.ChoiceListHeight).md)  
+[ГиперссылкаМножественныхЗначений (MultipleValuesHyperlink)](Расширение_поля_формы_для_поля_ввода.ГиперссылкаМножественныхЗначений_(Form_field_extension_for_a_text_box.MultipleValuesHyperlink).md)  
+[ДоступныеТипы (AvailableTypes)](Расширение_поля_формы_для_поля_ввода.ДоступныеТипы_(Form_field_extension_for_a_text_box.AvailableTypes).md)  
+[ИсторияВыбораПриВводе (ChoiceHistoryOnInput)](Расширение_поля_формы_для_поля_ввода.ИсторияВыбораПриВводе_(Form_field_extension_for_a_text_box.ChoiceHistoryOnInput).md)  
+[КартинкаКнопкиВыбора (ChoiceButtonPicture)](Расширение_поля_формы_для_поля_ввода.КартинкаКнопкиВыбора_(Form_field_extension_for_a_text_box.ChoiceButtonPicture).md)  
+[КартинкаМножественныхЗначений (MultipleValuesPicture)](Расширение_поля_формы_для_поля_ввода.КартинкаМножественныхЗначений_(Form_field_extension_for_a_text_box.MultipleValuesPicture).md)  
+[КнопкаВыбора (ChoiceButton)](Расширение_поля_формы_для_поля_ввода.КнопкаВыбора_(Form_field_extension_for_a_text_box.ChoiceButton).md)  
+[КнопкаВыпадающегоСписка (DropListButton)](Расширение_поля_формы_для_поля_ввода.КнопкаВыпадающегоСписка_(Form_field_extension_for_a_text_box.DropListButton).md)  
+[КнопкаОткрытия (OpenButton)](Расширение_поля_формы_для_поля_ввода.КнопкаОткрытия_(Form_field_extension_for_a_text_box.OpenButton).md)  
+[КнопкаОчистки (ClearButton)](Расширение_поля_формы_для_поля_ввода.КнопкаОчистки_(Form_field_extension_for_a_text_box.ClearButton).md)  
+[КнопкаРегулирования (SpinButton)](Расширение_поля_формы_для_поля_ввода.КнопкаРегулирования_(Form_field_extension_for_a_text_box.SpinButton).md)  
+[КнопкаСоздания (CreateButton)](Расширение_поля_формы_для_поля_ввода.КнопкаСоздания_(Form_field_extension_for_a_text_box.CreateButton).md)  
+[КнопкаСпискаВыбора (ChoiceListButton)](Расширение_поля_формы_для_поля_ввода.КнопкаСпискаВыбора_(Form_field_extension_for_a_text_box.ChoiceListButton).md)  
+[МаксимальнаяВысота (MaxHeight)](Расширение_поля_формы_для_поля_ввода.МаксимальнаяВысота_(Form_field_extension_for_a_text_box.MaxHeight).md)  
+[МаксимальнаяШирина (MaxWidth)](Расширение_поля_формы_для_поля_ввода.МаксимальнаяШирина_(Form_field_extension_for_a_text_box.MaxWidth).md)  
+[МаксимальноеЗначение (MaxValue)](Расширение_поля_формы_для_поля_ввода.МаксимальноеЗначение_(Form_field_extension_for_a_text_box.MaxValue).md)  
+[Маска (Mask)](Расширение_поля_формы_для_поля_ввода.Маска_(Form_field_extension_for_a_text_box.Mask).md)  
+[МинимальноеЗначение (MinValue)](Расширение_поля_формы_для_поля_ввода.МинимальноеЗначение_(Form_field_extension_for_a_text_box.MinValue).md)  
+[МногострочныйРежим (MultiLine)](Расширение_поля_формы_для_поля_ввода.МногострочныйРежим_(Form_field_extension_for_a_text_box.MultiLine).md)  
+[ОбновлениеТекстаРедактирования (EditTextUpdate)](Расширение_поля_формы_для_поля_ввода.ОбновлениеТекстаРедактирования_(Form_field_extension_for_a_text_box.EditTextUpdate).md)  
+[ОтметкаНезаполненного (MarkIncomplete)](Расширение_поля_формы_для_поля_ввода.ОтметкаНезаполненного_(Form_field_extension_for_a_text_box.MarkIncomplete).md)  
+[ОтображатьФлажкиВВыпадающемСпискеПриВводеМножественныхЗначений (ShowCheckBoxesInDropListWhenInputMultipleValues)](Расширение_поля_формы_для_поля_ввода.ОтображатьФлажкиВВыпадающемСпискеПриВводеМножественныхЗначений_(Form_field_extension_for_a_text_box.ShowCheckBoxesInDropListWhenInputMultipleValues).md)  
+[ОтображениеКнопкиВыбора (ChoiceButtonRepresentation)](Расширение_поля_формы_для_поля_ввода.ОтображениеКнопкиВыбора_(Form_field_extension_for_a_text_box.ChoiceButtonRepresentation).md)  
+[ПараметрыВыбора (ChoiceParameters)](Расширение_поля_формы_для_поля_ввода.ПараметрыВыбора_(Form_field_extension_for_a_text_box.ChoiceParameters).md)  
+[ПодсказкаАвтозаполнения (AutoFillHint)](Расширение_поля_формы_для_поля_ввода.ПодсказкаАвтозаполнения_(Form_field_extension_for_a_text_box.AutoFillHint).md)  
+[ПодсказкаВвода (InputHint)](Расширение_поля_формы_для_поля_ввода.ПодсказкаВвода_(Form_field_extension_for_a_text_box.InputHint).md)  
+[ПроверкаПравописанияПриВводеТекста (SpellCheckingOnTextInput)](Расширение_поля_формы_для_поля_ввода.ПроверкаПравописанияПриВводеТекста_(Form_field_extension_for_a_text_box.SpellCheckingOnTextInput).md)  
+[ПутьКДаннымЗначенияМножественногоЗначения (MultipleValueValueDataPath)](Расширение_поля_формы_для_поля_ввода.ПутьКДаннымЗначенияМножественногоЗначения_(Form_field_extension_for_a_text_box.MultipleValueValueDataPath).md)  
+[ПутьКДаннымКартинкиМножественногоЗначения (MultipleValuePictureDataPath)](Расширение_поля_формы_для_поля_ввода.ПутьКДаннымКартинкиМножественногоЗначения_(Form_field_extension_for_a_text_box.MultipleValuePictureDataPath).md)  
+[ПутьКДаннымПредставленияМножественногоЗначения (MultipleValuePresentationDataPath)](Расширение_поля_формы_для_поля_ввода.ПутьКДаннымПредставленияМножественногоЗначения_(Form_field_extension_for_a_text_box.MultipleValuePresentationDataPath).md)  
+[РазмерКартинкиМножественногоЗначения (MultipleValuePictureSize)](Расширение_поля_формы_для_поля_ввода.РазмерКартинкиМножественногоЗначения_(Form_field_extension_for_a_text_box.MultipleValuePictureSize).md)  
+[РазрешитьВводПустыхМножественныхЗначений (AllowInputEmptyMultipleValues)](Расширение_поля_формы_для_поля_ввода.РазрешитьВводПустыхМножественныхЗначений_(Form_field_extension_for_a_text_box.AllowInputEmptyMultipleValues).md)  
+[РазрешитьДублированиеМножественныхЗначений (AllowMultipleValuesDuplicates)](Расширение_поля_формы_для_поля_ввода.РазрешитьДублированиеМножественныхЗначений_(Form_field_extension_for_a_text_box.AllowMultipleValuesDuplicates).md)  
+[РазрешитьСоставнойТип (TypeDomainEnabled)](Расширение_поля_формы_для_поля_ввода.РазрешитьСоставнойТип_(Form_field_extension_for_a_text_box.TypeDomainEnabled).md)  
+[РастягиватьПоВертикали (VerticalStretch)](Расширение_поля_формы_для_поля_ввода.РастягиватьПоВертикали_(Form_field_extension_for_a_text_box.VerticalStretch).md)  
+[РастягиватьПоГоризонтали (HorizontalStretch)](Расширение_поля_формы_для_поля_ввода.РастягиватьПоГоризонтали_(Form_field_extension_for_a_text_box.HorizontalStretch).md)  
+[РасширенноеРедактирование (ExtendedEdit)](Расширение_поля_формы_для_поля_ввода.РасширенноеРедактирование_(Form_field_extension_for_a_text_box.ExtendedEdit).md)  
+[РасширенноеРедактированиеМножественныхЗначений (MultipleValuesExtendedEdit)](Расширение_поля_формы_для_поля_ввода.РасширенноеРедактированиеМножественныхЗначений_(Form_field_extension_for_a_text_box.MultipleValuesExtendedEdit).md)  
+[РедактированиеТекста (TextEdit)](Расширение_поля_формы_для_поля_ввода.РедактированиеТекста_(Form_field_extension_for_a_text_box.TextEdit).md)  
+[РежимВыбораИзСписка (ListChoiceMode)](Расширение_поля_формы_для_поля_ввода.РежимВыбораИзСписка_(Form_field_extension_for_a_text_box.ListChoiceMode).md)  
+[РежимВыбораНезаполненного (IncompleteChoiceMode)](Расширение_поля_формы_для_поля_ввода.РежимВыбораНезаполненного_(Form_field_extension_for_a_text_box.IncompleteChoiceMode).md)  
+[РежимПароля (PasswordMode)](Расширение_поля_формы_для_поля_ввода.РежимПароля_(Form_field_extension_for_a_text_box.PasswordMode).md)  
+[СвязиПараметровВыбора (ChoiceParameterLinks)](Расширение_поля_формы_для_поля_ввода.СвязиПараметровВыбора_(Form_field_extension_for_a_text_box.ChoiceParameterLinks).md)  
+[СвязьПоТипу (TypeLink)](Расширение_поля_формы_для_поля_ввода.СвязьПоТипу_(Form_field_extension_for_a_text_box.TypeLink).md)  
+[СпециальныйРежимВводаТекста (SpecialTextInputMode)](Расширение_поля_формы_для_поля_ввода.СпециальныйРежимВводаТекста_(Form_field_extension_for_a_text_box.SpecialTextInputMode).md)  
+[СписокВыбора (ChoiceList)](Расширение_поля_формы_для_поля_ввода.СписокВыбора_(Form_field_extension_for_a_text_box.ChoiceList).md)  
+[ТекстКнопкиВводаЭкраннойКлавиатуры (OnScreenKeyboardReturnKeyText)](Расширение_поля_формы_для_поля_ввода.ТекстКнопкиВводаЭкраннойКлавиатуры_(Form_field_extension_for_a_text_box.OnScreenKeyboardReturnKeyText).md)  
+[ТекстРедактирования (EditText)](Расширение_поля_формы_для_поля_ввода.ТекстРедактирования_(Form_field_extension_for_a_text_box.EditText).md)  
+[ФигураКартинкиМножественногоЗначения (MultipleValuePictureShape)](Расширение_поля_формы_для_поля_ввода.ФигураКартинкиМножественногоЗначения_(Form_field_extension_for_a_text_box.MultipleValuePictureShape).md)  
+[ФормаВыбора (ChoiceForm)](Расширение_поля_формы_для_поля_ввода.ФормаВыбора_(Form_field_extension_for_a_text_box.ChoiceForm).md)  
+[Формат (Format)](Расширение_поля_формы_для_поля_ввода.Формат_(Form_field_extension_for_a_text_box.Format).md)  
+[ФорматРедактирования (EditFormat)](Расширение_поля_формы_для_поля_ввода.ФорматРедактирования_(Form_field_extension_for_a_text_box.EditFormat).md)  
+[ЦветРамки (BorderColor)](Расширение_поля_формы_для_поля_ввода.ЦветРамки_(Form_field_extension_for_a_text_box.BorderColor).md)  
+[ЦветТекста (TextColor)](Расширение_поля_формы_для_поля_ввода.ЦветТекста_(Form_field_extension_for_a_text_box.TextColor).md)  
+[ЦветТекстаМножественныхЗначений (MultipleValuesTextColor)](Расширение_поля_формы_для_поля_ввода.ЦветТекстаМножественныхЗначений_(Form_field_extension_for_a_text_box.MultipleValuesTextColor).md)  
+[ЦветФона (BackColor)](Расширение_поля_формы_для_поля_ввода.ЦветФона_(Form_field_extension_for_a_text_box.BackColor).md)  
+[ЦветФонаМножественныхЗначений (MultipleValuesBackColor)](Расширение_поля_формы_для_поля_ввода.ЦветФонаМножественныхЗначений_(Form_field_extension_for_a_text_box.MultipleValuesBackColor).md)  
+[Ширина (Width)](Расширение_поля_формы_для_поля_ввода.Ширина_(Form_field_extension_for_a_text_box.Width).md)  
+[ШиринаВыпадающегоСписка (DropListWidth)](Расширение_поля_формы_для_поля_ввода.ШиринаВыпадающегоСписка_(Form_field_extension_for_a_text_box.DropListWidth).md)  
+[Шрифт (Font)](Расширение_поля_формы_для_поля_ввода.Шрифт_(Form_field_extension_for_a_text_box.Font).md)  
+[ШрифтМножественныхЗначений (MultipleValuesFont)](Расширение_поля_формы_для_поля_ввода.ШрифтМножественныхЗначений_(Form_field_extension_for_a_text_box.MultipleValuesFont).md)  
+
+Методы:
+
+[ОбновитьТекстРедактирования (UpdateEditText)](Расширение_поля_формы_для_поля_ввода.ОбновитьТекстРедактирования_(Form_field_extension_for_a_text_box.UpdateEditText).md)  
+[ПолучитьВыделенныеМножественныеЗначения (GetSelectedMultipleValues)](Расширение_поля_формы_для_поля_ввода.ПолучитьВыделенныеМножественныеЗначения_(Form_field_extension_for_a_text_box.GetSelectedMultipleValues).md)  
+[ПолучитьГраницыВыделения (GetTextSelectionBounds)](Расширение_поля_формы_для_поля_ввода.ПолучитьГраницыВыделения_(Form_field_extension_for_a_text_box.GetTextSelectionBounds).md)  
+[УстановитьВыделенныеМножественныеЗначения (SetSelectedMultipleValues)](Расширение_поля_формы_для_поля_ввода.УстановитьВыделенныеМножественныеЗначения_(Form_field_extension_for_a_text_box.SetSelectedMultipleValues).md)  
+[УстановитьГраницыВыделения (SetTextSelectionBounds)](Расширение_поля_формы_для_поля_ввода.УстановитьГраницыВыделения_(Form_field_extension_for_a_text_box.SetTextSelectionBounds).md)  
+
+События:
+
+[АвтоПодбор (AutoComplete)](Расширение_поля_формы_для_поля_ввода.АвтоПодбор_(Form_field_extension_for_a_text_box.AutoComplete).md)  
+[ДобавлениеМножественныхЗначений (MultipleValuesAdd)](Расширение_поля_формы_для_поля_ввода.ДобавлениеМножественныхЗначений_(Form_field_extension_for_a_text_box.MultipleValuesAdd).md)  
+[ИзменениеТекстаРедактирования (EditTextChange)](Расширение_поля_формы_для_поля_ввода.ИзменениеТекстаРедактирования_(Form_field_extension_for_a_text_box.EditTextChange).md)  
+[НачалоВыбора (StartChoice)](Расширение_поля_формы_для_поля_ввода.НачалоВыбора_(Form_field_extension_for_a_text_box.StartChoice).md)  
+[НачалоВыбораИзСписка (StartListChoice)](Расширение_поля_формы_для_поля_ввода.НачалоВыбораИзСписка_(Form_field_extension_for_a_text_box.StartListChoice).md)  
+[ОбработкаВыбора (ChoiceProcessing)](Расширение_поля_формы_для_поля_ввода.ОбработкаВыбора_(Form_field_extension_for_a_text_box.ChoiceProcessing).md)  
+[ОбработкаНавигационнойСсылкиМножественногоЗначения (MultipleValueURLProcessing)](Расширение_поля_формы_для_поля_ввода.ОбработкаНавигационнойСсылкиМножественногоЗначения_(Form_field_extension_for_a_text_box.MultipleValueURLProcessing).md)  
+[ОбработкаФормированияКоманд (CommandGenerateProcessing)](Расширение_поля_формы_для_поля_ввода.ОбработкаФормированияКоманд_(Form_field_extension_for_a_text_box.CommandGenerateProcessing).md)  
+[ОкончаниеВводаТекста (TextEditEnd)](Расширение_поля_формы_для_поля_ввода.ОкончаниеВводаТекста_(Form_field_extension_for_a_text_box.TextEditEnd).md)  
+[Открытие (Opening)](Расширение_поля_формы_для_поля_ввода.Открытие_(Form_field_extension_for_a_text_box.Opening).md)  
+[ОткрытиеМножественногоЗначения (MultipleValueOpening)](Расширение_поля_формы_для_поля_ввода.ОткрытиеМножественногоЗначения_(Form_field_extension_for_a_text_box.MultipleValueOpening).md)  
+[Очистка (Clearing)](Расширение_поля_формы_для_поля_ввода.Очистка_(Form_field_extension_for_a_text_box.Clearing).md)  
+[Регулирование (Tuning)](Расширение_поля_формы_для_поля_ввода.Регулирование_(Form_field_extension_for_a_text_box.Tuning).md)  
+[Создание (Creating)](Расширение_поля_формы_для_поля_ввода.Создание_(Form_field_extension_for_a_text_box.Creating).md)  
+[УдалениеМножественныхЗначений (MultipleValuesDelete)](Расширение_поля_формы_для_поля_ввода.УдалениеМножественныхЗначений_(Form_field_extension_for_a_text_box.MultipleValuesDelete).md)  
+
+Описание:
+
+Содержит свойства, специфичные для поля вида [ПолеВвода](ВидПоляФормы.ПолеВвода_(FormFieldType.InputField).md).
+
+Доступность:
+
+Тонкий клиент, веб-клиент, мобильный клиент, сервер, толстый клиент, мобильное приложение (клиент), мобильное приложение (сервер), мобильный автономный сервер.
+
+Использование в версии:
+
+Доступен, начиная с версии 8.2.
+
+Описание изменено в версии 8.3.27.
+
+---
+
+<!-- toc:start -->
+## Оглавление
+
+### Подразделы (3)
+
+- [Методы (5 страниц)](Расширение_поля_формы_для_поля_ввода__Методы.md)
+- [Свойства (77 страниц)](Расширение_поля_формы_для_поля_ввода__Свойства.md)
+- [События (15 страниц)](Расширение_поля_формы_для_поля_ввода__События.md)
+<!-- toc:end -->

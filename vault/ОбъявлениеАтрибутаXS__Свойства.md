@@ -1,0 +1,25 @@
+# Свойства
+
+## Страницы (19)
+
+- [ОбъявлениеАтрибутаXS.URIПространстваИмен](ОбъявлениеАтрибутаXS.URIПространстваИмен_(XSAttributeDeclaration.NamespaceURI).md)
+- [ОбъявлениеАтрибутаXS.Аннотация](ОбъявлениеАтрибутаXS.Аннотация_(XSAttributeDeclaration.Annotation).md)
+- [ОбъявлениеАтрибутаXS.АнонимноеОпределениеТипа](ОбъявлениеАтрибутаXS.АнонимноеОпределениеТипа_(XSAttributeDeclaration.AnonymousTypeDefinition).md)
+- [ОбъявлениеАтрибутаXS.Значение](ОбъявлениеАтрибутаXS.Значение_(XSAttributeDeclaration.Value).md)
+- [ОбъявлениеАтрибутаXS.Имя](ОбъявлениеАтрибутаXS.Имя_(XSAttributeDeclaration.Name).md)
+- [ОбъявлениеАтрибутаXS.ИмяТипа](ОбъявлениеАтрибутаXS.ИмяТипа_(XSAttributeDeclaration.TypeName).md)
+- [ОбъявлениеАтрибутаXS.Компоненты](ОбъявлениеАтрибутаXS.Компоненты_(XSAttributeDeclaration.Components).md)
+- [ОбъявлениеАтрибутаXS.Контейнер](ОбъявлениеАтрибутаXS.Контейнер_(XSAttributeDeclaration.Container).md)
+- [ОбъявлениеАтрибутаXS.КорневойКонтейнер](ОбъявлениеАтрибутаXS.КорневойКонтейнер_(XSAttributeDeclaration.RootContainer).md)
+- [ОбъявлениеАтрибутаXS.ЛексическоеЗначение](ОбъявлениеАтрибутаXS.ЛексическоеЗначение_(XSAttributeDeclaration.LexicalValue).md)
+- [ОбъявлениеАтрибутаXS.ОбластьВидимости](ОбъявлениеАтрибутаXS.ОбластьВидимости_(XSAttributeDeclaration.Scope).md)
+- [ОбъявлениеАтрибутаXS.Ограничение](ОбъявлениеАтрибутаXS.Ограничение_(XSAttributeDeclaration.Constraint).md)
+- [ОбъявлениеАтрибутаXS.Ссылка](ОбъявлениеАтрибутаXS.Ссылка_(XSAttributeDeclaration.Reference).md)
+- [ОбъявлениеАтрибутаXS.Схема](ОбъявлениеАтрибутаXS.Схема_(XSAttributeDeclaration.Schema).md)
+- [ОбъявлениеАтрибутаXS.ТипКомпоненты](ОбъявлениеАтрибутаXS.ТипКомпоненты_(XSAttributeDeclaration.ComponentType).md)
+- [ОбъявлениеАтрибутаXS.Форма](ОбъявлениеАтрибутаXS.Форма_(XSAttributeDeclaration.Form).md)
+- [ОбъявлениеАтрибутаXS.ЭлементDOM](ОбъявлениеАтрибутаXS.ЭлементDOM_(XSAttributeDeclaration.DOMElement).md)
+- [ОбъявлениеАтрибутаXS.ЭтоГлобальноеОбъявление](ОбъявлениеАтрибутаXS.ЭтоГлобальноеОбъявление_(XSAttributeDeclaration.IsGlobal).md)
+- [ОбъявлениеАтрибутаXS.ЭтоСсылка](ОбъявлениеАтрибутаXS.ЭтоСсылка_(XSAttributeDeclaration.IsReference).md)
+
+**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [Схема XML](Схема_XML.md) › [ОбъявлениеАтрибутаXS](ОбъявлениеАтрибутаXS_(XSAttributeDeclaration).md)

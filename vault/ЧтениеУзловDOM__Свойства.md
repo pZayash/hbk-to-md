@@ -1,0 +1,28 @@
+# Свойства
+
+## Страницы (22)
+
+- [ЧтениеУзловDOM.URIПространстваИмен](ЧтениеУзловDOM.URIПространстваИмен_(DOMNodeReader.NamespaceURI).md)
+- [ЧтениеУзловDOM.Автономный](ЧтениеУзловDOM.Автономный_(DOMNodeReader.Standalone).md)
+- [ЧтениеУзловDOM.БазовыйURI](ЧтениеУзловDOM.БазовыйURI_(DOMNodeReader.BaseURI).md)
+- [ЧтениеУзловDOM.ВерсияXML](ЧтениеУзловDOM.ВерсияXML_(DOMNodeReader.XMLVersion).md)
+- [ЧтениеУзловDOM.Значение](ЧтениеУзловDOM.Значение_(DOMNodeReader.Value).md)
+- [ЧтениеУзловDOM.ИмеетЗначение](ЧтениеУзловDOM.ИмеетЗначение_(DOMNodeReader.HasValue).md)
+- [ЧтениеУзловDOM.ИмеетИмя](ЧтениеУзловDOM.ИмеетИмя_(DOMNodeReader.HasName).md)
+- [ЧтениеУзловDOM.Имя](ЧтениеУзловDOM.Имя_(DOMNodeReader.Name).md)
+- [ЧтениеУзловDOM.ИмяНотации](ЧтениеУзловDOM.ИмяНотации_(DOMNodeReader.NotationName).md)
+- [ЧтениеУзловDOM.КодировкаXML](ЧтениеУзловDOM.КодировкаXML_(DOMNodeReader.XMLEncoding).md)
+- [ЧтениеУзловDOM.КодировкаИсточника](ЧтениеУзловDOM.КодировкаИсточника_(DOMNodeReader.InputEncoding).md)
+- [ЧтениеУзловDOM.КонтекстПространствИмен](ЧтениеУзловDOM.КонтекстПространствИмен_(DOMNodeReader.NamespaceContext).md)
+- [ЧтениеУзловDOM.ЛокальноеИмя](ЧтениеУзловDOM.ЛокальноеИмя_(DOMNodeReader.LocalName).md)
+- [ЧтениеУзловDOM.Префикс](ЧтениеУзловDOM.Префикс_(DOMNodeReader.Prefix).md)
+- [ЧтениеУзловDOM.ПробельныеСимволы](ЧтениеУзловDOM.ПробельныеСимволы_(DOMNodeReader.Space).md)
+- [ЧтениеУзловDOM.ПубличныйИдентификатор](ЧтениеУзловDOM.ПубличныйИдентификатор_(DOMNodeReader.PublicId).md)
+- [ЧтениеУзловDOM.СистемныйИдентификатор](ЧтениеУзловDOM.СистемныйИдентификатор_(DOMNodeReader.SystemId).md)
+- [ЧтениеУзловDOM.ТипУзла](ЧтениеУзловDOM.ТипУзла_(DOMNodeReader.NodeType).md)
+- [ЧтениеУзловDOM.ЭтоАтрибутПоУмолчанию](ЧтениеУзловDOM.ЭтоАтрибутПоУмолчанию_(DOMNodeReader.IsDefaultAttribute).md)
+- [ЧтениеУзловDOM.ЭтоПробельныеСимволы](ЧтениеУзловDOM.ЭтоПробельныеСимволы_(DOMNodeReader.IsWhitespace).md)
+- [ЧтениеУзловDOM.ЭтоСимвольныеДанные](ЧтениеУзловDOM.ЭтоСимвольныеДанные_(DOMNodeReader.IsCharacters).md)
+- [ЧтениеУзловDOM.Язык](ЧтениеУзловDOM.Язык_(DOMNodeReader.Lang).md)
+
+**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [DOM](DOM-2.md) › [ЧтениеУзловDOM](ЧтениеУзловDOM_(DOMNodeReader).md)

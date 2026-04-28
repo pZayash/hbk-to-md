@@ -1,0 +1,25 @@
+# Методы
+
+## Страницы (19)
+
+- [ДокументPDF.ДобавитьОтображаемыйОбъект](ДокументPDF.ДобавитьОтображаемыйОбъект_(PDFDocument.AddRepresentationObject).md)
+- [ДокументPDF.ДобавитьОтображаемыйОбъектАсинх](ДокументPDF.ДобавитьОтображаемыйОбъектАсинх_(PDFDocument.AddRepresentationObjectAsync).md)
+- [ДокументPDF.ДобавитьПодпись](ДокументPDF.ДобавитьПодпись_(PDFDocument.AddSignature).md)
+- [ДокументPDF.ДобавитьПодписьАсинх](ДокументPDF.ДобавитьПодписьАсинх_(PDFDocument.AddSignatureAsync).md)
+- [ДокументPDF.Записать](ДокументPDF.Записать_(PDFDocument.Write).md)
+- [ДокументPDF.ЗаписатьАсинх](ДокументPDF.ЗаписатьАсинх_(PDFDocument.WriteAsync).md)
+- [ДокументPDF.КоличествоСтраниц](ДокументPDF.КоличествоСтраниц_(PDFDocument.PageCount).md)
+- [ДокументPDF.Напечатать](ДокументPDF.Напечатать_(PDFDocument.Print).md)
+- [ДокументPDF.Показать](ДокументPDF.Показать_(PDFDocument.Show).md)
+- [ДокументPDF.ПолучитьОписанияПодписей](ДокументPDF.ПолучитьОписанияПодписей_(PDFDocument.GetSignatureDescriptions).md)
+- [ДокументPDF.ПолучитьОписанияПодписейАсинх](ДокументPDF.ПолучитьОписанияПодписейАсинх_(PDFDocument.GetSignatureDescriptionsAsync).md)
+- [ДокументPDF.ПреобразоватьВОттенкиСерого](ДокументPDF.ПреобразоватьВОттенкиСерого_(PDFDocument.ConvertToGrayScale).md)
+- [ДокументPDF.ПреобразоватьВОттенкиСерогоАсинх](ДокументPDF.ПреобразоватьВОттенкиСерогоАсинх_(PDFDocument.ConvertToGrayScaleAsync).md)
+- [ДокументPDF.ПроверитьПодписи](ДокументPDF.ПроверитьПодписи_(PDFDocument.VerifySignatures).md)
+- [ДокументPDF.ПроверитьПодписиАсинх](ДокументPDF.ПроверитьПодписиАсинх_(PDFDocument.VerifySignaturesAsync).md)
+- [ДокументPDF.ПроверитьПодпись](ДокументPDF.ПроверитьПодпись_(PDFDocument.VerifySignature).md)
+- [ДокументPDF.ПроверитьПодписьАсинх](ДокументPDF.ПроверитьПодписьАсинх_(PDFDocument.VerifySignatureAsync).md)
+- [ДокументPDF.Прочитать](ДокументPDF.Прочитать_(PDFDocument.Read).md)
+- [ДокументPDF.ПрочитатьАсинх](ДокументPDF.ПрочитатьАсинх_(PDFDocument.ReadAsync).md)
+
+**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [Работа с PDF](Работа_с_PDF-2.md) › [ДокументPDF](ДокументPDF_(PDFDocument).md)

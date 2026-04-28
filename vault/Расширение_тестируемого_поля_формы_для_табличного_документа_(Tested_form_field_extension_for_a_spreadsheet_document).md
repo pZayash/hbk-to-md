@@ -1,0 +1,47 @@
+# Расширение тестируемого поля формы для табличного документа
+
+**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [Автоматизированное тестирование](Автоматизированное_тестирование-2.md) › [Тестируемое поле формы](Тестируемое_поле_формы.md)
+
+Доступен, начиная с версии 8.3.2.
+
+Методы:
+
+[ВходитВОбъединеннуюОбласть (IncludedInMergedArea)](Расширение_тестируемого_поля_формы_для_табличного_документа.ВходитВОбъединеннуюОбласть_(Tested_form_field_extension_for_a_spreadsheet_document.IncludedInMergedArea).md)  
+[ВыполнитьВыборИзМенюРасшифровки (ExecuteChoiceFromDetailsMenu)](Расширение_тестируемого_поля_формы_для_табличного_документа.ВыполнитьВыборИзМенюРасшифровки_(Tested_form_field_extension_for_a_spreadsheet_document.ExecuteChoiceFromDetailsMenu).md)  
+[ЗакончитьРедактированиеТекущейОбласти (EndEditCurrentArea)](Расширение_тестируемого_поля_формы_для_табличного_документа.ЗакончитьРедактированиеТекущейОбласти_(Tested_form_field_extension_for_a_spreadsheet_document.EndEditCurrentArea).md)  
+[ЗаписатьСодержимоеВФайл (WriteContentToFile)](Расширение_тестируемого_поля_формы_для_табличного_документа.ЗаписатьСодержимоеВФайл_(Tested_form_field_extension_for_a_spreadsheet_document.WriteContentToFile).md)  
+[НачатьРедактированиеТекущейОбласти (BeginEditCurrentArea)](Расширение_тестируемого_поля_формы_для_табличного_документа.НачатьРедактированиеТекущейОбласти_(Tested_form_field_extension_for_a_spreadsheet_document.BeginEditCurrentArea).md)  
+[ПолучитьАдресТекущейОбласти (GetCurrentAreaAddress)](Расширение_тестируемого_поля_формы_для_табличного_документа.ПолучитьАдресТекущейОбласти_(Tested_form_field_extension_for_a_spreadsheet_document.GetCurrentAreaAddress).md)  
+[ПолучитьОтображениеСостояния (GetStatePresentation)](Расширение_тестируемого_поля_формы_для_табличного_документа.ПолучитьОтображениеСостояния_(Tested_form_field_extension_for_a_spreadsheet_document.GetStatePresentation).md)  
+[ПолучитьПолеТекущейОбласти (GetCurrentAreaField)](Расширение_тестируемого_поля_формы_для_табличного_документа.ПолучитьПолеТекущейОбласти_(Tested_form_field_extension_for_a_spreadsheet_document.GetCurrentAreaField).md)  
+[ПолучитьРазмерОбластиДанныхДокументаПоВертикали (GetDocumentDataAreaVerticalSize)](Расширение_тестируемого_поля_формы_для_табличного_документа.ПолучитьРазмерОбластиДанныхДокументаПоВертикали_(Tested_form_field_extension_for_a_spreadsheet_document.GetDocumentDataAreaVerticalSize).md)  
+[ПолучитьРазмерОбластиДанныхДокументаПоГоризонтали (GetDocumentDataAreaHorizontalSize)](Расширение_тестируемого_поля_формы_для_табличного_документа.ПолучитьРазмерОбластиДанныхДокументаПоГоризонтали_(Tested_form_field_extension_for_a_spreadsheet_document.GetDocumentDataAreaHorizontalSize).md)  
+[ПолучитьТекстОбласти (GetAreaText)](Расширение_тестируемого_поля_формы_для_табличного_документа.ПолучитьТекстОбласти_(Tested_form_field_extension_for_a_spreadsheet_document.GetAreaText).md)  
+[ПолучитьТекстТекущейОбласти (GetCurrentAreaText)](Расширение_тестируемого_поля_формы_для_табличного_документа.ПолучитьТекстТекущейОбласти_(Tested_form_field_extension_for_a_spreadsheet_document.GetCurrentAreaText).md)  
+[ТекстВПределахГраницОбласти (TextIsWithinAreaBounds)](Расширение_тестируемого_поля_формы_для_табличного_документа.ТекстВПределахГраницОбласти_(Tested_form_field_extension_for_a_spreadsheet_document.TextIsWithinAreaBounds).md)  
+[ТекущийРежимРедактирование (CurrentModeIsEdit)](Расширение_тестируемого_поля_формы_для_табличного_документа.ТекущийРежимРедактирование_(Tested_form_field_extension_for_a_spreadsheet_document.CurrentModeIsEdit).md)  
+[УстановитьТекущуюОбласть (SetCurrentArea)](Расширение_тестируемого_поля_формы_для_табличного_документа.УстановитьТекущуюОбласть_(Tested_form_field_extension_for_a_spreadsheet_document.SetCurrentArea).md)  
+
+Описание:
+
+Содержит свойства специфичные для поля вида [ПолеТабличногоДокумента](ВидПоляФормы.ПолеТабличногоДокумента_(FormFieldType.SpreadsheetDocumentField).md).
+
+Доступность:
+
+Тонкий клиент, толстый клиент.
+
+Использование в версии:
+
+Доступен, начиная с версии 8.3.2.
+
+Описание изменено в версии 8.3.27.
+
+---
+
+<!-- toc:start -->
+## Оглавление
+
+### Подразделы (1)
+
+- [Методы (15 страниц)](Расширение_тестируемого_поля_формы_для_табличного_документа__Методы.md)
+<!-- toc:end -->

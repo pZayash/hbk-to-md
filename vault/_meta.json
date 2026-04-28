@@ -1,0 +1,22 @@
+{
+  "params": {
+    "hbk": "C:\\Program Files\\1cv8\\8.3.27.1786\\bin\\shcntx_ru.hbk",
+    "lang_hbk": "C:\\Program Files\\1cv8\\8.3.27.1786\\bin\\shlang_ru.hbk",
+    "out": "C:\\!Pavl0\\GitHub\\pzayash\\hbk-to-md\\vault",
+    "version": "8.3.27.1786",
+    "clean": true
+  },
+  "stats": {
+    "total": 25542,
+    "converted": 25542,
+    "failed": 0,
+    "truncated": 119,
+    "collisions": 638,
+    "unresolved": 104,
+    "index_files_generated": 3521,
+    "breadcrumbs_added": 25542,
+    "started_at": 1777370675.2001023,
+    "finished_at": 1777371234.772917,
+    "duration_sec": 559.57
+  }
+}

@@ -1,0 +1,110 @@
+# ОбъектМетаданных: ПланВидовХарактеристик
+
+**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [Работа с объектами метаданных](Работа_с_объектами_метаданных.md) › [Объекты метаданных](Объекты_метаданных.md)
+
+Доступен, начиная с версии 8.1.
+
+Свойства:
+
+[Имя (Name)](ОбъектМетаданных_ПланВидовХарактеристик.Имя_(MetadataObject_ChartOfCharacteristicTypes.Name).md)  
+[Комментарий (Comment)](ОбъектМетаданных_ПланВидовХарактеристик.Комментарий_(MetadataObject_ChartOfCharacteristicTypes.Comment).md)  
+[ОбъектРасширяемойКонфигурации (ExtendedConfigurationObject)](ОбъектМетаданных_ПланВидовХарактеристик.ОбъектРасширяемойКонфигурации_(MetadataObject_ChartOfCharacteristicTypes.ExtendedConfigurationObject).md)  
+[ПринадлежностьОбъекта (ObjectBelonging)](ОбъектМетаданных_ПланВидовХарактеристик.ПринадлежностьОбъекта_(MetadataObject_ChartOfCharacteristicTypes.ObjectBelonging).md)  
+[Синоним (Synonym)](ОбъектМетаданных_ПланВидовХарактеристик.Синоним_(MetadataObject_ChartOfCharacteristicTypes.Synonym).md)  
+[СтандартныеРеквизиты (StandardAttributes)](ОбъектМетаданных_ПланВидовХарактеристик.СтандартныеРеквизиты_(MetadataObject_ChartOfCharacteristicTypes.StandardAttributes).md)  
+[Автонумерация (Autonumbering)](ОбъектМетаданных_ПланВидовХарактеристик.Автонумерация_(MetadataObject_ChartOfCharacteristicTypes.Autonumbering).md)  
+[БыстрыйВыбор (QuickChoice)](ОбъектМетаданных_ПланВидовХарактеристик.БыстрыйВыбор_(MetadataObject_ChartOfCharacteristicTypes.QuickChoice).md)  
+[ВводитсяНаОсновании (BasedOn)](ОбъектМетаданных_ПланВидовХарактеристик.ВводитсяНаОсновании_(MetadataObject_ChartOfCharacteristicTypes.BasedOn).md)  
+[ВводПоСтроке (InputByString)](ОбъектМетаданных_ПланВидовХарактеристик.ВводПоСтроке_(MetadataObject_ChartOfCharacteristicTypes.InputByString).md)  
+[ВключатьСправкуВСодержание (IncludeHelpInContents)](ОбъектМетаданных_ПланВидовХарактеристик.ВключатьСправкуВСодержание_(MetadataObject_ChartOfCharacteristicTypes.IncludeHelpInContents).md)  
+[ВыполнятьОбработкуПослеЗаписиВерсииИсторииДанных (ExecuteAfterWriteDataHistoryVersionProcessing)](ОбъектМетаданных_ПланВидовХарактеристик.ВыполнятьОбработкуПослеЗаписиВерсииИсторииДанных_(MetadataObject_ChartOfCharacteristicTypes.ExecuteAfterWriteDataHistoryVersionProcessing).md)  
+[ГруппыСверху (FoldersOnTop)](ОбъектМетаданных_ПланВидовХарактеристик.ГруппыСверху_(MetadataObject_ChartOfCharacteristicTypes.FoldersOnTop).md)  
+[ДлинаКода (CodeLength)](ОбъектМетаданных_ПланВидовХарактеристик.ДлинаКода_(MetadataObject_ChartOfCharacteristicTypes.CodeLength).md)  
+[ДлинаНаименования (DescriptionLength)](ОбъектМетаданных_ПланВидовХарактеристик.ДлинаНаименования_(MetadataObject_ChartOfCharacteristicTypes.DescriptionLength).md)  
+[ДополнительнаяФормаГруппы (AuxiliaryFolderForm)](ОбъектМетаданных_ПланВидовХарактеристик.ДополнительнаяФормаГруппы_(MetadataObject_ChartOfCharacteristicTypes.AuxiliaryFolderForm).md)  
+[ДополнительнаяФормаДляВыбора (AuxiliaryChoiceForm)](ОбъектМетаданных_ПланВидовХарактеристик.ДополнительнаяФормаДляВыбора_(MetadataObject_ChartOfCharacteristicTypes.AuxiliaryChoiceForm).md)  
+[ДополнительнаяФормаДляВыбораГруппы (AuxiliaryFolderChoiceForm)](ОбъектМетаданных_ПланВидовХарактеристик.ДополнительнаяФормаДляВыбораГруппы_(MetadataObject_ChartOfCharacteristicTypes.AuxiliaryFolderChoiceForm).md)  
+[ДополнительнаяФормаОбъекта (AuxiliaryObjectForm)](ОбъектМетаданных_ПланВидовХарактеристик.ДополнительнаяФормаОбъекта_(MetadataObject_ChartOfCharacteristicTypes.AuxiliaryObjectForm).md)  
+[ДополнительнаяФормаСписка (AuxiliaryListForm)](ОбъектМетаданных_ПланВидовХарактеристик.ДополнительнаяФормаСписка_(MetadataObject_ChartOfCharacteristicTypes.AuxiliaryListForm).md)  
+[ДополнительныеЗначенияХарактеристик (CharacteristicExtValues)](ОбъектМетаданных_ПланВидовХарактеристик.ДополнительныеЗначенияХарактеристик_(MetadataObject_ChartOfCharacteristicTypes.CharacteristicExtValues).md)  
+[ДополнительныеИндексы (AdditionalIndexes)](ОбъектМетаданных_ПланВидовХарактеристик.ДополнительныеИндексы_(MetadataObject_ChartOfCharacteristicTypes.AdditionalIndexes).md)  
+[ДопустимаяДлинаКода (CodeAllowedLength)](ОбъектМетаданных_ПланВидовХарактеристик.ДопустимаяДлинаКода_(MetadataObject_ChartOfCharacteristicTypes.CodeAllowedLength).md)  
+[Иерархический (Hierarchical)](ОбъектМетаданных_ПланВидовХарактеристик.Иерархический_(MetadataObject_ChartOfCharacteristicTypes.Hierarchical).md)  
+[ИспользоватьСтандартныеКоманды (UseStandardCommands)](ОбъектМетаданных_ПланВидовХарактеристик.ИспользоватьСтандартныеКоманды_(MetadataObject_ChartOfCharacteristicTypes.UseStandardCommands).md)  
+[ИсторияВыбораПриВводе (ChoiceHistoryOnInput)](ОбъектМетаданных_ПланВидовХарактеристик.ИсторияВыбораПриВводе_(MetadataObject_ChartOfCharacteristicTypes.ChoiceHistoryOnInput).md)  
+[ИсторияДанных (DataHistory)](ОбъектМетаданных_ПланВидовХарактеристик.ИсторияДанных_(MetadataObject_ChartOfCharacteristicTypes.DataHistory).md)  
+[Команды (Commands)](ОбъектМетаданных_ПланВидовХарактеристик.Команды_(MetadataObject_ChartOfCharacteristicTypes.Commands).md)  
+[КонтрольУникальности (CheckUnique)](ОбъектМетаданных_ПланВидовХарактеристик.КонтрольУникальности_(MetadataObject_ChartOfCharacteristicTypes.CheckUnique).md)  
+[Макеты (Templates)](ОбъектМетаданных_ПланВидовХарактеристик.Макеты_(MetadataObject_ChartOfCharacteristicTypes.Templates).md)  
+[МодульМенеджера (ManagerModule)](ОбъектМетаданных_ПланВидовХарактеристик.МодульМенеджера_(MetadataObject_ChartOfCharacteristicTypes.ManagerModule).md)  
+[МодульОбъекта (ObjectModule)](ОбъектМетаданных_ПланВидовХарактеристик.МодульОбъекта_(MetadataObject_ChartOfCharacteristicTypes.ObjectModule).md)  
+[ОбновлениеПредопределенныхДанных (PredefinedDataUpdate)](ОбъектМетаданных_ПланВидовХарактеристик.ОбновлениеПредопределенныхДанных_(MetadataObject_ChartOfCharacteristicTypes.PredefinedDataUpdate).md)  
+[ОбновлятьИсториюДанныхСразуПослеЗаписи (UpdateDataHistoryImmediatelyAfterWrite)](ОбъектМетаданных_ПланВидовХарактеристик.ОбновлятьИсториюДанныхСразуПослеЗаписи_(MetadataObject_ChartOfCharacteristicTypes.UpdateDataHistoryImmediatelyAfterWrite).md)  
+[ОсновнаяФормаГруппы (DefaultFolderForm)](ОбъектМетаданных_ПланВидовХарактеристик.ОсновнаяФормаГруппы_(MetadataObject_ChartOfCharacteristicTypes.DefaultFolderForm).md)  
+[ОсновнаяФормаДляВыбора (DefaultChoiceForm)](ОбъектМетаданных_ПланВидовХарактеристик.ОсновнаяФормаДляВыбора_(MetadataObject_ChartOfCharacteristicTypes.DefaultChoiceForm).md)  
+[ОсновнаяФормаДляВыбораГруппы (DefaultFolderChoiceForm)](ОбъектМетаданных_ПланВидовХарактеристик.ОсновнаяФормаДляВыбораГруппы_(MetadataObject_ChartOfCharacteristicTypes.DefaultFolderChoiceForm).md)  
+[ОсновнаяФормаОбъекта (DefaultObjectForm)](ОбъектМетаданных_ПланВидовХарактеристик.ОсновнаяФормаОбъекта_(MetadataObject_ChartOfCharacteristicTypes.DefaultObjectForm).md)  
+[ОсновнаяФормаСписка (DefaultListForm)](ОбъектМетаданных_ПланВидовХарактеристик.ОсновнаяФормаСписка_(MetadataObject_ChartOfCharacteristicTypes.DefaultListForm).md)  
+[ОсновноеПредставление (DefaultPresentation)](ОбъектМетаданных_ПланВидовХарактеристик.ОсновноеПредставление_(MetadataObject_ChartOfCharacteristicTypes.DefaultPresentation).md)  
+[ПолнотекстовыйПоиск (FullTextSearch)](ОбъектМетаданных_ПланВидовХарактеристик.ПолнотекстовыйПоиск_(MetadataObject_ChartOfCharacteristicTypes.FullTextSearch).md)  
+[ПолнотекстовыйПоискПриВводеПоСтроке (FullTextSearchOnInputByString)](ОбъектМетаданных_ПланВидовХарактеристик.ПолнотекстовыйПоискПриВводеПоСтроке_(MetadataObject_ChartOfCharacteristicTypes.FullTextSearchOnInputByString).md)  
+[ПоляБлокировкиДанных (DataLockFields)](ОбъектМетаданных_ПланВидовХарактеристик.ПоляБлокировкиДанных_(MetadataObject_ChartOfCharacteristicTypes.DataLockFields).md)  
+[Пояснение (Explanation)](ОбъектМетаданных_ПланВидовХарактеристик.Пояснение_(MetadataObject_ChartOfCharacteristicTypes.Explanation).md)  
+[Предопределенные (Predefined)](ОбъектМетаданных_ПланВидовХарактеристик.Предопределенные_(MetadataObject_ChartOfCharacteristicTypes.Predefined).md)  
+[ПредставлениеОбъекта (ObjectPresentation)](ОбъектМетаданных_ПланВидовХарактеристик.ПредставлениеОбъекта_(MetadataObject_ChartOfCharacteristicTypes.ObjectPresentation).md)  
+[ПредставлениеСписка (ListPresentation)](ОбъектМетаданных_ПланВидовХарактеристик.ПредставлениеСписка_(MetadataObject_ChartOfCharacteristicTypes.ListPresentation).md)  
+[РасширенноеПредставлениеОбъекта (ExtendedObjectPresentation)](ОбъектМетаданных_ПланВидовХарактеристик.РасширенноеПредставлениеОбъекта_(MetadataObject_ChartOfCharacteristicTypes.ExtendedObjectPresentation).md)  
+[РасширенноеПредставлениеСписка (ExtendedListPresentation)](ОбъектМетаданных_ПланВидовХарактеристик.РасширенноеПредставлениеСписка_(MetadataObject_ChartOfCharacteristicTypes.ExtendedListPresentation).md)  
+[РежимПолученияДанныхВыбораПриВводеПоСтроке (ChoiceDataGetModeOnInputByString)](ОбъектМетаданных_ПланВидовХарактеристик.РежимПолученияДанныхВыбораПриВводеПоСтроке_(MetadataObject_ChartOfCharacteristicTypes.ChoiceDataGetModeOnInputByString).md)  
+[РежимУправленияБлокировкойДанных (DataLockControlMode)](ОбъектМетаданных_ПланВидовХарактеристик.РежимУправленияБлокировкойДанных_(MetadataObject_ChartOfCharacteristicTypes.DataLockControlMode).md)  
+[Реквизиты (Attributes)](ОбъектМетаданных_ПланВидовХарактеристик.Реквизиты_(MetadataObject_ChartOfCharacteristicTypes.Attributes).md)  
+[СерииКодов (CodeSeries)](ОбъектМетаданных_ПланВидовХарактеристик.СерииКодов_(MetadataObject_ChartOfCharacteristicTypes.CodeSeries).md)  
+[СозданиеПриВводе (CreateOnInput)](ОбъектМетаданных_ПланВидовХарактеристик.СозданиеПриВводе_(MetadataObject_ChartOfCharacteristicTypes.CreateOnInput).md)  
+[СпособВыбора (ChoiceMode)](ОбъектМетаданных_ПланВидовХарактеристик.СпособВыбора_(MetadataObject_ChartOfCharacteristicTypes.ChoiceMode).md)  
+[СпособПоискаСтрокиПриВводеПоСтроке (SearchStringModeOnInputByString)](ОбъектМетаданных_ПланВидовХарактеристик.СпособПоискаСтрокиПриВводеПоСтроке_(MetadataObject_ChartOfCharacteristicTypes.SearchStringModeOnInputByString).md)  
+[СпособРедактирования (EditType)](ОбъектМетаданных_ПланВидовХарактеристик.СпособРедактирования_(MetadataObject_ChartOfCharacteristicTypes.EditType).md)  
+[Справка (Help)](ОбъектМетаданных_ПланВидовХарактеристик.Справка_(MetadataObject_ChartOfCharacteristicTypes.Help).md)  
+[ТабличныеЧасти (TabularSections)](ОбъектМетаданных_ПланВидовХарактеристик.ТабличныеЧасти_(MetadataObject_ChartOfCharacteristicTypes.TabularSections).md)  
+[Тип (Type)](ОбъектМетаданных_ПланВидовХарактеристик.Тип_(MetadataObject_ChartOfCharacteristicTypes.Type).md)  
+[Формы (Forms)](ОбъектМетаданных_ПланВидовХарактеристик.Формы_(MetadataObject_ChartOfCharacteristicTypes.Forms).md)  
+[Характеристики (Characteristics)](ОбъектМетаданных_ПланВидовХарактеристик.Характеристики_(MetadataObject_ChartOfCharacteristicTypes.Characteristics).md)  
+
+Методы:
+
+[ЕстьИзмененияРасширениямиКонфигурации (ChangedByConfigurationExtensions)](ОбъектМетаданных_ПланВидовХарактеристик.ЕстьИзмененияРасширениямиКонфигурации_(MetadataObject_ChartOfCharacteristicTypes.ChangedByConfigurationExtensions).md)  
+[ПолноеИмя (FullName)](ОбъектМетаданных_ПланВидовХарактеристик.ПолноеИмя_(MetadataObject_ChartOfCharacteristicTypes.FullName).md)  
+[Представление (Presentation)](ОбъектМетаданных_ПланВидовХарактеристик.Представление_(MetadataObject_ChartOfCharacteristicTypes.Presentation).md)  
+[РасширениеКонфигурации (ConfigurationExtension)](ОбъектМетаданных_ПланВидовХарактеристик.РасширениеКонфигурации_(MetadataObject_ChartOfCharacteristicTypes.ConfigurationExtension).md)  
+[Родитель (Parent)](ОбъектМетаданных_ПланВидовХарактеристик.Родитель_(MetadataObject_ChartOfCharacteristicTypes.Parent).md)  
+[ПолучитьИменаПредопределенных (GetPredefinedNames)](ОбъектМетаданных_ПланВидовХарактеристик.ПолучитьИменаПредопределенных_(MetadataObject_ChartOfCharacteristicTypes.GetPredefinedNames).md)  
+
+Описание:
+
+Используется для обращения к метаданным объекта конфигурации - план видов характеристик.
+
+Доступность:
+
+Сервер, толстый клиент, внешнее соединение, мобильное приложение (сервер), мобильный автономный сервер.
+
+См. также:
+
+[ОбъектМетаданных: ПланСчетов](ОбъектМетаданных_ПланСчетов_(MetadataObject_ChartOfAccounts).md), свойство [ВидыСубконто](ОбъектМетаданных_ПланСчетов.ВидыСубконто_(MetadataObject_ChartOfAccounts.ExtDimensionTypes).md)  
+[ПланВидовХарактеристикСсылка.\<Имя плана видов характеристик\>](ПланВидовХарактеристикСсылка.Имя_плана_видов_характеристик_(ChartOfCharacteristicTypesRef.Chart_of_characteristic_types_name).md), метод [Метаданные](ПланВидовХарактеристикСсылка.Имя_плана_видов_характеристик.Метаданные_(ChartOfCharacteristicTypesRef.Chart_of_characteristic_types_name.Metadata).md)  
+[ПланВидовХарактеристикОбъект.\<Имя плана видов характеристик\>](ПланВидовХарактеристикОбъект.Имя_плана_видов_характеристик_(ChartOfCharacteristicTypesObject.Chart_of_characteristic_types_name).md), метод [Метаданные](ПланВидовХарактеристикОбъект.Имя_плана_видов_характеристик.Метаданные_(ChartOfCharacteristicTypesObject.Chart_of_characteristic_types_name.Metadata).md)  
+
+Использование в версии:
+
+Доступен, начиная с версии 8.1.
+
+Описание изменено в версии 8.3.26.
+
+---
+
+<!-- toc:start -->
+## Оглавление
+
+### Подразделы (2)
+
+- [Методы (6 страниц)](ОбъектМетаданных_ПланВидовХарактеристик__Методы.md)
+- [Свойства (62 страниц)](ОбъектМетаданных_ПланВидовХарактеристик__Свойства.md)
+<!-- toc:end -->

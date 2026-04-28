@@ -1,0 +1,65 @@
+# МенеджерРаботыСРечью
+
+**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [Работа с речью](Работа_с_речью.md)
+
+Доступен, начиная с версии 8.3.23.
+
+Методы:
+
+[ВыполнитьОтложенноеРаспознавание (ExecuteDelayedSpeechToText)](МенеджерРаботыСРечью.ВыполнитьОтложенноеРаспознавание_(SpeechProcessingManager.ExecuteDelayedSpeechToText).md)  
+[ВыполнитьРегистрациюИнформационнойБазы (RegisterInfoBase)](МенеджерРаботыСРечью.ВыполнитьРегистрациюИнформационнойБазы_(SpeechProcessingManager.RegisterInfoBase).md)  
+[ВыполнитьРегистрациюСеанса (RegisterSession)](МенеджерРаботыСРечью.ВыполнитьРегистрациюСеанса_(SpeechProcessingManager.RegisterSession).md)  
+[НачатьПотоковоеРаспознавание (StartStreamingSpeechToText)](МенеджерРаботыСРечью.НачатьПотоковоеРаспознавание_(SpeechProcessingManager.StartStreamingSpeechToText).md)  
+[НачатьСинтез (StartTextToSpeech)](МенеджерРаботыСРечью.НачатьСинтез_(SpeechProcessingManager.StartTextToSpeech).md)  
+[ОстановитьПотоковоеРаспознавание (StopStreamingSpeechToText)](МенеджерРаботыСРечью.ОстановитьПотоковоеРаспознавание_(SpeechProcessingManager.StopStreamingSpeechToText).md)  
+[ОстановитьСинтез (StopTextToSpeech)](МенеджерРаботыСРечью.ОстановитьСинтез_(SpeechProcessingManager.StopTextToSpeech).md)  
+[ОтменитьОтложенноеРаспознавание (CancelDelayedSpeechToText)](МенеджерРаботыСРечью.ОтменитьОтложенноеРаспознавание_(SpeechProcessingManager.CancelDelayedSpeechToText).md)  
+[ПоддерживаетсяИспользованиеВнешнегоРасположения (ExternalLocationUseSupported)](МенеджерРаботыСРечью.ПоддерживаетсяИспользованиеВнешнегоРасположения_(SpeechProcessingManager.ExternalLocationUseSupported).md)  
+[ПоддерживаетсяПотоковоеРаспознавание (StreamingSpeechToTextSupported)](МенеджерРаботыСРечью.ПоддерживаетсяПотоковоеРаспознавание_(SpeechProcessingManager.StreamingSpeechToTextSupported).md)  
+[ПолучитьДанныеРаботыСРечьюИнформационнойБазы (GetInfoBaseSpeechProcessingData)](МенеджерРаботыСРечью.ПолучитьДанныеРаботыСРечьюИнформационнойБазы_(SpeechProcessingManager.GetInfoBaseSpeechProcessingData).md)  
+[ПолучитьДополнительныеГрамматикиИнформационнойБазы (GetInfoBaseAdditionalGrammars)](МенеджерРаботыСРечью.ПолучитьДополнительныеГрамматикиИнформационнойБазы_(SpeechProcessingManager.GetInfoBaseAdditionalGrammars).md)  
+[ПолучитьДополнительныеГрамматикиСеанса (GetSessionAdditionalGrammars)](МенеджерРаботыСРечью.ПолучитьДополнительныеГрамматикиСеанса_(SpeechProcessingManager.GetSessionAdditionalGrammars).md)  
+[ПолучитьДоступныеГолосаСинтеза (GetTextToSpeechAvailableVoices)](МенеджерРаботыСРечью.ПолучитьДоступныеГолосаСинтеза_(SpeechProcessingManager.GetTextToSpeechAvailableVoices).md)  
+[ПолучитьМодельРаспознаванияВоВременноеХранилище (GetSpeechToTextModelToTempStorage)](МенеджерРаботыСРечью.ПолучитьМодельРаспознаванияВоВременноеХранилище_(SpeechProcessingManager.GetSpeechToTextModelToTempStorage).md)  
+[ПолучитьОписаниеМоделейРаспознавания (GetSpeechToTextModelsDescription)](МенеджерРаботыСРечью.ПолучитьОписаниеМоделейРаспознавания_(SpeechProcessingManager.GetSpeechToTextModelsDescription).md)  
+[ПолучитьПараметрыВнешнегоПодключенияИнформационнойБазы (GetInfoBaseExternalConnectionParameters)](МенеджерРаботыСРечью.ПолучитьПараметрыВнешнегоПодключенияИнформационнойБазы_(SpeechProcessingManager.GetInfoBaseExternalConnectionParameters).md)  
+[ПолучитьПараметрыВнешнегоПодключенияСеанса (GetSessionExternalConnectionParameters)](МенеджерРаботыСРечью.ПолучитьПараметрыВнешнегоПодключенияСеанса_(SpeechProcessingManager.GetSessionExternalConnectionParameters).md)  
+[ПолучитьРезультатыОтложенныхРаспознаваний (GetDelayedSpeechToTextResults)](МенеджерРаботыСРечью.ПолучитьРезультатыОтложенныхРаспознаваний_(SpeechProcessingManager.GetDelayedSpeechToTextResults).md)  
+[Синтезировать (Synthesize)](МенеджерРаботыСРечью.Синтезировать_(SpeechProcessingManager.Synthesize).md)  
+[УдалитьДополнительнуюГрамматикуИнформационнойБазы (DeleteInfoBaseAdditionalGrammar)](МенеджерРаботыСРечью.УдалитьДополнительнуюГрамматикуИнформационнойБазы_(SpeechProcessingManager.DeleteInfoBaseAdditionalGrammar).md)  
+[УдалитьДополнительнуюГрамматикуСеанса (DeleteSessionAdditionalGrammar)](МенеджерРаботыСРечью.УдалитьДополнительнуюГрамматикуСеанса_(SpeechProcessingManager.DeleteSessionAdditionalGrammar).md)  
+[УдалитьМодельРаспознаванияДляИнформационнойБазы (DeleteInfoBaseSpeechToTextModel)](МенеджерРаботыСРечью.УдалитьМодельРаспознаванияДляИнформационнойБазы_(SpeechProcessingManager.DeleteInfoBaseSpeechToTextModel).md)  
+[УстановитьДанныеРаботыСРечьюИнформационнойБазы (SetInfoBaseSpeechProcessingData)](МенеджерРаботыСРечью.УстановитьДанныеРаботыСРечьюИнформационнойБазы_(SpeechProcessingManager.SetInfoBaseSpeechProcessingData).md)  
+[УстановитьДополнительнуюГрамматикуИнформационнойБазы (SetInfoBaseAdditionalGrammar)](МенеджерРаботыСРечью.УстановитьДополнительнуюГрамматикуИнформационнойБазы_(SpeechProcessingManager.SetInfoBaseAdditionalGrammar).md)  
+[УстановитьДополнительнуюГрамматикуСеанса (SetSessionAdditionalGrammar)](МенеджерРаботыСРечью.УстановитьДополнительнуюГрамматикуСеанса_(SpeechProcessingManager.SetSessionAdditionalGrammar).md)  
+[УстановитьМодельРаспознаванияДляИнформационнойБазы (SetInfoBaseSpeechToTextModel)](МенеджерРаботыСРечью.УстановитьМодельРаспознаванияДляИнформационнойБазы_(SpeechProcessingManager.SetInfoBaseSpeechToTextModel).md)  
+[УстановитьПараметрыВнешнегоПодключенияИнформационнойБазы (SetInfoBaseExternalConnectionParameters)](МенеджерРаботыСРечью.УстановитьПараметрыВнешнегоПодключенияИнформационнойБазы_(SpeechProcessingManager.SetInfoBaseExternalConnectionParameters).md)  
+[УстановитьПараметрыВнешнегоПодключенияСеанса (SetSessionExternalConnectionParameters)](МенеджерРаботыСРечью.УстановитьПараметрыВнешнегоПодключенияСеанса_(SpeechProcessingManager.SetSessionExternalConnectionParameters).md)  
+
+Описание:
+
+Предоставляет доступ к функциям работы с распознаванием речи.
+
+Доступность:
+
+Тонкий клиент, веб-клиент, мобильный клиент, сервер, толстый клиент, мобильное приложение (клиент), мобильное приложение (сервер), мобильный автономный сервер.
+
+См. также:
+
+[Глобальный контекст](Глобальный_контекст.md), свойство [РаботаСРечью](Глобальный_контекст.РаботаСРечью_(Global_context.SpeechProcessing).md)  
+
+Использование в версии:
+
+Доступен, начиная с версии 8.3.23.
+
+Описание изменено в версии 8.3.25.
+
+---
+
+<!-- toc:start -->
+## Оглавление
+
+### Подразделы (1)
+
+- [Методы (29 страниц)](МенеджерРаботыСРечью__Методы.md)
+<!-- toc:end -->

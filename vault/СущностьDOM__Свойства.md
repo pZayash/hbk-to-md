@@ -1,0 +1,28 @@
+# Свойства
+
+## Страницы (22)
+
+- [СущностьDOM.URIПространстваИмен](СущностьDOM.URIПространстваИмен_(DOMEntity.NamespaceURI).md)
+- [СущностьDOM.Атрибуты](СущностьDOM.Атрибуты_(DOMEntity.Attributes).md)
+- [СущностьDOM.БазовыйURI](СущностьDOM.БазовыйURI_(DOMEntity.BaseURI).md)
+- [СущностьDOM.ВерсияXML](СущностьDOM.ВерсияXML_(DOMEntity.XMLVersion).md)
+- [СущностьDOM.ДокументВладелец](СущностьDOM.ДокументВладелец_(DOMEntity.OwnerDocument).md)
+- [СущностьDOM.ДочерниеУзлы](СущностьDOM.ДочерниеУзлы_(DOMEntity.ChildNodes).md)
+- [СущностьDOM.ЗначениеУзла](СущностьDOM.ЗначениеУзла_(DOMEntity.NodeValue).md)
+- [СущностьDOM.ИмяНотации](СущностьDOM.ИмяНотации_(DOMEntity.NotationName).md)
+- [СущностьDOM.ИмяУзла](СущностьDOM.ИмяУзла_(DOMEntity.NodeName).md)
+- [СущностьDOM.КодировкаXML](СущностьDOM.КодировкаXML_(DOMEntity.XMLEncoding).md)
+- [СущностьDOM.КодировкаИсточника](СущностьDOM.КодировкаИсточника_(DOMEntity.InputEncoding).md)
+- [СущностьDOM.ЛокальноеИмя](СущностьDOM.ЛокальноеИмя_(DOMEntity.LocalName).md)
+- [СущностьDOM.ПервыйДочерний](СущностьDOM.ПервыйДочерний_(DOMEntity.FirstChild).md)
+- [СущностьDOM.ПоследнийДочерний](СущностьDOM.ПоследнийДочерний_(DOMEntity.LastChild).md)
+- [СущностьDOM.ПредыдущийСоседний](СущностьDOM.ПредыдущийСоседний_(DOMEntity.PreviousSibling).md)
+- [СущностьDOM.Префикс](СущностьDOM.Префикс_(DOMEntity.Prefix).md)
+- [СущностьDOM.ПубличныйИдентификатор](СущностьDOM.ПубличныйИдентификатор_(DOMEntity.PublicId).md)
+- [СущностьDOM.РодительскийУзел](СущностьDOM.РодительскийУзел_(DOMEntity.ParentNode).md)
+- [СущностьDOM.СистемныйИдентификатор](СущностьDOM.СистемныйИдентификатор_(DOMEntity.SystemId).md)
+- [СущностьDOM.СледующийСоседний](СущностьDOM.СледующийСоседний_(DOMEntity.NextSibling).md)
+- [СущностьDOM.ТекстовоеСодержимое](СущностьDOM.ТекстовоеСодержимое_(DOMEntity.TextContent).md)
+- [СущностьDOM.ТипУзла](СущностьDOM.ТипУзла_(DOMEntity.NodeType).md)
+
+**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [DOM](DOM-2.md) › [СущностьDOM](СущностьDOM_(DOMEntity).md)

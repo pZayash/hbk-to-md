@@ -1,0 +1,56 @@
+# МенеджерХранилищаДвоичныхДанных
+
+**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [Хранилище двоичных данных](Хранилище_двоичных_данных.md)
+
+Доступен, начиная с версии 8.3.23.
+
+Методы:
+
+[ЗагрузитьДифференциальнуюРезервнуюКопию (LoadDifferentialBackup)](МенеджерХранилищаДвоичныхДанных.ЗагрузитьДифференциальнуюРезервнуюКопию_(BinaryDataStorageManager.LoadDifferentialBackup).md)  
+[ЗагрузитьПолнуюРезервнуюКопию (LoadFullBackup)](МенеджерХранилищаДвоичныхДанных.ЗагрузитьПолнуюРезервнуюКопию_(BinaryDataStorageManager.LoadFullBackup).md)  
+[ОчиститьНеиспользуемоеМестоПоУниверсальнойДате (ClearUnusedSpaceByUniversalDate)](МенеджерХранилищаДвоичныхДанных.ОчиститьНеиспользуемоеМестоПоУниверсальнойДате_(BinaryDataStorageManager.ClearUnusedSpaceByUniversalDate).md)  
+[ПолучитьДоступностьХранилищаДвоичныхДанных (GetBinaryDataStorageAvailability)](МенеджерХранилищаДвоичныхДанных.ПолучитьДоступностьХранилищаДвоичныхДанных_(BinaryDataStorageManager.GetBinaryDataStorageAvailability).md)  
+[ПолучитьИнформацию (GetInformation)](МенеджерХранилищаДвоичныхДанных.ПолучитьИнформацию_(BinaryDataStorageManager.GetInformation).md)  
+[ПолучитьИспользованиеКакХранилищаПоУмолчанию (GetUsingAsDefaultStorage)](МенеджерХранилищаДвоичныхДанных.ПолучитьИспользованиеКакХранилищаПоУмолчанию_(BinaryDataStorageManager.GetUsingAsDefaultStorage).md)  
+[ПолучитьМинимальныйРазмерЗаписываемыхДанных (GetMinWriteDataSize)](МенеджерХранилищаДвоичныхДанных.ПолучитьМинимальныйРазмерЗаписываемыхДанных_(BinaryDataStorageManager.GetMinWriteDataSize).md)  
+[ПолучитьРежимИспользованияХранилищаДвоичныхДанных (GetBinaryDataStorageUseMode)](МенеджерХранилищаДвоичныхДанных.ПолучитьРежимИспользованияХранилищаДвоичныхДанных_(BinaryDataStorageManager.GetBinaryDataStorageUseMode).md)  
+[ПолучитьРежимРазмещенияКопийДанныхВХранилищеДвоичныхДанных (GetBinaryDataStorageDataCopiesPlacementMode)](МенеджерХранилищаДвоичныхДанных.ПолучитьРежимРазмещенияКопийДанныхВХранилищеДвоичныхДанных_(BinaryDataStorageManager.GetBinaryDataStorageDataCopiesPlacementMode).md)  
+[ПолучитьРежимЧтенияЗаписиХранилищаДвоичныхДанных (GetBinaryDataStorageReadWriteMode)](МенеджерХранилищаДвоичныхДанных.ПолучитьРежимЧтенияЗаписиХранилищаДвоичныхДанных_(BinaryDataStorageManager.GetBinaryDataStorageReadWriteMode).md)  
+[ПолучитьСоставХранимыхДанных (GetStoredDataContent)](МенеджерХранилищаДвоичныхДанных.ПолучитьСоставХранимыхДанных_(BinaryDataStorageManager.GetStoredDataContent).md)  
+[ПолучитьУниверсальнуюДатуСозданияРезервнойКопии (GetBackupCreationUniversalDate)](МенеджерХранилищаДвоичныхДанных.ПолучитьУниверсальнуюДатуСозданияРезервнойКопии_(BinaryDataStorageManager.GetBackupCreationUniversalDate).md)  
+[СоздатьДифференциальнуюРезервнуюКопию (CreateDifferentialBackup)](МенеджерХранилищаДвоичныхДанных.СоздатьДифференциальнуюРезервнуюКопию_(BinaryDataStorageManager.CreateDifferentialBackup).md)  
+[СоздатьПолнуюРезервнуюКопию (CreateFullBackup)](МенеджерХранилищаДвоичныхДанных.СоздатьПолнуюРезервнуюКопию_(BinaryDataStorageManager.CreateFullBackup).md)  
+[УстановитьИспользованиеКакХранилищаПоУмолчанию (SetUsingAsDefaultStorage)](МенеджерХранилищаДвоичныхДанных.УстановитьИспользованиеКакХранилищаПоУмолчанию_(BinaryDataStorageManager.SetUsingAsDefaultStorage).md)  
+[УстановитьМинимальныйРазмерЗаписываемыхДанных (SetMinWriteDataSize)](МенеджерХранилищаДвоичныхДанных.УстановитьМинимальныйРазмерЗаписываемыхДанных_(BinaryDataStorageManager.SetMinWriteDataSize).md)  
+[УстановитьРежимИспользованияХранилищаДвоичныхДанных (SetBinaryDataStorageUseMode)](МенеджерХранилищаДвоичныхДанных.УстановитьРежимИспользованияХранилищаДвоичныхДанных_(BinaryDataStorageManager.SetBinaryDataStorageUseMode).md)  
+[УстановитьРежимРазмещенияКопийДанныхВХранилищеДвоичныхДанных (SetBinaryDataStorageDataCopiesPlacementMode)](МенеджерХранилищаДвоичныхДанных.УстановитьРежимРазмещенияКопийДанныхВХранилищеДвоичныхДанных_(BinaryDataStorageManager.SetBinaryDataStorageDataCopiesPlacementMode).md)  
+[УстановитьРежимЧтенияЗаписиХранилищаДвоичныхДанных (SetBinaryDataStorageReadWriteMode)](МенеджерХранилищаДвоичныхДанных.УстановитьРежимЧтенияЗаписиХранилищаДвоичныхДанных_(BinaryDataStorageManager.SetBinaryDataStorageReadWriteMode).md)  
+[УстановитьСоставХранимыхДанных (SetStoredDataContent)](МенеджерХранилищаДвоичныхДанных.УстановитьСоставХранимыхДанных_(BinaryDataStorageManager.SetStoredDataContent).md)  
+
+Описание:
+
+Управляет встроенным хранилищем двоичных данных.
+
+Доступность:
+
+Сервер.
+
+См. также:
+
+[Глобальный контекст](Глобальный_контекст.md), свойство [ХранилищеДвоичныхДанных](Глобальный_контекст.ХранилищеДвоичныхДанных_(Global_context.BinaryDataStorage).md)  
+
+Использование в версии:
+
+Доступен, начиная с версии 8.3.23.
+
+Описание изменено в версии 8.3.26.
+
+---
+
+<!-- toc:start -->
+## Оглавление
+
+### Подразделы (1)
+
+- [Методы (20 страниц)](МенеджерХранилищаДвоичныхДанных__Методы.md)
+<!-- toc:end -->

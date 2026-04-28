@@ -1,0 +1,26 @@
+# Методы
+
+## Страницы (20)
+
+- [ЗаписьPDF.Закрыть](ЗаписьPDF.Закрыть_(PDFWriter.Close).md)
+- [ЗаписьPDF.ЗакрытьАсинх](ЗаписьPDF.ЗакрытьАсинх_(PDFWriter.CloseAsync).md)
+- [ЗаписьPDF.ЗаписатьВложения](ЗаписьPDF.ЗаписатьВложения_(PDFWriter.WriteAttachments).md)
+- [ЗаписьPDF.ЗаписатьВложенияАсинх](ЗаписьPDF.ЗаписатьВложенияАсинх_(PDFWriter.WriteAttachmentsAsync).md)
+- [ЗаписьPDF.ЗаписатьОтображаемыйОбъект](ЗаписьPDF.ЗаписатьОтображаемыйОбъект_(PDFWriter.WriteRepresentationObject).md)
+- [ЗаписьPDF.ЗаписатьОтображаемыйОбъектАсинх](ЗаписьPDF.ЗаписатьОтображаемыйОбъектАсинх_(PDFWriter.WriteRepresentationObjectAsync).md)
+- [ЗаписьPDF.ЗаписатьПодпись](ЗаписьPDF.ЗаписатьПодпись_(PDFWriter.WriteSignature).md)
+- [ЗаписьPDF.ЗаписатьПодписьАсинх](ЗаписьPDF.ЗаписатьПодписьАсинх_(PDFWriter.WriteSignatureAsync).md)
+- [ЗаписьPDF.ЗаписатьУдалениеВложений](ЗаписьPDF.ЗаписатьУдалениеВложений_(PDFWriter.WriteAttachmentsDeletion).md)
+- [ЗаписьPDF.ЗаписатьУдалениеВложенийАсинх](ЗаписьPDF.ЗаписатьУдалениеВложенийАсинх_(PDFWriter.WriteAttachmentsDeletionAsync).md)
+- [ЗаписьPDF.НачатьЗакрытие](ЗаписьPDF.НачатьЗакрытие_(PDFWriter.BeginClose).md)
+- [ЗаписьPDF.НачатьЗаписьВложений](ЗаписьPDF.НачатьЗаписьВложений_(PDFWriter.BeginWriteAttachments).md)
+- [ЗаписьPDF.НачатьЗаписьОтображаемогоОбъекта](ЗаписьPDF.НачатьЗаписьОтображаемогоОбъекта_(PDFWriter.BeginWriteRepresentationObject).md)
+- [ЗаписьPDF.НачатьЗаписьПодписи](ЗаписьPDF.НачатьЗаписьПодписи_(PDFWriter.BeginWriteSignature).md)
+- [ЗаписьPDF.НачатьЗаписьУдаленияВложений](ЗаписьPDF.НачатьЗаписьУдаленияВложений_(PDFWriter.BeginWriteAttachmentsDeletion).md)
+- [ЗаписьPDF.НачатьОткрытие](ЗаписьPDF.НачатьОткрытие_(PDFWriter.BeginOpen).md)
+- [ЗаписьPDF.Открыть](ЗаписьPDF.Открыть_(PDFWriter.Open).md)
+- [ЗаписьPDF.ОткрытьАсинх](ЗаписьPDF.ОткрытьАсинх_(PDFWriter.OpenAsync).md)
+- [ЗаписьPDF.ПреобразоватьВОттенкиСерого](ЗаписьPDF.ПреобразоватьВОттенкиСерого_(PDFWriter.ConvertToGrayScale).md)
+- [ЗаписьPDF.ПреобразоватьВОттенкиСерогоАсинх](ЗаписьPDF.ПреобразоватьВОттенкиСерогоАсинх_(PDFWriter.ConvertToGrayScaleAsync).md)
+
+**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [Работа с PDF](Работа_с_PDF-2.md) › [ЗаписьPDF](ЗаписьPDF_(PDFWriter).md)

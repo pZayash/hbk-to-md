@@ -1,0 +1,26 @@
+# Методы
+
+## Страницы (20)
+
+- [ЧтениеXML.URIПространстваИменАтрибута](ЧтениеXML.URIПространстваИменАтрибута_(XMLReader.AttributeNamespaceURI).md)
+- [ЧтениеXML.Закрыть](ЧтениеXML.Закрыть_(XMLReader.Close).md)
+- [ЧтениеXML.ЗначениеАтрибута](ЧтениеXML.ЗначениеАтрибута_(XMLReader.AttributeValue).md)
+- [ЧтениеXML.ИмяАтрибута](ЧтениеXML.ИмяАтрибута_(XMLReader.AttributeName).md)
+- [ЧтениеXML.КоличествоАтрибутов](ЧтениеXML.КоличествоАтрибутов_(XMLReader.AttributeCount).md)
+- [ЧтениеXML.ЛокальноеИмяАтрибута](ЧтениеXML.ЛокальноеИмяАтрибута_(XMLReader.AttributeLocalName).md)
+- [ЧтениеXML.ОткрытьПоток](ЧтениеXML.ОткрытьПоток_(XMLReader.OpenStream).md)
+- [ЧтениеXML.ОткрытьФайл](ЧтениеXML.ОткрытьФайл_(XMLReader.OpenFile).md)
+- [ЧтениеXML.ПервоеОбъявление](ЧтениеXML.ПервоеОбъявление_(XMLReader.FirstDeclaration).md)
+- [ЧтениеXML.ПервыйАтрибут](ЧтениеXML.ПервыйАтрибут_(XMLReader.FirstAttribute).md)
+- [ЧтениеXML.ПерейтиКСодержимому](ЧтениеXML.ПерейтиКСодержимому_(XMLReader.MoveToContent).md)
+- [ЧтениеXML.ПолучитьАтрибут](ЧтениеXML.ПолучитьАтрибут_(XMLReader.GetAttribute).md)
+- [ЧтениеXML.ПрефиксАтрибута](ЧтениеXML.ПрефиксАтрибута_(XMLReader.AttributePrefix).md)
+- [ЧтениеXML.Пропустить](ЧтениеXML.Пропустить_(XMLReader.Skip).md)
+- [ЧтениеXML.Прочитать](ЧтениеXML.Прочитать_(XMLReader.Read).md)
+- [ЧтениеXML.ПрочитатьАтрибут](ЧтениеXML.ПрочитатьАтрибут_(XMLReader.ReadAttribute).md)
+- [ЧтениеXML.СледующееОбъявление](ЧтениеXML.СледующееОбъявление_(XMLReader.NextDeclaration).md)
+- [ЧтениеXML.СледующийАтрибут](ЧтениеXML.СледующийАтрибут_(XMLReader.NextAttribute).md)
+- [ЧтениеXML.ТипАтрибута](ЧтениеXML.ТипАтрибута_(XMLReader.AttributeType).md)
+- [ЧтениеXML.УстановитьСтроку](ЧтениеXML.УстановитьСтроку_(XMLReader.SetString).md)
+
+**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [XML](XML-2.md) › [ЧтениеXML](ЧтениеXML_(XMLReader).md)
