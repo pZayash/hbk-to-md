@@ -5,6 +5,7 @@ from convert import (
     extract_titles,
     parse_html,
     rewrite_links,
+    PRIMITIVE_TYPE_STEMS,
 )
 
 
@@ -74,9 +75,21 @@ def test_rewrite_links_context():
     rewrite_links(soup, archive_index, unresolved, "objects/x/y.html")
     hrefs = [a.get("href") for a in soup.find_all("a")]
     assert "objects__catalog63__catalog565__XMLReader.md" in hrefs
-    assert "lang__def_Boolean.md" in hrefs
+    # lang__def_Boolean is a primitive type — link stripped, plain text "Булево" kept
+    assert "lang__def_Boolean.md" not in hrefs
+    assert soup.get_text(separator=" ").find("Булево") >= 0
     assert "https://example.com" in hrefs
     assert unresolved == []
+
+
+def test_rewrite_links_primitive_type_stripped():
+    html = '<a href="v8help://SyntaxHelperLanguage/def_String">Строка</a>'
+    soup = parse_html("<html><body>" + html + "</body></html>")
+    archive_index = {"def_string": "lang__def_String.md"}
+    rewrite_links(soup, archive_index, [], "p.html")
+    # link replaced with plain text, no <a> tag remaining
+    assert soup.find("a") is None
+    assert "Строка" in soup.get_text()
 
 
 def test_rewrite_links_anchor_preserved():

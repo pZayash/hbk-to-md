@@ -34,6 +34,17 @@ INDEX_PREFIX = "_index"
 BREADCRUMB_MARKER = "**↑** [Главная]"
 PROGRESS_EVERY = 500
 
+PRIMITIVE_TYPE_STEMS: frozenset[str] = frozenset({
+    "lang__def_String", "lang__def_Number", "lang__def_Date",
+    "lang__def_Undefined", "lang__def_BooleanTrue", "lang__def_BooleanFalse", "lang__def_Null",
+    "lang__Булево_(Boolean)", "lang__Число_(Number)", "lang__Строка_(String)",
+    "lang__Дата_(Date)", "lang__Неопределено_(Undefined)",
+})
+
+SKIP_SEGMENT_INDEX: frozenset[str] = frozenset({
+    "properties", "methods", "events", "ctors", "fields", "params", "formparams",
+})
+
 STAGE_EXTRACT_SHCNTX = "extract_shcntx"
 STAGE_SCAN_TITLES_SHCNTX = "scan_titles_shcntx"
 STAGE_BUILD_INDEX_SHCNTX = "build_index_shcntx"
@@ -44,6 +55,7 @@ STAGE_CONVERT_SHCNTX = "convert_shcntx"
 STAGE_CONVERT_SHLANG = "convert_shlang"
 STAGE_BUILD_TOC = "build_toc"
 STAGE_INJECT_BREADCRUMBS = "inject_breadcrumbs"
+STAGE_INJECT_SIGNATURES = "inject_signatures"
 STAGE_WRITE_LOGS = "write_logs"
 
 SEGMENT_TITLES = {
@@ -294,6 +306,11 @@ def rewrite_links(
             if not target_filename:
                 target_filename = archive_path_to_filename(resolved)
                 unresolved_log.append((page_source_path, href_s))
+        stem = target_filename[:-3] if target_filename.endswith(".md") else target_filename
+        stem = stem.rsplit("/", 1)[-1]
+        if stem in PRIMITIVE_TYPE_STEMS or stem.startswith("lang__def_"):
+            a.replace_with(NavigableString(a.get_text("", strip=False)))
+            continue
         new_href = target_filename
         if anchor:
             new_href += "#" + anchor
@@ -367,6 +384,8 @@ class Stats:
     unresolved: int = 0
     index_files_generated: int = 0
     breadcrumbs_added: int = 0
+    signatures_injected: int = 0
+    signatures_skipped: int = 0
     started_at: float = field(default_factory=time.time)
     finished_at: float | None = None
 
@@ -749,6 +768,8 @@ def build_index_name_map(
         stack.extend(node.children.values())
         if node.prefix == "" or not node.children or node.content_filename:
             continue
+        if node.segment in SKIP_SEGMENT_INDEX:
+            continue
         depth = len([p for p in node.prefix.split("/") if p])
         if depth == 1:
             title_file = title_to_filename(node.title, prefix="")
@@ -803,12 +824,17 @@ def render_breadcrumb(
     index_name_map: dict[str, str],
     prefix_map: dict[str, TreeNode],
 ) -> str:
-    parts = [f"{BREADCRUMB_MARKER}({INDEX_PREFIX}.md)"]
+    home = f'**↑** <a href="obsidian://open?file={INDEX_PREFIX}.md">Главная</a>'
+    resolved_parts: list[tuple[str, str]] = []
     for parent_prefix in walk_parents(prefix):
         resolved = resolve_breadcrumb_target(parent_prefix, archive_index, index_name_map, prefix_map)
-        if not resolved:
-            continue
-        filename, title = resolved
+        if resolved:
+            resolved_parts.append(resolved)
+    parts = [home]
+    for filename, title in resolved_parts[:-1]:
+        parts.append(f'<a href="obsidian://open?file={filename}">{escape_markdown_link_text(title)}</a>')
+    if resolved_parts:
+        filename, title = resolved_parts[-1]
         parts.append(f"[{escape_markdown_link_text(title)}]({filename})")
     return BREADCRUMB_SEPARATOR.join(parts)
 
@@ -915,6 +941,8 @@ def write_all_indexes(
         stack.extend(node.children.values())
         if node.prefix == "" or not node.children or node.content_filename:
             continue
+        if node.segment in SKIP_SEGMENT_INDEX:
+            continue
         filename = index_name_map[node.prefix]
         parts = [p for p in node.prefix.split("/") if p]
         parent_prefix = "/".join(parts[:-1])
@@ -927,7 +955,7 @@ def write_all_indexes(
 
 def inject_breadcrumb_into_content(filepath: Path, breadcrumb: str) -> bool:
     text = filepath.read_text(encoding="utf-8")
-    text_wo_breadcrumb = re.sub(r"(?m)^\*\*↑\*\* \[Главная\].*\n\n?", "", text, count=1).lstrip("\n")
+    text_wo_breadcrumb = re.sub(r"(?m)^\*\*↑\*\*.*\n\n?", "", text, count=1).lstrip("\n")
     lines = text_wo_breadcrumb.splitlines()
     h1_idx = next((j for j, l in enumerate(lines) if l.startswith("# ")), None)
     if h1_idx is not None:
@@ -1000,7 +1028,7 @@ def inject_all_breadcrumbs(
         filepath = out_dir / node.content_filename
         if not filepath.exists():
             continue
-        if node.children:
+        if node.children and node.segment not in SKIP_SEGMENT_INDEX:
             toc = render_inline_toc(node, index_name_map)
             inject_inline_toc_into_content(filepath, toc)
         breadcrumb = render_breadcrumb(node.prefix, archive_index, index_name_map, prefix_map)
@@ -1040,6 +1068,24 @@ def inject_breadcrumbs(out_dir: Path, archive_index: dict[str, str], tree: TreeN
     return inject_all_breadcrumbs(tree, out_dir, archive_index, index_name_map)
 
 
+def inject_all_signatures(out_dir: Path, index_filenames: set[str], stats: Stats) -> int:
+    from signatures import build_signature_block, inject_signature_into_content
+
+    changed = 0
+    for md_path in sorted(out_dir.glob("*.md")):
+        if md_path.name in index_filenames:
+            continue
+        text = md_path.read_text(encoding="utf-8")
+        sig_block = build_signature_block(text)
+        if sig_block is None:
+            stats.signatures_skipped += 1
+            continue
+        if inject_signature_into_content(md_path, sig_block):
+            stats.signatures_injected += 1
+            changed += 1
+    return changed
+
+
 def write_logs(out_dir: Path, logs: dict[str, list], stats: Stats, params: dict) -> None:
     if logs["truncated"]:
         (out_dir / "_truncated.log").write_text(
@@ -1076,6 +1122,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", required=True, type=Path, help="Выходной каталог")
     parser.add_argument("--version", default=None, help="Версия платформы (если не указана — выводится из пути)")
     parser.add_argument("--clean", action="store_true", help="Снести --out перед конвертацией")
+    parser.add_argument("--no-breadcrumbs", action="store_true", dest="no_breadcrumbs", help="Отключить breadcrumb-навигацию (по умолчанию включена)")
     args = parser.parse_args(argv)
 
     out_dir: Path = args.out.resolve()
@@ -1154,9 +1201,13 @@ def main(argv: list[str] | None = None) -> int:
         stats.converted,
     )
     stats.index_files_generated = index_count
-    stats.breadcrumbs_added = run_stage(
-        STAGE_INJECT_BREADCRUMBS, inject_breadcrumbs, out_dir, archive_lookup_final, tree, index_name_map
-    )
+    if not args.no_breadcrumbs:
+        stats.breadcrumbs_added = run_stage(
+            STAGE_INJECT_BREADCRUMBS, inject_breadcrumbs, out_dir, archive_lookup_final, tree, index_name_map
+        )
+
+    index_filenames: set[str] = {f"{INDEX_PREFIX}.md"} | set(index_name_map.values())
+    run_stage(STAGE_INJECT_SIGNATURES, inject_all_signatures, out_dir, index_filenames, stats)
 
     run_stage(STAGE_WRITE_LOGS, write_logs, out_dir, logs, stats, params)
     log_event(

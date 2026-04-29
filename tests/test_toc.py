@@ -5,6 +5,7 @@ from pathlib import Path
 from convert import (
     ALPHA_GROUP_THRESHOLD,
     SEGMENT_NAMES,
+    SKIP_SEGMENT_INDEX,
     TreeNode,
     build_hierarchy,
     build_index_name_map,
@@ -12,6 +13,7 @@ from convert import (
     compute_page_counts,
     index_filename_for,
     infer_title_from_children,
+    inject_inline_toc_into_content,
     propagate_titles,
     render_index,
     render_inline_toc,
@@ -138,11 +140,13 @@ def test_build_index_name_map_section_title_based():
     root.children["objects"] = objects
     prefix_map = collect_prefix_map(root)
     result = build_index_name_map(root, prefix_map, {})
-    assert result["objects/CatalogsManager/methods"] == "СправочникиМенеджер_(CatalogsManager)__Методы.md"
+    # "methods" is in SKIP_SEGMENT_INDEX — must not appear in the map
+    assert "objects/CatalogsManager/methods" not in result
+    # Parent non-segment node still gets an index
+    assert "objects/CatalogsManager" in result
 
 
 def test_build_index_name_map_seeded_from_archive():
-    # If archive_index has a value that collides, index gets -2 suffix
     root = TreeNode(prefix="", segment="")
     objects = TreeNode(prefix="objects", segment="objects", title="Объекты")
     cm = TreeNode(prefix="objects/CatalogsManager", segment="CatalogsManager", title="СправочникиМенеджер_(CatalogsManager)")
@@ -152,10 +156,17 @@ def test_build_index_name_map_seeded_from_archive():
     objects.children["CatalogsManager"] = cm
     root.children["objects"] = objects
     prefix_map = collect_prefix_map(root)
-    # Seed with the filename that would otherwise be generated
     archive_index = {"some/path.html": "СправочникиМенеджер_(CatalogsManager)__Методы.md"}
     result = build_index_name_map(root, prefix_map, archive_index)
-    assert result["objects/CatalogsManager/methods"] == "СправочникиМенеджер_(CatalogsManager)__Методы-2.md"
+    # "methods" is skipped — no entry, no collision disambiguation needed
+    assert "objects/CatalogsManager/methods" not in result
+
+
+def test_skip_segment_index_contains_expected():
+    assert "methods" in SKIP_SEGMENT_INDEX
+    assert "properties" in SKIP_SEGMENT_INDEX
+    assert "events" in SKIP_SEGMENT_INDEX
+    assert "objects" not in SKIP_SEGMENT_INDEX
 
 
 # --- render_index tests ---
@@ -197,17 +208,6 @@ def test_render_index_escapes_square_brackets_in_link_text():
     assert r"- [\[...\]](lang__root_brackets.md)" in content
     assert "- [[...]](lang__root_brackets.md)" not in content
 
-
-def test_render_inline_toc_escapes_square_brackets_in_link_text():
-    node = TreeNode(prefix="lang", segment="lang", title="Встроенный язык 1С")
-    node.children["root_brackets"] = TreeNode(
-        prefix="lang/root_brackets",
-        segment="root_brackets",
-        title="[...]",
-        content_filename="lang__root_brackets.md",
-    )
-    toc = render_inline_toc(node, {})
-    assert r"- [\[...\]](lang__root_brackets.md)" in toc
 
 
 def test_render_index_alpha_grouping():
@@ -332,21 +332,50 @@ def test_write_all_indexes_skips_node_with_content(tmp_path: Path):
     assert count == 1
 
 
-def test_render_inline_toc():
-    node = TreeNode(prefix="objects/catalog2", segment="catalog2", title="Системные перечисления")
-    # subsection without content_filename → will use index_name_map for link
-    subsection = TreeNode(prefix="objects/catalog2/sub", segment="sub", title="Подраздел", page_count=3)
-    subsection.children["leaf"] = TreeNode(prefix="objects/catalog2/sub/leaf", segment="leaf", title="leaf")
-    page = TreeNode(prefix="objects/catalog2/p", segment="p", title="Страница", content_filename="Страница.md")
-    node.children["sub"] = subsection
-    node.children["p"] = page
-    index_name_map = {"objects/catalog2/sub": "Подраздел_index.md"}
-    toc = render_inline_toc(node, index_name_map)
-    assert "## Оглавление" in toc
-    assert "Подраздел_index.md" in toc
-
 
 def test_segment_names_contains_expected():
     assert "methods" in SEGMENT_NAMES
     assert "objects" in SEGMENT_NAMES
     assert "Global context" in SEGMENT_NAMES
+
+
+# --- render_inline_toc / inject_inline_toc_into_content tests ---
+
+def test_render_inline_toc_non_segment_node():
+    node = TreeNode(prefix="objects/GlobalContext", segment="GlobalContext", title="Глобальный контекст")
+    node.children["m1"] = TreeNode(
+        prefix="objects/GlobalContext/m1",
+        segment="m1",
+        title="Метод1",
+        content_filename="m1.md",
+    )
+    toc = render_inline_toc(node, {})
+    assert "## Оглавление" in toc
+    assert "Метод1" in toc
+
+
+def test_render_inline_toc_empty_node():
+    node = TreeNode(prefix="objects/Leaf", segment="Leaf", title="Лист")
+    toc = render_inline_toc(node, {})
+    assert toc == ""
+
+
+def test_inject_inline_toc_into_content_writes(tmp_path: Path):
+    f = tmp_path / "page.md"
+    f.write_text("# Заголовок\n\nТекст.\n", encoding="utf-8")
+    result = inject_inline_toc_into_content(f, "## Оглавление\n\n- [А](a.md)")
+    assert result is True
+    text = f.read_text(encoding="utf-8")
+    assert "<!-- toc:start -->" in text
+    assert "## Оглавление" in text
+    assert "<!-- toc:end -->" in text
+
+
+def test_inject_inline_toc_idempotent(tmp_path: Path):
+    f = tmp_path / "page.md"
+    toc = "## Оглавление\n\n- [А](a.md)"
+    f.write_text(f"# Заголовок\n\n<!-- toc:start -->\n{toc}\n<!-- toc:end -->\n", encoding="utf-8")
+    original = f.read_text(encoding="utf-8")
+    result = inject_inline_toc_into_content(f, toc)
+    assert result is False
+    assert f.read_text(encoding="utf-8") == original

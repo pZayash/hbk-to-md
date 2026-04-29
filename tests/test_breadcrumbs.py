@@ -79,9 +79,10 @@ def test_render_breadcrumb_format():
         index_name_map,
         prefix_map,
     )
-    assert line.startswith("**↑** [Главная](_index.md)")
-    assert " › [Объекты](_index__Объекты.md)" in line
-    assert " › [Глобальный контекст](objects__Global_context.md)" in line
+    assert line.startswith('**↑** <a href="obsidian://open?file=_index.md">Главная</a>')
+    assert '<a href="obsidian://open?file=_index__Объекты.md">Объекты</a>' in line
+    assert '<a href="obsidian://open?file=objects__Global_context.md">Глобальный контекст</a>' in line
+    assert line.endswith("[Группа методов](objects__Global_context__methods__catalog1566.md)")
 
 
 def test_render_breadcrumb_root_only():
@@ -92,7 +93,23 @@ def test_render_breadcrumb_root_only():
         index_name_map,
         {"objects": TreeNode(prefix="objects", segment="objects", title="Объекты")},
     )
-    assert line == "**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md)"
+    assert line == '**↑** <a href="obsidian://open?file=_index.md">Главная</a> › [Объекты](_index__Объекты.md)'
+
+
+def test_breadcrumbs_on_by_default():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--no-breadcrumbs", action="store_true", dest="no_breadcrumbs")
+    args = parser.parse_args([])
+    assert args.no_breadcrumbs is False
+
+
+def test_no_breadcrumbs_flag_disables():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--no-breadcrumbs", action="store_true", dest="no_breadcrumbs")
+    args = parser.parse_args(["--no-breadcrumbs"])
+    assert args.no_breadcrumbs is True
 
 
 def test_inject_breadcrumb_no_frontmatter(tmp_path: Path):

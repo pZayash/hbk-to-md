@@ -13,7 +13,14 @@
       "Bash(grep -oP '[^_]+\\(?=\\\\.md$\\)')",
       "Read(//c/Program Files/1cv8/**)",
       "Read(//c/Program Files \\(x86\\)/1cv8/**)",
-      "Bash(python convert.py --hbk '/c/Program Files/1cv8/8.3.27.1786/bin/shcntx_ru.hbk' --out vault/ --clean)"
+      "Bash(python convert.py --hbk '/c/Program Files/1cv8/8.3.27.1786/bin/shcntx_ru.hbk' --out vault/ --clean)",
+      "Bash(python -m pytest tests/ -v --tb=short)",
+      "Bash(python count_links.py 20)",
+      "Bash(iconv -f utf-8 -t utf-8)",
+      "Bash(python count_links.py vault 30)",
+      "Bash(python -m pytest tests/test_signatures.py -v)",
+      "Bash(python -m pytest --tb=short -q)",
+      "Bash(echo \"---EXIT:$?\")"
     ],
     "additionalDirectories": [
       "C:\\!Pavl0\\GitHub\\pzayash\\hbk-to-md\\.claude"

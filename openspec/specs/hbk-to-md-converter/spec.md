@@ -7,13 +7,16 @@ Define behavior of the HBK to Markdown conversion pipeline and vault output form
 
 ### Requirement: CLI-конвертер `.hbk` → плоский каталог `.md`
 
-Система SHALL предоставлять Python-скрипт `tools/hbk-to-md/convert.py`, который принимает путь к `shcntx_ru.hbk` и (опционально) `shlang_ru.hbk` и записывает в указанный выходной каталог набор Markdown-файлов — по одному на каждую HTML-страницу справки.
+Система SHALL предоставлять Python-скрипт `convert.py`, который принимает путь к `shcntx_ru.hbk` и (опционально) `shlang_ru.hbk` и записывает в указанный выходной каталог набор Markdown-файлов — по одному на каждую HTML-страницу справки.
+
+Конвертер SHALL поддерживать флаг `--breadcrumbs` (по умолчанию отсутствует). Когда флаг не передан, этап `STAGE_INJECT_BREADCRUMBS` SHALL быть полностью пропущен. Когда флаг передан, этап выполняется с форматом HTML-анкоров для предков (см. capability `graph-friendly-breadcrumbs`).
 
 #### Scenario: Базовый запуск с одним архивом
 
 - **WHEN** вызван `python convert.py --hbk PATH/shcntx_ru.hbk --out PATH/vault --clean`
 - **THEN** в `PATH/vault/` создан набор `.md`-файлов — по одному на каждую HTML-страницу из `shcntx_ru.hbk`
 - **THEN** в `PATH/vault/_meta.json` записаны параметры запуска и статистика конвертации
+- **THEN** хлебные крошки НЕ инжектированы (флаг `--breadcrumbs` не передан)
 
 #### Scenario: Запуск с обоими архивами
 
@@ -25,6 +28,12 @@ Define behavior of the HBK to Markdown conversion pipeline and vault output form
 - **WHEN** `--out` указывает на непустой каталог и `--clean` не передан
 - **THEN** скрипт завершается с ненулевым кодом и сообщением об ошибке
 - **THEN** файлы в `--out` не модифицируются
+
+#### Scenario: Флаг --breadcrumbs включает инжекцию
+
+- **WHEN** вызван `python convert.py --hbk ... --out ... --clean --breadcrumbs`
+- **THEN** этап `STAGE_INJECT_BREADCRUMBS` выполняется
+- **THEN** в каждую страницу инжектирована строка хлебных крошек в формате HTML-анкоров для предков
 
 ### Requirement: Распаковка через pip-зависимости без внешних бинарей
 
@@ -50,22 +59,24 @@ Define behavior of the HBK to Markdown conversion pipeline and vault output form
 
 ### Requirement: Плоская раскладка `.md` с кодированием иерархии в имени
 
-Все `.md`-файлы SHALL находиться в корне выходного каталога. Иерархия исходных путей SHALL отражаться в именах файлов через разделитель `__` (двойное подчёркивание); пробелы внутри сегмента SHALL заменяться на `_`; расширение `.html` SHALL заменяться на `.md`.
+Все `.md`-файлы SHALL находиться в корне выходного каталога. Имена файлов SHALL быть производными от `title_ru` страницы (человекочитаемые), а не от пути в архиве. Пробелы SHALL заменяться на `_`; небезопасные символы (`/\:*?"<>|`) SHALL удаляться; расширение SHALL быть `.md`. Для страниц без заголовка допускается резервный (fallback) вариант — имя, производное от пути (через `archive_path_to_filename()`).
 
-#### Scenario: Преобразование вложенного пути
+Страницы из `shlang_ru.hbk` SHALL сохранять префикс `lang__` перед title-derived частью имени.
 
-- **WHEN** в архиве файл `objects/Global context/methods/catalog1566/CanReadXML1628.html`
-- **THEN** в `--out` создан файл `objects__Global_context__methods__catalog1566__CanReadXML1628.md`
+#### Scenario: Метод получает имя по title_ru
 
-#### Scenario: Преобразование пути без вложенности
+- **WHEN** страница имеет `<h1 class="V8SH_pagetitle">Глобальный контекст.ВозможностьЧтенияXML (Global context.CanReadXML)</h1>`
+- **THEN** в `--out` создан файл `Глобальный_контекст.ВозможностьЧтенияXML.md`
 
-- **WHEN** в архиве файл `objects/catalog56.html`
-- **THEN** в `--out` создан файл `objects__catalog56.md`
+#### Scenario: Страница без заголовка — резервный вариант имени
 
-#### Scenario: Префикс для второго архива
+- **WHEN** страница не имеет элемента `<h1 class="V8SH_pagetitle">`
+- **THEN** имя файла производится из пути архива (поведение `archive_path_to_filename()`)
 
-- **WHEN** конвертируется `shlang_ru.hbk` со страницей `def_String`
-- **THEN** в `--out` создан файл `lang__def_String.md`
+#### Scenario: Страница shlang получает title-имя с префиксом lang__
+
+- **WHEN** конвертируется страница из `shlang_ru.hbk` с заголовком `"Строка"`
+- **THEN** в `--out` создан файл `lang__Строка.md`
 
 #### Scenario: Обрезка длинного имени
 
@@ -73,9 +84,9 @@ Define behavior of the HBK to Markdown conversion pipeline and vault output form
 - **THEN** имя обрезается, в хвост добавляется `__TRUNC_<sha1[:8]>` исходного пути
 - **THEN** соответствие исходного пути и итогового имени логируется в `_truncated.log`
 
-#### Scenario: Коллизия имён после нормализации
+#### Scenario: Коллизия имён после нормализации по title
 
-- **WHEN** два разных исходных пути после нормализации дают одинаковое имя
+- **WHEN** два разных исходных пути после title-нормализации дают одинаковое имя
 - **THEN** ко второму и далее добавляется суффикс `-2`, `-3`, ...
 - **THEN** коллизия логируется в `_collisions.log`
 
@@ -111,39 +122,17 @@ Define behavior of the HBK to Markdown conversion pipeline and vault output form
 
 ### Requirement: YAML-frontmatter в каждом `.md`
 
-Каждый сгенерированный `.md`-файл SHALL начинаться с YAML-блока frontmatter, содержащего минимальный набор полей:
+Итоговые Markdown-файлы SHALL НЕ содержать YAML-frontmatter. Ни content-файлы, ни `_index.md`, ни `_index__*.md` НЕ MUST начинаться с блока `--- ... ---`.
 
-- `title_ru` — русское имя страницы из `<h1 class="V8SH_pagetitle">` (часть до круглых скобок)
-- `title_en` — английское имя из тех же скобок (пустая строка, если не найдено)
-- `source_path` — относительный путь файла внутри `.hbk`-архива
-- `hbk_source` — `shcntx_ru` или `shlang_ru`
-- `hbk_version` — версия платформы 1С (из `--version` или из имени каталога bin)
-- `availability` — минимальная версия из `<p class="V8SH_versionInfo">`, если найдена; иначе поле отсутствует
+#### Scenario: Content-файл без frontmatter
+- **WHEN** конвертируется страница с заголовком `Глобальный контекст.ВозможностьЧтенияXML`
+- **THEN** итоговый `.md` не содержит стартовый блок `--- ... ---`
+- **THEN** файл начинается с `# Глобальный контекст.ВозможностьЧтенияXML` (или с тела, если H1 отсутствует)
 
-#### Scenario: Полный frontmatter
-
-- **WHEN** конвертируется страница `objects/Global context/methods/catalog1566/CanReadXML1628.html` с titles `Глобальный контекст.ВозможностьЧтенияXML (Global context.CanReadXML)` и version `8.0`
-- **THEN** в начале выходного MD-файла блок:
-  ```yaml
-  ---
-  title_ru: "Глобальный контекст.ВозможностьЧтенияXML"
-  title_en: "Global context.CanReadXML"
-  source_path: "objects/Global context/methods/catalog1566/CanReadXML1628.html"
-  hbk_source: "shcntx_ru"
-  hbk_version: "8.3.25.1445"
-  availability: "8.0"
-  ---
-  ```
-
-#### Scenario: Заголовок без английского варианта
-
-- **WHEN** в `<h1 class="V8SH_pagetitle">` нет круглых скобок
-- **THEN** `title_en` имеет значение пустой строки
-
-#### Scenario: Версия не найдена
-
-- **WHEN** в HTML нет `<p class="V8SH_versionInfo">` с шаблоном `8.X[.Y]`
-- **THEN** поле `availability` отсутствует во frontmatter
+#### Scenario: Index-файл без frontmatter
+- **WHEN** генерируется `_index.md` и `_index__Объекты.md`
+- **THEN** в начале файлов отсутствует YAML-блок `--- ... ---`
+- **THEN** файлы содержат только markdown-контент и навигационные секции
 
 ### Requirement: Идемпотентность и логи запуска
 
@@ -154,6 +143,8 @@ Define behavior of the HBK to Markdown conversion pipeline and vault output form
 - `_collisions.log` — коллизии после нормализации
 - `_unresolved.log` — ссылки на отсутствующие таргеты
 - `_errors.log` — ошибки конвертации отдельных страниц (с путём и текстом исключения)
+
+В процессе выполнения конвертер SHALL дополнительно публиковать структурированные runtime-логи в `stdout` в формате `key=value` для наблюдения за текущим состоянием и длительностью этапов.
 
 #### Scenario: Повторный запуск с --clean
 
@@ -169,18 +160,27 @@ Define behavior of the HBK to Markdown conversion pipeline and vault output form
 - **THEN** остальные страницы конвертируются успешно
 - **THEN** в `_meta.json.failed` отражено количество ошибок
 
+#### Scenario: Логи этапов доступны агенту в stdout
+
+- **WHEN** запускается конвертация
+- **THEN** `stdout` содержит события `event=stage_start` и `event=stage_end` для ключевых этапов
+- **THEN** каждое `event=stage_end` содержит `elapsed_sec`
+
+#### Scenario: Прогресс длинной конвертации читается из stdout
+
+- **WHEN** выполняется этап `convert_*` на большом архиве
+- **THEN** `stdout` периодически содержит события `event=progress` с полями `done`, `total`, `pct`, `rate_fps`, `eta_sec`
 
 ### Requirement: Корневой `_index.md` как точка входа в vault
 
-Конвертер SHALL генерировать в корне `--out` файл `_index.md` — точку входа в vault. Файл SHALL содержать YAML-frontmatter с `type: index-root`, заголовок с версией платформы 1С, статистику по количеству страниц и список ссылок на `_index__<top>.md` каждой top-секции (`objects`, `lang`, `tables` — те, для которых есть страницы).
+Конвертер SHALL генерировать в корне `--out` файл `_index.md` как human-readable точку входа в vault. Файл SHALL содержать H1 с версией платформы 1С, статистику по количеству страниц и список ссылок на top-секции (`objects`, `lang`, `tables`) — без YAML-frontmatter.
 
 #### Scenario: Базовая генерация `_index.md`
-
 - **WHEN** конвертация завершена и в vault есть страницы из `shcntx_ru.hbk` (24 500) и `shlang_ru.hbk` (1 042)
-- **THEN** в `--out/_index.md` создан файл с frontmatter `type: index-root`, `hbk_version: "8.3.27.1786"`, `total_pages: 25542`
-- **THEN** в теле файла H1 содержит «1С:Предприятие <version> — справка»
-- **THEN** в теле есть строка статистики «Всего страниц: **25 542**»
-- **THEN** в теле есть секция «## Разделы» с пунктами-ссылками на `_index__objects.md`, `_index__lang.md`, `_index__tables.md`
+- **THEN** в `--out/_index.md` есть H1 с версией платформы
+- **THEN** в теле есть строка статистики `Всего страниц: **25 542**`
+- **THEN** в теле есть секция `## Разделы` со ссылками на top-level index-файлы
+- **THEN** файл не содержит frontmatter-полей `type`, `hbk_version`, `total_pages`
 
 #### Scenario: Топ-секция без страниц не добавляется
 
@@ -211,19 +211,13 @@ Define behavior of the HBK to Markdown conversion pipeline and vault output form
 
 ### Requirement: Содержимое `_index` — листинг direct children
 
-Каждый `_index__<prefix>.md` SHALL содержать YAML-frontmatter (`type: index`, `source_prefix`, `parent_index`), заголовок H1 с title, опциональную ссылку на парную content-страницу (если есть) и листинг direct children. Children делятся на две группы:
-
-1. **Подразделы** — direct-children, у которых сами есть дети (sub-sections); каждый — линк на свой `_index__<child>.md` с counts
-2. **Страницы** — leaf-children; каждый — линк на content-страницу с `title_ru (title_en)` (если есть `title_en`)
-
-В `_index` сначала идёт секция `## Подразделы (N)`, потом `## Страницы (N)`. Если одна из групп пуста — её секция отсутствует. Сортировка внутри секции — по `title_ru` (case-insensitive).
+Каждый `_index__<prefix>.md` SHALL содержать заголовок H1 с title, опциональную ссылку на парную content-страницу (если есть) и листинг direct children в двух группах: подразделы и страницы. YAML-frontmatter (`type`, `source_prefix`, `parent_index`) SHALL NOT записываться в файл.
 
 #### Scenario: Листинг подразделов и страниц
-
 - **WHEN** под префиксом `objects/Global context` есть 3 sub-папки (`events`, `methods`, `properties`) и 0 leaf-страниц
-- **THEN** в `_index__objects__Global_context.md` есть секция `## Подразделы (3)` со ссылками на `_index__objects__Global_context__events.md`, `_index__objects__Global_context__methods.md`, `_index__objects__Global_context__properties.md`
-- **THEN** ссылки сопровождаются counts: например, `[Методы (1547 страниц)](_index__objects__Global_context__methods.md)`
-- **THEN** секции `## Страницы` нет (leaf-children отсутствуют)
+- **THEN** в `_index__objects__Global_context.md` есть секция `## Подразделы (3)` со ссылками на соответствующие target-файлы
+- **THEN** секции `## Страницы` нет
+- **THEN** файл не содержит frontmatter `type: index`, `source_prefix`, `parent_index`
 
 #### Scenario: Только leaf-страницы
 
@@ -267,7 +261,7 @@ Define behavior of the HBK to Markdown conversion pipeline and vault output form
 
 ### Requirement: Breadcrumb-блок наверху content-страницы
 
-После основной конвертации каждая content-страница (`objects__*.md`, `lang__*.md`, `tables__*.md`) SHALL получить блок-breadcrumb наверху — строго после frontmatter (`---\n...\n---`), перед H1, отделённый пустой строкой. Формат: `**↑** [Главная](_index.md) › <segment1> › <segment2> › ...`. Разделитель — ` › ` (U+203A).
+После основной конвертации каждая content-страница (`objects__*.md`, `lang__*.md`, `tables__*.md`) SHALL получить breadcrumb-блок после H1, перед телом страницы, отделённый пустой строкой. Формат breadcrumb: `**↑** [Главная](_index.md) › <segment1> › <segment2> › ...`.
 
 Walk родителей по `source_path`: для каждого префикса (от корня до родителя текущей страницы) SHALL резолвиться таргет:
 
@@ -278,11 +272,10 @@ Walk родителей по `source_path`: для каждого префикс
 Корневой элемент `[Главная](_index.md)` всегда присутствует. Текущая страница (последний segment) НЕ включается в breadcrumb (она видна как H1 ниже).
 
 #### Scenario: Breadcrumb для глубокой страницы со всеми резолвами
-
 - **WHEN** конвертируется `objects/Global context/methods/catalog1566/CanReadXML1628.html`
-- **WHEN** `objects/Global context.html` есть как content; `objects/Global context/methods/` нет content, но есть `_index__objects__Global_context__methods.md`; `objects/Global context/methods/catalog1566.html` есть как content; `objects/` не имеет content, но имеет `_index__objects.md`
-- **THEN** в начале `objects__Global_context__methods__catalog1566__CanReadXML1628.md` (после frontmatter, перед H1) есть строка: `**↑** [Главная](_index.md) › [Объекты](_index__objects.md) › [Глобальный контекст](objects__Global_context.md) › [Методы](_index__objects__Global_context__methods.md) › [Группа методов](objects__Global_context__methods__catalog1566.md)`
-- **THEN** между breadcrumb и H1 — одна пустая строка
+- **THEN** в `objects__...__CanReadXML1628.md` первая строка — H1 текущей страницы
+- **THEN** breadcrumb расположен сразу после H1 и одной пустой строки
+- **THEN** между breadcrumb и телом страницы одна пустая строка
 
 #### Scenario: Skip сегмента без content и без `_index`
 
@@ -348,136 +341,58 @@ Walk родителей по `source_path`: для каждого префикс
 
 ### Requirement: Минимизация frontmatter для token-optimized выгрузки
 
-Итоговые content-файлы SHALL не содержать YAML-frontmatter с полями `title_ru`, `title_en`, `source_path`, `hbk_source`, `hbk_version`, `availability`.
+Итоговые `.md`-файлы SHALL полностью исключать YAML-frontmatter для token-optimized выгрузки. Запрещены как "полные" поля (`title_ru`, `title_en`, `source_path`, `hbk_source`, `hbk_version`, `availability`), так и "минимальные" (`title`, `type`, `source_prefix`, `parent_index`, `total_pages`).
 
-#### Scenario: Content без мета-полей
-
-- **WHEN** конвертирована страница `objects/...`
-- **THEN** в начале файла нет блока `--- ... ---` с перечисленными полями
-- **THEN** файл начинается с breadcrumb (если включён) и/или `# <заголовок>`
-
-
-### Requirement: Плоская раскладка `.md` с кодированием иерархии в имени
-
-Все `.md`-файлы SHALL находиться в корне выходного каталога. Имена файлов SHALL быть производными от `title_ru` страницы (человекочитаемые), а не от пути в архиве. Пробелы SHALL заменяться на `_`; небезопасные символы (`/\:*?"<>|`) SHALL удаляться; расширение SHALL быть `.md`. Для страниц без заголовка допускается резервный (fallback) вариант — имя, производное от пути (через `archive_path_to_filename()`).
-
-Страницы из `shlang_ru.hbk` SHALL сохранять префикс `lang__` перед title-derived частью имени.
-
-#### Scenario: Метод получает имя по title_ru
-
-- **WHEN** страница имеет `<h1 class="V8SH_pagetitle">Глобальный контекст.ВозможностьЧтенияXML (Global context.CanReadXML)</h1>`
-- **THEN** в `--out` создан файл `Глобальный_контекст.ВозможностьЧтенияXML.md`
-
-#### Scenario: Страница без заголовка — резервный вариант имени
-
-- **WHEN** страница не имеет элемента `<h1 class="V8SH_pagetitle">`
-- **THEN** имя файла производится из пути архива (поведение `archive_path_to_filename()`)
-
-#### Scenario: Страница shlang получает title-имя с префиксом lang__
-
-- **WHEN** конвертируется страница из `shlang_ru.hbk` с заголовком `"Строка"`
-- **THEN** в `--out` создан файл `lang__Строка.md`
-
-#### Scenario: Обрезка длинного имени
-
-- **WHEN** результирующее имя файла превышает 200 символов
-- **THEN** имя обрезается, в хвост добавляется `__TRUNC_<sha1[:8]>` исходного пути
-- **THEN** соответствие исходного пути и итогового имени логируется в `_truncated.log`
-
-#### Scenario: Коллизия имён после нормализации по title
-
-- **WHEN** два разных исходных пути после title-нормализации дают одинаковое имя
-- **THEN** ко второму и далее добавляется суффикс `-2`, `-3`, ...
-- **THEN** коллизия логируется в `_collisions.log`
-
-### Requirement: YAML-frontmatter в каждом `.md`
-
-Каждый сгенерированный `.md`-файл SHALL начинаться с YAML-блока frontmatter, содержащего одно поле:
-
-- `title` — полный русский заголовок страницы из `<h1 class="V8SH_pagetitle">` (полный текст до PAGETITLE_SPLIT_RE, т.е. `title_ru`; если пусто — `title_en`)
-
-Остальные поля (`source_path`, `hbk_source`, `hbk_version`, `availability`) хранятся только в памяти и в `_meta.json`. Они НЕ SHALL записываться во frontmatter выходных `.md`.
-
-#### Scenario: Frontmatter содержит только title
-
-- **WHEN** конвертируется страница с `title_ru = "Глобальный контекст.ВозможностьЧтенияXML"`
-- **THEN** в начале выходного MD-файла блок:
-  ```yaml
-  ---
-  title: "Глобальный контекст.ВозможностьЧтенияXML"
-  ---
-  ```
-- **THEN** поля `source_path`, `hbk_source`, `hbk_version` отсутствуют во frontmatter
-
-#### Scenario: Заголовок без русского варианта
-
-- **WHEN** `title_ru` пуст, но `title_en` не пуст
-- **THEN** frontmatter содержит `title: "<title_en value>"`
-
-#### Scenario: Страница без заголовка — frontmatter отсутствует
-
-- **WHEN** страница не имеет распознанного заголовка (`title_ru` и `title_en` оба пусты)
-- **THEN** frontmatter блок не создаётся (файл начинается с контента)
+#### Scenario: Ни один `.md` не содержит YAML frontmatter
+- **WHEN** конвертация завершена
+- **THEN** любой output-файл с расширением `.md` не начинается с `---`
+- **THEN** технические метаданные доступны через `_meta.json`, а не через frontmatter
 
 ### Requirement: Структура контента — H1 до breadcrumb
 
-Каждый сгенерированный `.md`-файл SHALL иметь следующий порядок секций:
-
-1. YAML frontmatter (если есть `title`)
+Каждый content-файл SHALL иметь следующий порядок:
+1. `# {title}` (если заголовок распознан)
 2. Пустая строка
-3. `# {title_ru}` — заголовок H1
+3. Breadcrumb-строка (если генерируется)
 4. Пустая строка
-5. Breadcrumb-строка (если генерируется)
+5. Тело страницы
+
+Frontmatter-слой в структуру НЕ входит.
+
+#### Scenario: Файл открывается на H1
+- **WHEN** конвертируется страница с `title_ru = "Глобальный контекст.ВозможностьЧтенияXML"` и breadcrumb активирован
+- **THEN** первая строка файла: `# Глобальный контекст.ВозможностьЧтенияXML`
+- **THEN** следующая непустая строка после H1 — breadcrumb
+
+#### Scenario: Страница без breadcrumb — H1 первая строка
+- **WHEN** страница не имеет breadcrumb (нет `_index`-pass)
+- **THEN** первая строка файла: `# {title_ru}`
+- **THEN** файл не содержит frontmatter перед H1
+
+### Requirement: Этап STAGE_INJECT_SIGNATURES в pipeline
+
+Конвертер SHALL выполнять этап `STAGE_INJECT_SIGNATURES` после `STAGE_INJECT_BREADCRUMBS` и до `STAGE_WRITE_LOGS`. Этап SHALL обходить все content-файлы vault и вставлять BSL-сигнатуры согласно capability `bsl-type-signatures`.
+
+#### Scenario: Этап присутствует в stdout-логах
+- **WHEN** конвертация запущена
+- **THEN** `stdout` содержит события `event=stage_start stage=inject_signatures` и `event=stage_end stage=inject_signatures elapsed_sec=...`
+
+#### Scenario: Этап выполняется после breadcrumbs
+- **WHEN** конвертация завершена
+- **THEN** в каждом vault content-файле breadcrumb расположен до сигнатуры (порядок: H1 → breadcrumb → сигнатура → тело)
+
+### Requirement: Позиция сигнатуры в структуре content-файла
+
+Сигнатура SHALL вставляться строго после H1 и breadcrumb-строки, перед первым контентным блоком тела страницы. Порядок секций в content-файле SHALL быть:
+
+1. `# Заголовок`
+2. Пустая строка
+3. Breadcrumb-строка (если есть)
+4. Пустая строка
+5. Строка(и) BSL-сигнатуры
 6. Пустая строка
 7. Тело страницы
 
-H1 SHALL быть первым текстовым элементом после frontmatter. Breadcrumb SHALL располагаться после H1.
-
-#### Scenario: Файл открывается на H1
-
-- **WHEN** конвертируется страница с `title_ru = "Глобальный контекст.ВозможностьЧтенияXML"` и breadcrumb активирован
-- **THEN** первая не-frontmatter строка файла: `# Глобальный контекст.ВозможностьЧтенияXML`
-- **THEN** breadcrumb расположен после H1, отделён пустой строкой
-
-#### Scenario: Страница без breadcrumb — H1 первая строка
-
-- **WHEN** страница не имеет breadcrumb (нет `_index`-pass)
-- **THEN** первая строка файла (после frontmatter если есть): `# {title_ru}`
-
-
-### Requirement: Идемпотентность и логи запуска
-
-Конвертер SHALL поддерживать повторный безопасный запуск через `--clean`. По завершении SHALL создавать в `--out` служебные файлы:
-
-- `_meta.json` — параметры запуска, статистика (всего страниц, сконвертировано, ошибок, обрезанных имён, нерезолвленных ссылок), длительность
-- `_truncated.log` — обрезанные имена (orig_path → final_name)
-- `_collisions.log` — коллизии после нормализации
-- `_unresolved.log` — ссылки на отсутствующие таргеты
-- `_errors.log` — ошибки конвертации отдельных страниц (с путём и текстом исключения)
-
-В процессе выполнения конвертер SHALL дополнительно публиковать структурированные runtime-логи в `stdout` в формате `key=value` для наблюдения за текущим состоянием и длительностью этапов.
-
-#### Scenario: Повторный запуск с --clean
-
-- **WHEN** скрипт запущен с `--clean` на ранее использованный `--out`
-- **THEN** содержимое `--out` полностью удалено
-- **THEN** vault создан заново с нуля
-- **THEN** сгенерирован новый `_meta.json`
-
-#### Scenario: Ошибка одной страницы не прерывает остальные
-
-- **WHEN** при конвертации одной из 25 000 страниц возникает исключение
-- **THEN** ошибка записана в `_errors.log` (путь страницы + текст исключения)
-- **THEN** остальные страницы конвертируются успешно
-- **THEN** в `_meta.json.failed` отражено количество ошибок
-
-#### Scenario: Логи этапов доступны агенту в stdout
-
-- **WHEN** запускается конвертация
-- **THEN** `stdout` содержит события `event=stage_start` и `event=stage_end` для ключевых этапов
-- **THEN** каждое `event=stage_end` содержит `elapsed_sec`
-
-#### Scenario: Прогресс длинной конвертации читается из stdout
-
-- **WHEN** выполняется этап `convert_*` на большом архиве
-- **THEN** `stdout` периодически содержит события `event=progress` с полями `done`, `total`, `pct`, `rate_fps`, `eta_sec`
+#### Scenario: Сигнатура расположена после breadcrumb
+- **WHEN** content-файл содержит H1, breadcrumb и BSL-сигнатуру
+- **THEN** порядок в файле: H1 → пустая строка → breadcrumb → пустая строка → сигнатура → пустая строка → тело
