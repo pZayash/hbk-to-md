@@ -18,8 +18,10 @@ from convert import (
     render_index,
     render_inline_toc,
     render_root_index,
+    scan_text_for_inline_toc_redundancy,
     simplify_table_section_title,
     stem_for,
+    toc_path_literal_in_scan,
     write_all_indexes,
 )
 
@@ -341,7 +343,7 @@ def test_segment_names_contains_expected():
 
 # --- render_inline_toc / inject_inline_toc_into_content tests ---
 
-def test_render_inline_toc_non_segment_node():
+def test_render_inline_toc_non_segment_node(tmp_path: Path):
     node = TreeNode(prefix="objects/GlobalContext", segment="GlobalContext", title="Глобальный контекст")
     node.children["m1"] = TreeNode(
         prefix="objects/GlobalContext/m1",
@@ -349,7 +351,8 @@ def test_render_inline_toc_non_segment_node():
         title="Метод1",
         content_filename="m1.md",
     )
-    toc = render_inline_toc(node, {})
+    (tmp_path / "m1.md").write_text("# m1\n", encoding="utf-8")
+    toc = render_inline_toc(node, {}, tmp_path, "")
     assert "## Оглавление" in toc
     assert "Метод1" in toc
 
@@ -379,3 +382,96 @@ def test_inject_inline_toc_idempotent(tmp_path: Path):
     result = inject_inline_toc_into_content(f, toc)
     assert result is False
     assert f.read_text(encoding="utf-8") == original
+
+
+def test_render_inline_toc_skips_when_all_valid_paths_in_body(tmp_path: Path):
+    node = TreeNode(prefix="objects/GlobalContext", segment="GlobalContext", title="Глобальный контекст")
+    node.children["a"] = TreeNode(
+        prefix="objects/GlobalContext/a",
+        segment="a",
+        title="A",
+        content_filename="a.md",
+    )
+    node.children["b"] = TreeNode(
+        prefix="objects/GlobalContext/b",
+        segment="b",
+        title="B",
+        content_filename="b.md",
+    )
+    (tmp_path / "a.md").write_text("# a\n", encoding="utf-8")
+    (tmp_path / "b.md").write_text("# b\n", encoding="utf-8")
+    scan = "См. [A](a.md) и [B](b.md).\n"
+    assert render_inline_toc(node, {}, tmp_path, scan) == ""
+
+
+def test_render_inline_toc_inserts_when_path_missing_from_body(tmp_path: Path):
+    node = TreeNode(prefix="objects/GlobalContext", segment="GlobalContext", title="Глобальный контекст")
+    node.children["a"] = TreeNode(
+        prefix="objects/GlobalContext/a",
+        segment="a",
+        title="A",
+        content_filename="a.md",
+    )
+    node.children["b"] = TreeNode(
+        prefix="objects/GlobalContext/b",
+        segment="b",
+        title="B",
+        content_filename="b.md",
+    )
+    (tmp_path / "a.md").write_text("# a\n", encoding="utf-8")
+    (tmp_path / "b.md").write_text("# b\n", encoding="utf-8")
+    scan = "Только [A](a.md).\n"
+    toc = render_inline_toc(node, {}, tmp_path, scan)
+    assert "## Оглавление" in toc
+    assert "b.md" in toc
+
+
+def test_render_inline_toc_empty_when_only_invalid_targets(tmp_path: Path):
+    node = TreeNode(prefix="objects/GlobalContext", segment="GlobalContext", title="Глобальный контекст")
+    node.children["ghost"] = TreeNode(
+        prefix="objects/GlobalContext/ghost",
+        segment="ghost",
+        title="Ghost",
+        content_filename="missing.md",
+    )
+    node.children["empty_target"] = TreeNode(
+        prefix="objects/GlobalContext/sub",
+        segment="sub",
+        title="Подраздел",
+        page_count=1,
+    )
+    node.children["empty_target"].children["x"] = TreeNode(
+        prefix="objects/GlobalContext/sub/x",
+        segment="x",
+        title="X",
+    )
+    assert render_inline_toc(node, {}, tmp_path, "любой текст") == ""
+
+
+def test_inject_inline_toc_empty_removes_block(tmp_path: Path):
+    f = tmp_path / "page.md"
+    toc_body = "## Оглавление\n\n- [А](a.md)"
+    f.write_text(f"# Заголовок\n\n<!-- toc:start -->\n{toc_body}\n<!-- toc:end -->\n", encoding="utf-8")
+    assert inject_inline_toc_into_content(f, "") is True
+    text = f.read_text(encoding="utf-8")
+    assert "<!-- toc:start -->" not in text
+    assert "<!-- toc:end -->" not in text
+    assert "## Оглавление" not in text
+
+
+def test_scan_text_strips_toc_and_breadcrumb():
+    raw = (
+        "# T\n\n"
+        "**↑** home\n\n"
+        "Body with [x](y.md).\n\n"
+        "<!-- toc:start -->\n## Оглавление\n\n- [Z](z.md)\n<!-- toc:end -->\n"
+    )
+    scan = scan_text_for_inline_toc_redundancy(raw)
+    assert "**↑**" not in scan
+    assert "toc:start" not in scan
+    assert "Body with" in scan
+
+
+def test_toc_path_literal_in_scan():
+    assert toc_path_literal_in_scan("prefix ](a/b.md) suffix", "a/b.md") is True
+    assert toc_path_literal_in_scan("](a/b.md", "a/b.md") is False

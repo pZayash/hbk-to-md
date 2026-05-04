@@ -20,10 +20,16 @@
       "Bash(python count_links.py vault 30)",
       "Bash(python -m pytest tests/test_signatures.py -v)",
       "Bash(python -m pytest --tb=short -q)",
-      "Bash(echo \"---EXIT:$?\")"
+      "Bash(echo \"---EXIT:$?\")",
+      "Bash(python -m pytest tests/test_filename.py -v)",
+      "Bash(python -m pytest -v)",
+      "Bash(python convert.py --hbk \"/c/Program Files/1cv8/8.3.27.1786/bin/1cv8_ru.hbk\" --out vault --clean)",
+      "Bash(python convert.py --help)",
+      "Bash(python convert.py --hbk \"/c/Program Files/1cv8/8.3.27.1786/bin/shcntx_ru.hbk\" --lang-hbk \"/c/Program Files/1cv8/8.3.27.1786/bin/shlang_ru.hbk\" --out vault --clean)"
     ],
     "additionalDirectories": [
-      "C:\\!Pavl0\\GitHub\\pzayash\\hbk-to-md\\.claude"
+      "C:\\!Pavl0\\GitHub\\pzayash\\hbk-to-md\\.claude",
+      "c:\\Users\\paza\\.claude\\projects\\c---Pavl0-GitHub-pzayash-hbk-to-md\\memory"
     ]
   }
 }

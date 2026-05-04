@@ -6,12 +6,29 @@ import pytest
 from convert import (
     LANG_PREFIX,
     archive_path_to_filename,
+    build_archive_index,
     disambiguate,
     quick_extract_title,
     quick_scan_titles,
+    resolve_parent_title,
     title_to_filename,
     truncate_filename,
 )
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _make_html(root: Path, rel: str, title: str = "") -> None:
+    """Create a minimal HTML file with given V8SH_pagetitle at rel path under root."""
+    p = root / Path(rel)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(
+        f'<html><head><meta charset="utf-8"></head><body>'
+        f'<h1 class="V8SH_pagetitle">{title}</h1></body></html>',
+        encoding="utf-8",
+    )
 
 
 def test_nested_path():
@@ -167,3 +184,126 @@ def test_quick_scan_titles_missing_h1_maps_empty(tmp_path: Path):
     (tmp_path / "noh1.html").write_bytes(_NO_H1_HTML)
     result = quick_scan_titles(tmp_path)
     assert result.get("noh1.html") == ""
+
+
+# ---------- resolve_parent_title --------------------------------------------
+
+def test_resolve_parent_title_finds_immediate_parent(tmp_path: Path):
+    title_map = {
+        "tables/table6.html": "Каталог.Имя_справочника (Catalog.Имя_справочника)",
+        "tables/table6/fields/ref38.html": "Ссылка (Ref)",
+    }
+    result = resolve_parent_title("tables/table6/fields/Ref38.html", title_map)
+    assert result == "Каталог.Имя_справочника (Catalog.Имя_справочника)"
+
+
+def test_resolve_parent_title_walks_up_multiple_levels(tmp_path: Path):
+    title_map = {
+        "tables/catalog63.html": "Корневой",
+        "tables/catalog63/table66.html": "Документ.Изменения (Document.Changes)",
+    }
+    result = resolve_parent_title("tables/catalog63/table66/fields/Ref546.html", title_map)
+    assert result == "Документ.Изменения (Document.Changes)"
+
+
+def test_resolve_parent_title_returns_empty_when_no_ancestor(tmp_path: Path):
+    title_map = {"other/page.html": "Другое"}
+    result = resolve_parent_title("tables/table6/fields/Ref38.html", title_map)
+    assert result == ""
+
+
+# ---------- build_archive_index — collision resolution ----------------------
+
+def test_build_archive_index_colliding_titles_get_parent_enriched_names(tmp_path: Path):
+    _make_html(tmp_path, "tables/table6.html", "Каталог.Имя_справочника (Catalog.Имя_справочника)")
+    _make_html(tmp_path, "tables/table6/fields/Ref38.html", "Ссылка (Ref)")
+    _make_html(tmp_path, "tables/table81.html", "ВнешнийИсточникДанных.Таблица (ExternalDataSource.Table)")
+    _make_html(tmp_path, "tables/table81/fields/Ref645.html", "Ссылка (Ref)")
+
+    title_map = {
+        "tables/table6.html": "Каталог.Имя_справочника (Catalog.Имя_справочника)",
+        "tables/table6/fields/ref38.html": "Ссылка (Ref)",
+        "tables/table81.html": "ВнешнийИсточникДанных.Таблица (ExternalDataSource.Table)",
+        "tables/table81/fields/ref645.html": "Ссылка (Ref)",
+    }
+    index = build_archive_index(tmp_path, prefix="", title_map=title_map)
+
+    name38 = index["tables/table6/fields/ref38.html"]
+    name645 = index["tables/table81/fields/ref645.html"]
+
+    assert "Каталог" in name38
+    assert "Ссылка" in name38
+    assert "ВнешнийИсточникДанных" in name645
+    assert "Ссылка" in name645
+    assert name38 != name645
+
+
+def test_build_archive_index_colliding_page_no_parent_falls_back_to_path(tmp_path: Path):
+    _make_html(tmp_path, "a/b.html", "Дубль")
+    _make_html(tmp_path, "c/d.html", "Дубль")
+
+    title_map = {
+        "a/b.html": "Дубль",
+        "c/d.html": "Дубль",
+    }
+    index = build_archive_index(tmp_path, prefix="", title_map=title_map)
+
+    assert index["a/b.html"] == archive_path_to_filename("a/b.html")
+    assert index["c/d.html"] == archive_path_to_filename("c/d.html")
+
+
+def test_build_archive_index_all_unique_values_when_titles_collide(tmp_path: Path):
+    _make_html(tmp_path, "tables/table6.html", "Каталог.Х (Catalog.X)")
+    _make_html(tmp_path, "tables/table6/fields/Ref38.html", "Ссылка (Ref)")
+    _make_html(tmp_path, "tables/table81.html", "ВнешнийИсточникДанных.Т (ExternalDataSource.T)")
+    _make_html(tmp_path, "tables/table81/fields/Ref645.html", "Ссылка (Ref)")
+
+    title_map = {
+        "tables/table6.html": "Каталог.Х (Catalog.X)",
+        "tables/table6/fields/ref38.html": "Ссылка (Ref)",
+        "tables/table81.html": "ВнешнийИсточникДанных.Т (ExternalDataSource.T)",
+        "tables/table81/fields/ref645.html": "Ссылка (Ref)",
+    }
+    index = build_archive_index(tmp_path, prefix="", title_map=title_map)
+    values = list(index.values())
+    assert len(values) == len(set(values))
+
+
+def test_build_archive_index_non_colliding_pages_unaffected(tmp_path: Path):
+    _make_html(tmp_path, "objects/Obj.html", "Глобальный контекст")
+
+    title_map = {"objects/obj.html": "Глобальный контекст"}
+    index = build_archive_index(tmp_path, prefix="", title_map=title_map)
+
+    assert index["objects/obj.html"] == title_to_filename("Глобальный контекст")
+
+
+def test_build_archive_index_title_map_none_uses_path_based_names(tmp_path: Path):
+    _make_html(tmp_path, "def_String.html", "Строка (String)")
+    _make_html(tmp_path, "def_Number.html", "Число (Number)")
+
+    index = build_archive_index(tmp_path, prefix=LANG_PREFIX, title_map=None)
+
+    assert index["def_string.html"] == archive_path_to_filename("def_String.html", prefix=LANG_PREFIX)
+    assert index["def_number.html"] == archive_path_to_filename("def_Number.html", prefix=LANG_PREFIX)
+
+
+def test_build_archive_index_strips_english_from_lang_title(tmp_path: Path):
+    _make_html(tmp_path, "if.html", "Если (If)")
+    title_map = {"if.html": "Если (If)"}
+    index = build_archive_index(tmp_path, prefix=LANG_PREFIX, title_map=title_map)
+    assert index["if.html"] == "lang__Если.md"
+
+
+def test_build_archive_index_strips_english_from_dotted_title(tmp_path: Path):
+    _make_html(tmp_path, "objects/task.html", "Задача.Имя_задачи (Task.Имя_задачи)")
+    title_map = {"objects/task.html": "Задача.Имя_задачи (Task.Имя_задачи)"}
+    index = build_archive_index(tmp_path, prefix="", title_map=title_map)
+    assert index["objects/task.html"] == "Задача.Имя_задачи.md"
+
+
+def test_build_archive_index_no_parens_title_unchanged(tmp_path: Path):
+    _make_html(tmp_path, "objects/obj2.html", "ГлобальныйКонтекст")
+    title_map = {"objects/obj2.html": "ГлобальныйКонтекст"}
+    index = build_archive_index(tmp_path, prefix="", title_map=title_map)
+    assert index["objects/obj2.html"] == "ГлобальныйКонтекст.md"

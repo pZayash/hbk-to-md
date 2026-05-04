@@ -15,6 +15,7 @@ import sys
 import tempfile
 import time
 import zipfile
+from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterable
@@ -37,8 +38,8 @@ PROGRESS_EVERY = 500
 PRIMITIVE_TYPE_STEMS: frozenset[str] = frozenset({
     "lang__def_String", "lang__def_Number", "lang__def_Date",
     "lang__def_Undefined", "lang__def_BooleanTrue", "lang__def_BooleanFalse", "lang__def_Null",
-    "lang__Булево_(Boolean)", "lang__Число_(Number)", "lang__Строка_(String)",
-    "lang__Дата_(Date)", "lang__Неопределено_(Undefined)",
+    "lang__Булево", "lang__Число", "lang__Строка",
+    "lang__Дата", "lang__Неопределено",
 })
 
 SKIP_SEGMENT_INDEX: frozenset[str] = frozenset({
@@ -183,6 +184,17 @@ def quick_scan_titles(extracted_dir: Path) -> dict[str, str]:
         rel = html_path.relative_to(extracted_dir).as_posix()
         result[rel.lower()] = quick_extract_title(html_path)
     return result
+
+
+def resolve_parent_title(rel_path: str, title_map: dict[str, str]) -> str:
+    """Walk up rel_path looking for a sibling .html whose title serves as parent prefix."""
+    parts = rel_path.split("/")
+    for i in range(len(parts) - 2, 0, -1):
+        candidate = "/".join(parts[:i]) + ".html"
+        title = title_map.get(candidate.lower(), "")
+        if title:
+            return title
+    return ""
 
 
 def title_to_filename(title: str, prefix: str = "") -> str:
@@ -437,19 +449,49 @@ def build_archive_index(
     ('def_string'), т.к. v8help-ссылки на язык приходят без расширения.
     """
     index: dict[str, str] = {}
-    for html in iter_html(extracted_dir):
-        rel = html.relative_to(extracted_dir).as_posix()
-        target = ""
-        if title_map is not None:
-            title = title_map.get(rel.lower(), "")
-            if title:
-                target = title_to_filename(title, prefix=prefix)
-        if not target:
-            target = archive_path_to_filename(rel, prefix=prefix)
+
+    def _add(rel: str, target: str) -> None:
         index[rel.lower()] = target
         if prefix == LANG_PREFIX:
             stem = rel.rsplit(".", 1)[0]
             index[stem.lower()] = target
+
+    if title_map is not None:
+        # Pass 1: collect (rel, title) pairs and count title occurrences.
+        pairs: list[tuple[str, str]] = []
+        title_counts: Counter[str] = Counter()
+        for html in iter_html(extracted_dir):
+            rel = html.relative_to(extracted_dir).as_posix()
+            title = title_map.get(rel.lower(), "")
+            pairs.append((rel, title))
+            if title:
+                title_counts[title] += 1
+
+        # Pass 2: assign filenames — unique titles use title_to_filename,
+        # colliding titles get parent-enriched name or path-based fallback.
+        for rel, title in pairs:
+            target = ""
+            if title:
+                m = PAGETITLE_SPLIT_RE.match(title)
+                ru_title = m.group(1).strip() if m else title
+                if title_counts[title] > 1:
+                    parent = resolve_parent_title(rel, title_map)
+                    if parent:
+                        mp = PAGETITLE_SPLIT_RE.match(parent)
+                        ru_parent = mp.group(1).strip() if mp else parent
+                        target = title_to_filename(ru_parent + "." + ru_title, prefix=prefix)
+                    else:
+                        target = archive_path_to_filename(rel, prefix=prefix)
+                else:
+                    target = title_to_filename(ru_title, prefix=prefix)
+            if not target:
+                target = archive_path_to_filename(rel, prefix=prefix)
+            _add(rel, target)
+    else:
+        for html in iter_html(extracted_dir):
+            rel = html.relative_to(extracted_dir).as_posix()
+            _add(rel, archive_path_to_filename(rel, prefix=prefix))
+
     return index
 
 
@@ -973,39 +1015,79 @@ def inject_breadcrumb_into_content(filepath: Path, breadcrumb: str) -> bool:
     return True
 
 
-def render_inline_toc(node: TreeNode, index_name_map: dict[str, str]) -> str:
+_TOC_BLOCK_RE = re.compile(r"(?s)\n?<!-- toc:start -->.*?<!-- toc:end -->\n?")
+
+
+def scan_text_for_inline_toc_redundancy(file_content: str) -> str:
+    """Body text without TOC markers block and without the breadcrumb line (see spec)."""
+    text = _TOC_BLOCK_RE.sub("\n", file_content)
+    text = re.sub(r"(?m)^\*\*↑\*\*.*\n\n?", "", text, count=1)
+    return text
+
+
+def toc_path_literal_in_scan(scan_text: str, path: str) -> bool:
+    """True if markdown link target `path` appears as the literal substring `](path)`."""
+    return f"]({path})" in scan_text
+
+
+def _filter_inline_toc_items_by_existing_files(
+    items: list[tuple[str, str]], out_dir: Path
+) -> list[tuple[str, str]]:
+    return [(title, target) for title, target in items if target and (out_dir / target).is_file()]
+
+
+def render_inline_toc(
+    node: TreeNode,
+    index_name_map: dict[str, str],
+    out_dir: Path | None = None,
+    scan_text: str | None = None,
+) -> str:
     subsections = _sort_nodes([c for c in node.children.values() if c.children])
     pages = _sort_nodes([c for c in node.children.values() if (not c.children and c.content_filename)])
     if not subsections and not pages:
         return ""
-    lines = ["## Оглавление", ""]
     use_table_simplify = node.prefix == "tables" or node.prefix.startswith("tables/")
-    if subsections:
-        lines.append(f"### Подразделы ({len(subsections)})")
+    subsection_items: list[tuple[str, str]] = []
+    for c in subsections:
+        label = simplify_table_section_title(c.title) if use_table_simplify else c.title
+        target = c.content_filename if c.content_filename else index_name_map.get(c.prefix, "")
+        subsection_items.append((f"{label} ({c.page_count} страниц)", target))
+    page_items: list[tuple[str, str]] = [(c.title, c.content_filename or "") for c in pages]
+
+    if out_dir is not None and scan_text is not None:
+        subsection_items = _filter_inline_toc_items_by_existing_files(subsection_items, out_dir)
+        page_items = _filter_inline_toc_items_by_existing_files(page_items, out_dir)
+        all_paths = [t for _, t in subsection_items] + [t for _, t in page_items]
+        if not all_paths:
+            return ""
+        if all(toc_path_literal_in_scan(scan_text, p) for p in all_paths):
+            return ""
+
+    lines = ["## Оглавление", ""]
+    if subsection_items:
+        lines.append(f"### Подразделы ({len(subsection_items)})")
         lines.append("")
-        subsection_items = []
-        for c in subsections:
-            label = simplify_table_section_title(c.title) if use_table_simplify else c.title
-            target = c.content_filename if c.content_filename else index_name_map.get(c.prefix, "")
-            subsection_items.append((f"{label} ({c.page_count} страниц)", target))
         lines.extend(_render_links_with_groups(subsection_items))
         lines.append("")
-    if pages:
-        lines.append(f"### Страницы ({len(pages)})")
+    if page_items:
+        lines.append(f"### Страницы ({len(page_items)})")
         lines.append("")
-        page_items = [(c.title, c.content_filename or "") for c in pages]
         lines.extend(_render_links_with_groups(page_items))
         lines.append("")
     return "\n".join(lines).rstrip()
 
 
 def inject_inline_toc_into_content(filepath: Path, toc: str) -> bool:
-    if not toc:
-        return False
     text = filepath.read_text(encoding="utf-8")
-    text = re.sub(r"(?s)\n?<!-- toc:start -->.*?<!-- toc:end -->\n?", "\n", text).rstrip()
-    new_text = f"{text}\n\n<!-- toc:start -->\n{toc}\n<!-- toc:end -->\n"
-    if new_text == filepath.read_text(encoding="utf-8"):
+    if not toc:
+        new_text = _TOC_BLOCK_RE.sub("\n", text)
+        if new_text == text:
+            return False
+        filepath.write_text(new_text.rstrip() + "\n", encoding="utf-8")
+        return True
+    without_toc = _TOC_BLOCK_RE.sub("\n", text).rstrip()
+    new_text = f"{without_toc}\n\n<!-- toc:start -->\n{toc}\n<!-- toc:end -->\n"
+    if new_text == text:
         return False
     filepath.write_text(new_text, encoding="utf-8")
     return True
@@ -1029,7 +1111,9 @@ def inject_all_breadcrumbs(
         if not filepath.exists():
             continue
         if node.children and node.segment not in SKIP_SEGMENT_INDEX:
-            toc = render_inline_toc(node, index_name_map)
+            file_content = filepath.read_text(encoding="utf-8")
+            scan_text = scan_text_for_inline_toc_redundancy(file_content)
+            toc = render_inline_toc(node, index_name_map, out_dir, scan_text)
             inject_inline_toc_into_content(filepath, toc)
         breadcrumb = render_breadcrumb(node.prefix, archive_index, index_name_map, prefix_map)
         if inject_breadcrumb_into_content(filepath, breadcrumb):
