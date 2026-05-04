@@ -1,6 +1,10 @@
 # HTTPЗапрос.Формирование неинициализированного объекта
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [Интернет](Интернет-2.md) › [Работа с HTTP](Работа_с_HTTP.md) › [HTTPЗапрос](HTTPЗапрос_(HTTPRequest).md) › [Конструкторы](HTTPЗапрос__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › <a href="obsidian://open?file=objects__catalog63__catalog578.md">Интернет</a> › <a href="obsidian://open?file=Работа_с_HTTP.md">Работа с HTTP</a> › [HTTPЗапрос](HTTPЗапрос.md)
+
+<!-- signature:start -->
+`HTTPЗапрос`()
+<!-- signature:end -->
 
 HTTPЗапрос (HTTPRequest)
 

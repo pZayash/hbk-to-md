@@ -1,0 +1,32 @@
+# ЧтениеFastInfoset.ПробельныеСимволы
+
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › <a href="obsidian://open?file=objects__catalog63__catalog565.md">XML</a> › [ЧтениеFastInfoset](ЧтениеFastInfoset.md)
+
+<!-- signature:start -->
+`ПробельныеСимволы`: [`ПробельныеСимволыXML`](ПробельныеСимволыXML.md)
+<!-- signature:end -->
+
+ЧтениеFastInfoset (FastInfosetReader)
+
+ПробельныеСимволы (Space)
+
+Доступен, начиная с версии 8.1.
+
+Использование:
+
+Только чтение.
+
+Описание:
+
+Тип: [ПробельныеСимволыXML](ПробельныеСимволыXML.md).   
+Содержит значение атрибута xml:space для данного контекста чтения.
+
+Доступность:
+
+Сервер, толстый клиент, внешнее соединение.
+
+Использование в версии:
+
+Доступен, начиная с версии 8.1.
+
+---

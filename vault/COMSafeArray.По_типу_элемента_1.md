@@ -1,6 +1,10 @@
 # COMSafeArray.По типу элемента 1
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Универсальные коллекции значений](Универсальные_коллекции_значений.md) › [COMSafeArray](COMSafeArray_(COMSafeArray).md) › [Конструкторы](Универсальные_коллекции_значений__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Универсальные_коллекции_значений.md">Универсальные коллекции значений</a> › [COMSafeArray](COMSafeArray.md)
+
+<!-- signature:start -->
+`COMSafeArray`(`<ТипЭлемента>`: `Строка`, `<<разм0>`, `...`, `<размN-1>>`)
+<!-- signature:end -->
 
 COMSafeArray (COMSafeArray)
 
@@ -16,8 +20,8 @@ COMSafeArray (COMSafeArray)
 
 <ТипЭлемента> (обязательный)
 
-Тип: [Строка](lang__def_String.md).   
-Определяет тип элемента [COMSafeArray](COMSafeArray_(COMSafeArray).md).  
+Тип: Строка.   
+Определяет тип элемента [COMSafeArray](COMSafeArray.md).  
 Тип элемента задается строкой и может принимать одно из следующих значений:
 
 - VT\_I1 - знаковое целое 1 байт;
@@ -44,17 +48,17 @@ COMSafeArray (COMSafeArray)
 
 <<разм0>,...,<размN-1>> (обязательный)
 
-Тип: [Число](lang__def_Number.md).   
-Количество элементов [COMSafeArray](COMSafeArray_(COMSafeArray).md) по каждой из размерностей, начиная со старшей.
+Тип: Число.   
+Количество элементов [COMSafeArray](COMSafeArray.md) по каждой из размерностей, начиная со старшей.
 
-- <разм0> задает количество элементов по нулевому, самому старшему, измерению [COMSafeArray](COMSafeArray_(COMSafeArray).md);
-- <разм1> - по первому измерению, если [COMSafeArray](COMSafeArray_(COMSafeArray).md) более чем двумерный;
+- <разм0> задает количество элементов по нулевому, самому старшему, измерению [COMSafeArray](COMSafeArray.md);
+- <разм1> - по первому измерению, если [COMSafeArray](COMSafeArray.md) более чем двумерный;
 
-и так далее. Всего параметров столько, сколько измерений должно быть в [COMSafeArray](COMSafeArray_(COMSafeArray).md).
+и так далее. Всего параметров столько, сколько измерений должно быть в [COMSafeArray](COMSafeArray.md).
 
 Описание:
 
-Создает [COMSafeArray](COMSafeArray_(COMSafeArray).md) указанной размерности с указанным типом элемента без инициализации элементов.
+Создает [COMSafeArray](COMSafeArray.md) указанной размерности с указанным типом элемента без инициализации элементов.
 
 Пример:
 

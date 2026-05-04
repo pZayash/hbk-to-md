@@ -1,6 +1,10 @@
 # ЗаписьPDF.На основании имени файла
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [Работа с PDF](Работа_с_PDF-2.md) › [ЗаписьPDF](ЗаписьPDF_(PDFWriter).md) › [Конструкторы](ЗаписьPDF__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › <a href="obsidian://open?file=objects__catalog63__catalog2657.md">Работа с PDF</a> › [ЗаписьPDF](ЗаписьPDF.md)
+
+<!-- signature:start -->
+`ЗаписьPDF`(`<ИмяФайла>`: `Строка`)
+<!-- signature:end -->
 
 ЗаписьPDF (PDFWriter)
 
@@ -16,7 +20,7 @@
 
 <ИмяФайла> (обязательный)
 
-Тип: [Строка](lang__def_String.md).   
+Тип: Строка.   
 Имя файла, в который будет выполнена запись.
 
 Описание:

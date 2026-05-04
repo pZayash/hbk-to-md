@@ -1,6 +1,10 @@
 # ПараметрыЗаписиJSON.По умолчанию
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [JSON](JSON-2.md) › [ПараметрыЗаписиJSON](ПараметрыЗаписиJSON_(JSONWriterSettings).md) › [Конструкторы](ПараметрыЗаписиJSON__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › <a href="obsidian://open?file=objects__catalog63__catalog2298.md">JSON</a> › [ПараметрыЗаписиJSON](ПараметрыЗаписиJSON.md)
+
+<!-- signature:start -->
+`ПараметрыЗаписиJSON`()
+<!-- signature:end -->
 
 ПараметрыЗаписиJSON (JSONWriterSettings)
 

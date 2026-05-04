@@ -1,6 +1,10 @@
 # ЧтениеZipФайла.Формирование неинициализированного объекта
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [ZIP](ZIP-2.md) › [ЧтениеZipФайла](ЧтениеZipФайла_(ZipFileReader).md) › [Конструкторы](ЧтениеZipФайла__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › <a href="obsidian://open?file=objects__catalog63__catalog967.md">ZIP</a> › [ЧтениеZipФайла](ЧтениеZipФайла.md)
+
+<!-- signature:start -->
+`ЧтениеZipФайла`()
+<!-- signature:end -->
 
 ЧтениеZipФайла (ZipFileReader)
 
@@ -20,7 +24,7 @@
 
 Описание:
 
-Формирует неинициализированный объект [ЧтениеZipФайла](ЧтениеZipФайла_(ZipFileReader).md).
+Формирует неинициализированный объект [ЧтениеZipФайла](ЧтениеZipФайла.md).
 
 Использование в версии:
 

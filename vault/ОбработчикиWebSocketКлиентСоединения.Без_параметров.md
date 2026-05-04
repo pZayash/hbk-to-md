@@ -1,6 +1,10 @@
 # ОбработчикиWebSocketКлиентСоединения.Без параметров
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [WebSocket](WebSocket.md) › [ОбработчикиWebSocketКлиентСоединения](ОбработчикиWebSocketКлиентСоединения_(WebSocketClientConnectionHandlers).md) › [Конструкторы](ОбработчикиWebSocketКлиентСоединения__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › <a href="obsidian://open?file=WebSocket.md">WebSocket</a> › [ОбработчикиWebSocketКлиентСоединения](ОбработчикиWebSocketКлиентСоединения.md)
+
+<!-- signature:start -->
+`ОбработчикиWebSocketКлиентСоединения`()
+<!-- signature:end -->
 
 ОбработчикиWebSocketКлиентСоединения (WebSocketClientConnectionHandlers)
 

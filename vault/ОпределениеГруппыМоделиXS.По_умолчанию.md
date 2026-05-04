@@ -1,6 +1,6 @@
 # ОпределениеГруппыМоделиXS.По умолчанию
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [Схема XML](Схема_XML.md) › [ОпределениеГруппыМоделиXS](ОпределениеГруппыМоделиXS_(XSModelGroupDefinition).md) › [Конструкторы](ОпределениеГруппыМоделиXS__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › <a href="obsidian://open?file=Схема_XML.md">Схема XML</a> › [ОпределениеГруппыМоделиXS](ОпределениеГруппыМоделиXS.md)
 
 ОпределениеГруппыМоделиXS (XSModelGroupDefinition)
 

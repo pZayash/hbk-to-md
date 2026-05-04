@@ -1,6 +1,10 @@
 # ЧтениеPDF.На основании потока
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [Работа с PDF](Работа_с_PDF-2.md) › [ЧтениеPDF](ЧтениеPDF_(PDFReader).md) › [Конструкторы](ЧтениеPDF__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › <a href="obsidian://open?file=objects__catalog63__catalog2657.md">Работа с PDF</a> › [ЧтениеPDF](ЧтениеPDF.md)
+
+<!-- signature:start -->
+`ЧтениеPDF`(`<Поток>`: [`Поток`](Поток.md))
+<!-- signature:end -->
 
 ЧтениеPDF (PDFReader)
 
@@ -16,7 +20,7 @@
 
 <Поток> (необязательный)
 
-Тип: [Поток](Поток_(Stream).md).   
+Тип: [Поток](Поток.md).   
 Поток, из которого будет производиться чтение данных.
 
 Описание:

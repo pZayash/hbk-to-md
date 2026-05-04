@@ -1,14 +1,14 @@
 {
   "main": {
-    "id": "afba262cd53469f2",
+    "id": "82f660cdc54cb567",
     "type": "split",
     "children": [
       {
-        "id": "ab88bf3cfe017132",
+        "id": "205be81a68e414b8",
         "type": "tabs",
         "children": [
           {
-            "id": "b893acbd4870cbf2",
+            "id": "73bb47844a03fed8",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -23,15 +23,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "3ac4a5da1d1a8b7d",
+    "id": "21c4c1c0343f3d47",
     "type": "split",
     "children": [
       {
-        "id": "2d2e181c40cdff1f",
+        "id": "fcd1b04ced13e2d5",
         "type": "tabs",
         "children": [
           {
-            "id": "6d94a61eb697a13f",
+            "id": "4ec0a90a99225d40",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -44,7 +44,7 @@
             }
           },
           {
-            "id": "544336228107c916",
+            "id": "077feae3e64999e8",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -61,7 +61,7 @@
             }
           },
           {
-            "id": "563aabff5e231ad4",
+            "id": "62cf0fb64be31bc0",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -74,18 +74,18 @@
       }
     ],
     "direction": "horizontal",
-    "width": 496.5096130371094
+    "width": 300
   },
   "right": {
-    "id": "134fa15c56dded9f",
+    "id": "91a42807daf73ff7",
     "type": "split",
     "children": [
       {
-        "id": "5f15d903b271dba7",
+        "id": "33876817314e5956",
         "type": "tabs",
         "children": [
           {
-            "id": "985291bf76e5828c",
+            "id": "83c13b4c046a6104",
             "type": "leaf",
             "state": {
               "type": "backlink",
@@ -103,7 +103,7 @@
             }
           },
           {
-            "id": "7cf0728cb5ccac15",
+            "id": "798a51df52a8c558",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
@@ -116,7 +116,7 @@
             }
           },
           {
-            "id": "80e6739a13e02db6",
+            "id": "b6640578251c376b",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -131,7 +131,7 @@
             }
           },
           {
-            "id": "8199b812e7cd6392",
+            "id": "e07ddfe7ce3e852d",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -145,7 +145,7 @@
             }
           },
           {
-            "id": "144be058f1a6be2e",
+            "id": "f83b902c79ce4995",
             "type": "leaf",
             "state": {
               "type": "outline",
@@ -176,16 +176,13 @@
       "bases:Создать новую базу": false
     }
   },
-  "active": "b893acbd4870cbf2",
+  "active": "73bb47844a03fed8",
   "lastOpenFiles": [
-    "АвтоИсправлениеПриВводеТекста__Свойства.md",
-    "Автоматизированное_тестирование.md",
-    "НаправлениеПереходаКСтроке_(RowGotoDirection).md",
-    "НаправлениеПереходаКСтроке__Свойства.md",
-    "АвтоИспользованиеОбщегоРеквизита_(CommonAttributeAutoUse).md",
-    "АвтоИспользованиеОбщегоРеквизита__Свойства.md",
-    "_index__Встроенный_язык_1С.md",
-    "lang__root_brackets.md",
-    "lang__(вычислить_выражение_по_условию).md"
+    "КонструкторЗапроса.ОткрытьАсинх.md",
+    "КонструкторЗапроса.md",
+    "Глобальный_контекст.Константы.md",
+    "КонстантыМенеджер.md",
+    "Константы-2.md",
+    "Константы.md"
   ]
 }

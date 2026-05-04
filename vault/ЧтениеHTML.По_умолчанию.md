@@ -1,6 +1,6 @@
 # ЧтениеHTML.По умолчанию
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [HTML](HTML.md) › [ЧтениеHTML](ЧтениеHTML_(HTMLReader).md) › [Конструкторы](ЧтениеHTML__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › <a href="obsidian://open?file=HTML.md">HTML</a> › [ЧтениеHTML](ЧтениеHTML.md)
 
 ЧтениеHTML (HTMLReader)
 

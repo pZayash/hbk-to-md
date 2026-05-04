@@ -1,6 +1,10 @@
 # COMSafeArray.Из COMSafeArray
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Универсальные коллекции значений](Универсальные_коллекции_значений.md) › [COMSafeArray](COMSafeArray_(COMSafeArray).md) › [Конструкторы](Универсальные_коллекции_значений__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Универсальные_коллекции_значений.md">Универсальные коллекции значений</a> › [COMSafeArray](COMSafeArray.md)
+
+<!-- signature:start -->
+`COMSafeArray`(`<Источник>`: [`COMSafeArray`](COMSafeArray.md))
+<!-- signature:end -->
 
 COMSafeArray (COMSafeArray)
 
@@ -16,12 +20,12 @@ COMSafeArray (COMSafeArray)
 
 <Источник> (обязательный)
 
-Тип: [COMSafeArray](COMSafeArray_(COMSafeArray).md).   
-[COMSafeArray](COMSafeArray_(COMSafeArray).md), содержимое которого будет скопировано.
+Тип: [COMSafeArray](COMSafeArray.md).   
+[COMSafeArray](COMSafeArray.md), содержимое которого будет скопировано.
 
 Описание:
 
-Создает [COMSafeArray](COMSafeArray_(COMSafeArray).md) и копирует в него данные из другого [COMSafeArray](COMSafeArray_(COMSafeArray).md).
+Создает [COMSafeArray](COMSafeArray.md) и копирует в него данные из другого [COMSafeArray](COMSafeArray.md).
 
 Пример:
 

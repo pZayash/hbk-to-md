@@ -1,6 +1,10 @@
 # COMSafeArray.По типу элемента 2
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Универсальные коллекции значений](Универсальные_коллекции_значений.md) › [COMSafeArray](COMSafeArray_(COMSafeArray).md) › [Конструкторы](Универсальные_коллекции_значений__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Универсальные_коллекции_значений.md">Универсальные коллекции значений</a> › [COMSafeArray](COMSafeArray.md)
+
+<!-- signature:start -->
+`COMSafeArray`(`<ТипЭлемента>`: `Строка`, `<Количество>`: [`Массив`](Массив.md), `<НижняяГраница>`: [`Массив`](Массив.md))
+<!-- signature:end -->
 
 COMSafeArray (COMSafeArray)
 
@@ -16,22 +20,22 @@ COMSafeArray (COMSafeArray)
 
 <ТипЭлемента> (обязательный)
 
-Тип: [Строка](lang__def_String.md).   
-Определяет тип элемента [COMSafeArray](COMSafeArray_(COMSafeArray).md).
+Тип: Строка.   
+Определяет тип элемента [COMSafeArray](COMSafeArray.md).
 
 <Количество> (обязательный)
 
-Тип: [Массив](Массив_(Array).md).   
-Количество элементов [COMSafeArray](COMSafeArray_(COMSafeArray).md) по каждому из измерений. Размер массива равен числу измерений [COMSafeArray](COMSafeArray_(COMSafeArray).md).
+Тип: [Массив](Массив.md).   
+Количество элементов [COMSafeArray](COMSafeArray.md) по каждому из измерений. Размер массива равен числу измерений [COMSafeArray](COMSafeArray.md).
 
 <НижняяГраница> (необязательный)
 
-Тип: [Массив](Массив_(Array).md).   
-Минимальные значения индексов по каждому из измерений. Размер массива равен числу измерений [COMSafeArray](COMSafeArray_(COMSafeArray).md).
+Тип: [Массив](Массив.md).   
+Минимальные значения индексов по каждому из измерений. Размер массива равен числу измерений [COMSafeArray](COMSafeArray.md).
 
 Описание:
 
-Создает [COMSafeArray](COMSafeArray_(COMSafeArray).md) указанной размерности с указанным типом элемента без инициализации элементов.  
+Создает [COMSafeArray](COMSafeArray.md) указанной размерности с указанным типом элемента без инициализации элементов.  
 Количество элементов по каждой из размерностей задается одним массивом. Нижние значения индексов по каждому измерению могут задаваться другим массивом.
 
 Пример:

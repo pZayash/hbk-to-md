@@ -1,6 +1,6 @@
 # Работа с HTTP
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [Интернет](Интернет-2.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › [Интернет](objects__catalog63__catalog578.md)
 
 В данном разделе описаны объекты для работы с HTTP-запросами.
 
@@ -11,7 +11,7 @@
 
 ### Подразделы (3)
 
-- [HTTPЗапрос (13 страниц)](HTTPЗапрос_(HTTPRequest).md)
-- [HTTPОтвет (7 страниц)](HTTPОтвет_(HTTPResponse).md)
-- [HTTPСоединение (26 страниц)](HTTPСоединение_(HTTPConnection).md)
+- [HTTPЗапрос (13 страниц)](HTTPЗапрос.md)
+- [HTTPОтвет (7 страниц)](HTTPОтвет.md)
+- [HTTPСоединение (26 страниц)](HTTPСоединение.md)
 <!-- toc:end -->

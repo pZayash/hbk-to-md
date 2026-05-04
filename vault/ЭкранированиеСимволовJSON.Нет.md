@@ -1,0 +1,19 @@
+# ЭкранированиеСимволовJSON.Нет
+
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Системные_перечисления.md">Системные перечисления</a> › <a href="obsidian://open?file=objects__catalog2__catalog2300.md">JSON</a> › [ЭкранированиеСимволовJSON](ЭкранированиеСимволовJSON.md)
+
+ЭкранированиеСимволовJSON (JSONCharactersEscapeMode)
+
+Нет (None)
+
+Доступен, начиная с версии 8.3.6.
+
+Описание:
+
+Не экранировать символы.
+
+Использование в версии:
+
+Доступен, начиная с версии 8.3.6.
+
+---

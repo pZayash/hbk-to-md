@@ -1,6 +1,10 @@
 # COMSafeArray.Из массива 1
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Универсальные коллекции значений](Универсальные_коллекции_значений.md) › [COMSafeArray](COMSafeArray_(COMSafeArray).md) › [Конструкторы](Универсальные_коллекции_значений__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Универсальные_коллекции_значений.md">Универсальные коллекции значений</a> › [COMSafeArray](COMSafeArray.md)
+
+<!-- signature:start -->
+`COMSafeArray`(`<Массив>`: [`Массив`](Массив.md), `<ТипЭлемента>`: `Строка`, `<<разм0>`, `...`, `<размN-1>>`)
+<!-- signature:end -->
 
 COMSafeArray (COMSafeArray)
 
@@ -16,35 +20,35 @@ COMSafeArray (COMSafeArray)
 
 <Массив> (обязательный)
 
-Тип: [Массив](Массив_(Array).md).   
-Массив - источник данных для [COMSafeArray](COMSafeArray_(COMSafeArray).md).
+Тип: [Массив](Массив.md).   
+Массив - источник данных для [COMSafeArray](COMSafeArray.md).
 
 <ТипЭлемента> (обязательный)
 
-Тип: [Строка](lang__def_String.md).   
-Определяет тип элемента [COMSafeArray](COMSafeArray_(COMSafeArray).md).
+Тип: Строка.   
+Определяет тип элемента [COMSafeArray](COMSafeArray.md).
 
 <<разм0>,...,<размN-1>> (необязательный)
 
-Тип: [Число](lang__def_Number.md).   
-Количество элементов [COMSafeArray](COMSafeArray_(COMSafeArray).md) по каждой из размерностей, начиная со старшей.
+Тип: Число.   
+Количество элементов [COMSafeArray](COMSafeArray.md) по каждой из размерностей, начиная со старшей.
 
-- <разм0> задает количество элементов по нулевому, самому старшему, измерению [COMSafeArray](COMSafeArray_(COMSafeArray).md);
-- <разм1> - по первому измерению, если [COMSafeArray](COMSafeArray_(COMSafeArray).md) более чем двумерный;
+- <разм0> задает количество элементов по нулевому, самому старшему, измерению [COMSafeArray](COMSafeArray.md);
+- <разм1> - по первому измерению, если [COMSafeArray](COMSafeArray.md) более чем двумерный;
 
-и так далее. Всего параметров столько, сколько измерений должно быть в [COMSafeArray](COMSafeArray_(COMSafeArray).md).
+и так далее. Всего параметров столько, сколько измерений должно быть в [COMSafeArray](COMSafeArray.md).
 
 Описание:
 
-Создает [COMSafeArray](COMSafeArray_(COMSafeArray).md) с заданным типом элемента из элементов массива значений.  
-Значения элементов [COMSafeArray](COMSafeArray_(COMSafeArray).md) выбираются из массива, заданного в параметре <ТипЭлемента> по следующему правилу:
+Создает [COMSafeArray](COMSafeArray.md) с заданным типом элемента из элементов массива значений.  
+Значения элементов [COMSafeArray](COMSafeArray.md) выбираются из массива, заданного в параметре <ТипЭлемента> по следующему правилу:
 
-- Каждое значение старшего индекса [COMSafeArray](COMSafeArray_(COMSafeArray).md) определяет его срез с количеством измерений на 1 меньше.
-- Для каждого значения старшего индекса из [COMSafeArray](COMSafeArray_(COMSafeArray).md) выбирается соответствующее значение из массива и этим значением инициализируется срез [COMSafeArray](COMSafeArray_(COMSafeArray).md). Если в массиве нет значения с соответствующим индексом, то срез [COMSafeArray](COMSafeArray_(COMSafeArray).md) инициализируется значением типа [Неопределено](lang__def_Undefined.md).
+- Каждое значение старшего индекса [COMSafeArray](COMSafeArray.md) определяет его срез с количеством измерений на 1 меньше.
+- Для каждого значения старшего индекса из [COMSafeArray](COMSafeArray.md) выбирается соответствующее значение из массива и этим значением инициализируется срез [COMSafeArray](COMSafeArray.md). Если в массиве нет значения с соответствующим индексом, то срез [COMSafeArray](COMSafeArray.md) инициализируется значением типа Неопределено.
 
-Так продолжается до тех пор, кока срез не станет одним элементом [COMSafeArray](COMSafeArray_(COMSafeArray).md).  
+Так продолжается до тех пор, кока срез не станет одним элементом [COMSafeArray](COMSafeArray.md).  
 Если срез не является элементом, а элемент массива не является массивом, то считается, что он является массивом длины 1.  
-Если размерности [COMSafeArray](COMSafeArray_(COMSafeArray).md) заданы, то построенный [COMSafeArray](COMSafeArray_(COMSafeArray).md) будет иметь заданные размерности. Если не заданы, то они определяются по максимальным индексам массива и максимальному уровню вложенности массивов.
+Если размерности [COMSafeArray](COMSafeArray.md) заданы, то построенный [COMSafeArray](COMSafeArray.md) будет иметь заданные размерности. Если не заданы, то они определяются по максимальным индексам массива и максимальному уровню вложенности массивов.
 
 Пример:
 

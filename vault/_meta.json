@@ -10,13 +10,15 @@
     "total": 25542,
     "converted": 25542,
     "failed": 0,
-    "truncated": 119,
-    "collisions": 638,
+    "truncated": 6,
+    "collisions": 176,
     "unresolved": 104,
-    "index_files_generated": 3521,
+    "index_files_generated": 13,
     "breadcrumbs_added": 25542,
-    "started_at": 1777370675.2001023,
-    "finished_at": 1777371234.772917,
-    "duration_sec": 559.57
+    "signatures_injected": 19396,
+    "signatures_skipped": 6146,
+    "started_at": 1777881916.6086006,
+    "finished_at": 1777882482.366289,
+    "duration_sec": 565.76
   }
 }

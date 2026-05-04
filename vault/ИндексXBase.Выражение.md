@@ -1,0 +1,32 @@
+# ИндексXBase.Выражение
+
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › <a href="obsidian://open?file=XBase.md">XBase</a> › [ИндексXBase](ИндексXBase.md)
+
+<!-- signature:start -->
+`Выражение`: `Строка`
+<!-- signature:end -->
+
+ИндексXBase (XBaseIndex)
+
+Выражение (Expression)
+
+Доступен, начиная с версии 8.0.
+
+Использование:
+
+Только чтение.
+
+Описание:
+
+Тип: Строка.   
+Выражение индекса, например: "IDDOC+CODE+DATE".
+
+Доступность:
+
+Сервер, толстый клиент, внешнее соединение.
+
+Использование в версии:
+
+Доступен, начиная с версии 8.0.
+
+---

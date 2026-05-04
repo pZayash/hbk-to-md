@@ -1,6 +1,10 @@
 # ДокументHTML.По умолчанию
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [HTML](HTML.md) › [ДокументHTML](ДокументHTML_(HTMLDocument).md) › [Конструкторы](ДокументHTML__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › <a href="obsidian://open?file=HTML.md">HTML</a> › [ДокументHTML](ДокументHTML.md)
+
+<!-- signature:start -->
+`ДокументHTML`(`<Заголовок>`: `Строка`)
+<!-- signature:end -->
 
 ДокументHTML (HTMLDocument)
 
@@ -16,7 +20,7 @@
 
 <Заголовок> (обязательный)
 
-Тип: [Строка](lang__def_String.md).   
+Тип: Строка.   
 Заголовок HTML документа. Если параметр установлен, то в документе будет создан элемент TITLE, и содержимое заголовка будет помещено внутри него.
 
 Описание:

@@ -1,6 +1,10 @@
 # СериализаторXDTO.На основании XDTO
 
-**↑** [Главная](_index.md) › [Объекты](_index__Объекты.md) › [Общие объекты](Общие_объекты.md) › [XDTO](XDTO-2.md) › [СериализаторXDTO](СериализаторXDTO_(XDTOSerializer).md) › [Конструкторы](СериализаторXDTO__Конструкторы.md)
+**↑** <a href="obsidian://open?file=_index.md">Главная</a> › <a href="obsidian://open?file=_index__Объекты.md">Объекты</a> › <a href="obsidian://open?file=Общие_объекты.md">Общие объекты</a> › <a href="obsidian://open?file=objects__catalog63__catalog1015.md">XDTO</a> › [СериализаторXDTO](СериализаторXDTO.md)
+
+<!-- signature:start -->
+`СериализаторXDTO`(`<Фабрика>`: [`ФабрикаXDTO`](ФабрикаXDTO.md))
+<!-- signature:end -->
 
 СериализаторXDTO (XDTOSerializer)
 
@@ -16,7 +20,7 @@
 
 <Фабрика> (обязательный)
 
-Тип: [ФабрикаXDTO](ФабрикаXDTO_(XDTOFactory).md).   
+Тип: [ФабрикаXDTO](ФабрикаXDTO.md).   
 Фабрика типов XDTO.
 
 Описание:
