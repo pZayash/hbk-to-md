@@ -24,6 +24,8 @@ from bs4 import BeautifulSoup, NavigableString
 from markdownify import markdownify as md_convert
 from onec_dtools.container_reader import ContainerReader
 
+from link_check import remediate_vault_links
+
 
 MAX_FILENAME = 200
 LANG_PREFIX = "lang__"
@@ -57,6 +59,7 @@ STAGE_CONVERT_SHLANG = "convert_shlang"
 STAGE_BUILD_TOC = "build_toc"
 STAGE_INJECT_BREADCRUMBS = "inject_breadcrumbs"
 STAGE_INJECT_SIGNATURES = "inject_signatures"
+STAGE_REMEDIATE_LINKS = "remediate_links"
 STAGE_WRITE_LOGS = "write_logs"
 
 SEGMENT_TITLES = {
@@ -269,11 +272,56 @@ def extract_availability(soup: BeautifulSoup) -> str | None:
     return m.group(1) if m else None
 
 
+def _normalize_archive_path(path: str) -> str:
+    """Схлопнуть `//` и пустые сегменты в архивном пути."""
+    return "/".join(seg for seg in path.replace("\\", "/").split("/") if seg)
+
+
+def _is_degenerate_v8help_target(normalized: str) -> bool:
+    """Корневой `.html` и пустые пути — не настоящие цели."""
+    if not normalized:
+        return True
+    basename = normalized.rsplit("/", 1)[-1].lower()
+    return basename in (".html", "html")
+
+
+def _lookup_archive_target(
+    rel_path: str,
+    archive_index: dict[str, str],
+    archive_lookup_final: dict[str, str] | None,
+) -> str | None:
+    """Найти выходной .md по архивному HTML-пути (без fallback на path-имя)."""
+    key = _normalize_archive_path(rel_path).lower()
+    if not key:
+        return None
+    candidates = [key]
+    if key.endswith(".html"):
+        candidates.append(key[: -len(".html")])
+    elif key.endswith(".htm"):
+        candidates.append(key[: -len(".htm")])
+    else:
+        candidates.extend((key + ".html", key + ".htm"))
+    lookup = archive_lookup_final or {}
+    for candidate in candidates:
+        if candidate in lookup:
+            return lookup[candidate]
+    for candidate in candidates:
+        if candidate in archive_index:
+            return archive_index[candidate]
+    return None
+
+
+def _strip_link(a, unresolved_log: list[tuple[str, str]], page_source_path: str, href_s: str) -> None:
+    unresolved_log.append((page_source_path, href_s))
+    a.replace_with(NavigableString(a.get_text("", strip=False)))
+
+
 def rewrite_links(
     soup: BeautifulSoup,
     archive_index: dict[str, str],
     unresolved_log: list[tuple[str, str]],
     page_source_path: str,
+    archive_lookup_final: dict[str, str] | None = None,
 ) -> None:
     """Переписать v8help://... в относительные .md; убрать битые href."""
     for a in list(soup.find_all("a")):
@@ -288,36 +336,34 @@ def rewrite_links(
             continue
         if href_s.startswith("#"):
             continue
+        if href_s.lower().startswith("v8help:") and not href_s.lower().startswith("v8help://"):
+            href_s = "v8help://" + href_s[7:].lstrip(":/")
+        path_part, _, anchor = href_s.partition("#")
+        anchor = anchor or None
         m = V8HELP_RE.match(href_s)
+        target_filename: str | None = None
         if m:
-            scheme, raw_target, anchor = m.group(1), m.group(2), m.group(3)
-            normalized = raw_target.lstrip("/")
+            scheme, raw_target, anchor = m.group(1), m.group(2), m.group(3) or anchor
+            normalized = _normalize_archive_path(raw_target.lstrip("/"))
+            if _is_degenerate_v8help_target(normalized):
+                _strip_link(a, unresolved_log, page_source_path, href_s)
+                continue
             if scheme.lower() == "syntaxhelpercontext":
-                target_filename = archive_index.get(normalized.lower())
-                if not target_filename:
-                    target_filename = archive_path_to_filename(normalized)
-                    unresolved_log.append((page_source_path, href_s))
+                target_filename = _lookup_archive_target(normalized, archive_index, archive_lookup_final)
             else:
-                key1 = normalized.lower()
-                key2 = (normalized + ".html").lower()
-                target_filename = archive_index.get(key1) or archive_index.get(key2)
-                if not target_filename:
-                    target_filename = archive_path_to_filename(normalized, prefix=LANG_PREFIX)
-                    unresolved_log.append((page_source_path, href_s))
+                target_filename = _lookup_archive_target(normalized, archive_index, archive_lookup_final)
         else:
-            # Относительный (или абсолютный архивный) HTML-путь — резолвим
-            # относительно каталога текущей страницы.
-            path_part, _, anchor = href_s.partition("#")
-            anchor = anchor or None
             path_part = path_part.split("?", 1)[0]
             if not path_part:
                 continue
             base_dir = posixpath.dirname(page_source_path)
-            resolved = posixpath.normpath(posixpath.join(base_dir, path_part)).lstrip("/")
-            target_filename = archive_index.get(resolved.lower())
-            if not target_filename:
-                target_filename = archive_path_to_filename(resolved)
-                unresolved_log.append((page_source_path, href_s))
+            resolved = _normalize_archive_path(
+                posixpath.normpath(posixpath.join(base_dir, path_part)).lstrip("/")
+            )
+            target_filename = _lookup_archive_target(resolved, archive_index, archive_lookup_final)
+        if not target_filename:
+            _strip_link(a, unresolved_log, page_source_path, href_s)
+            continue
         stem = target_filename[:-3] if target_filename.endswith(".md") else target_filename
         stem = stem.rsplit("/", 1)[-1]
         if stem in PRIMITIVE_TYPE_STEMS or stem.startswith("lang__def_"):
@@ -380,6 +426,36 @@ def cleanup_markdown_noise(md: str) -> str:
     return "\n".join(cleaned).strip() + "\n"
 
 
+def build_link_alias_map(
+    archive_index: dict[str, str],
+    archive_lookup_final: dict[str, str],
+) -> dict[str, str]:
+    """Карта любых известных имён .md → финальное имя на диске (после усечения/коллизий)."""
+    alias: dict[str, str] = {}
+    for rel, final in archive_lookup_final.items():
+        if not rel.endswith(".html"):
+            continue
+        alias[final] = final
+        alias[archive_path_to_filename(rel)] = final
+        provisional = archive_index.get(rel)
+        if provisional:
+            alias[provisional] = final
+    return alias
+
+
+def remediate_output_links(
+    out_dir: Path,
+    archive_index: dict[str, str],
+    archive_lookup_final: dict[str, str],
+    stats: Stats,
+) -> None:
+    """Пост-обработка: алиасы path→title и удаление оставшихся висячих ссылок."""
+    alias = build_link_alias_map(archive_index, archive_lookup_final)
+    report = remediate_vault_links(out_dir, alias)
+    stats.links_remediated = report.links_remediated
+    stats.links_stripped = report.links_stripped
+
+
 def write_md(out_dir: Path, filename: str, body: str) -> None:
     (out_dir / filename).write_text(body.strip() + "\n", encoding="utf-8")
 
@@ -394,6 +470,8 @@ class Stats:
     truncated: int = 0
     collisions: int = 0
     unresolved: int = 0
+    links_remediated: int = 0
+    links_stripped: int = 0
     index_files_generated: int = 0
     breadcrumbs_added: int = 0
     signatures_injected: int = 0
@@ -522,7 +600,7 @@ def convert_one(
 
     content = read_html(html_path)
     soup = parse_html(content)
-    rewrite_links(soup, archive_index, logs["unresolved"], rel_path)
+    rewrite_links(soup, archive_index, logs["unresolved"], rel_path, archive_lookup_final)
     title_ru, title_en = extract_titles(soup)
     availability = extract_availability(soup)
 
@@ -1275,6 +1353,15 @@ def main(argv: list[str] | None = None) -> int:
                 archive_lookup_final,
             )
 
+    run_stage(
+        STAGE_REMEDIATE_LINKS,
+        remediate_output_links,
+        out_dir,
+        archive_index,
+        archive_lookup_final,
+        stats,
+    )
+
     tree, index_name_map, index_count = run_stage(
         STAGE_BUILD_TOC,
         build_toc,
@@ -1302,6 +1389,8 @@ def main(argv: list[str] | None = None) -> int:
         truncated=stats.truncated,
         collisions=stats.collisions,
         unresolved=stats.unresolved,
+        links_remediated=stats.links_remediated,
+        links_stripped=stats.links_stripped,
         index_files=stats.index_files_generated,
         breadcrumbs=stats.breadcrumbs_added,
         duration_sec=stats.as_dict()["duration_sec"],

@@ -100,16 +100,48 @@ def test_rewrite_links_anchor_preserved():
     assert soup.find("a")["href"] == "objects__X__Y.md#anchor"
 
 
-def test_rewrite_links_unresolved_logged():
+def test_rewrite_links_unresolved_stripped():
     html = '<a href="v8help://SyntaxHelperContext/objects/missing/Z.html">T</a>'
     soup = parse_html("<html><body>" + html + "</body></html>")
     unresolved: list = []
     rewrite_links(soup, {}, unresolved, "page.html")
-    assert soup.find("a")["href"] == "objects__missing__Z.md"
+    assert soup.find("a") is None
+    assert "T" in soup.get_text()
     assert len(unresolved) == 1
 
 
-def test_rewrite_links_relative_html_resolved():
+def test_rewrite_links_degenerate_v8help_stripped():
+    html = '<a href="v8help://SyntaxHelperContext/.html">x</a>'
+    soup = parse_html("<html><body>" + html + "</body></html>")
+    unresolved: list = []
+    rewrite_links(soup, {}, unresolved, "page.html")
+    assert soup.find("a") is None
+    assert len(unresolved) == 1
+
+
+def test_rewrite_links_double_slash_normalized():
+    html = (
+        '<a href="v8help://SyntaxHelperContext/objects/catalog63/catalog565/'
+        'XMLStringProcessingManager//DeleteDisallowedXMLCharacters6255.html">x</a>'
+    )
+    soup = parse_html("<html><body>" + html + "</body></html>")
+    archive_index = {
+        "objects/catalog63/catalog565/xmlstringprocessingmanager/"
+        "deletedisallowedxmlcharacters6255.html": "Менеджер.md",
+    }
+    unresolved: list = []
+    rewrite_links(soup, archive_index, unresolved, "page.html")
+    assert soup.find("a")["href"] == "Менеджер.md"
+    assert unresolved == []
+
+
+def test_rewrite_links_relative_unresolved_stripped():
+    html = '<a href="missing.html">x</a>'
+    soup = parse_html("<html><body>" + html + "</body></html>")
+    unresolved: list = []
+    rewrite_links(soup, {}, unresolved, "objects/page.html")
+    assert soup.find("a") is None
+    assert len(unresolved) == 1
     html = '<a href="ExternalDataProcessorsManager/methods/Connect3978.html">Подключить</a>'
     soup = parse_html("<html><body>" + html + "</body></html>")
     archive_index = {
@@ -135,16 +167,7 @@ def test_rewrite_links_relative_with_anchor():
     assert soup.find("a")["href"] == "objects__sibling.md#sect"
 
 
-def test_rewrite_links_relative_unresolved_logged():
-    html = '<a href="missing.html">x</a>'
-    soup = parse_html("<html><body>" + html + "</body></html>")
-    unresolved: list = []
-    rewrite_links(soup, {}, unresolved, "objects/page.html")
-    assert soup.find("a")["href"] == "objects__missing.md"
-    assert len(unresolved) == 1
-
-
-def test_rewrite_links_fragment_only_untouched():
+def test_rewrite_links_relative_html_resolved():
     html = '<a href="#anchor">x</a>'
     soup = parse_html("<html><body>" + html + "</body></html>")
     rewrite_links(soup, {}, [], "p.html")
