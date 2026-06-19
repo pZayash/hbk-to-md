@@ -12,11 +12,11 @@
 
 Значения
 
-[CramMD5 (CramMD5)](objects__catalog2__catalog2086__SMTPAuthenticationMode__properties__CramMD55790.md)  
-[Login (Login)](objects__catalog2__catalog2086__SMTPAuthenticationMode__properties__Login5789.md)  
-[Plain (Plain)](objects__catalog2__catalog2086__SMTPAuthenticationMode__properties__Plain5788.md)  
-[БезАутентификации (None)](objects__catalog2__catalog2086__SMTPAuthenticationMode__properties__None5786.md)  
-[ПоУмолчанию (Default)](objects__catalog2__catalog2086__SMTPAuthenticationMode__properties__Default5787.md)  
+CramMD5 (CramMD5)  
+Login (Login)  
+Plain (Plain)  
+БезАутентификации (None)  
+ПоУмолчанию (Default)  
 
 Описание:
 

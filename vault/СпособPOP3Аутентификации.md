@@ -12,9 +12,9 @@
 
 Значения
 
-[APOP (APOP)](objects__catalog2__catalog2086__POP3AuthenticationMode__properties__APOP5793.md)  
-[CramMD5 (CramMD5)](objects__catalog2__catalog2086__POP3AuthenticationMode__properties__CramMD55794.md)  
-[Обычная (General)](objects__catalog2__catalog2086__POP3AuthenticationMode__properties__General5792.md)  
+APOP (APOP)  
+CramMD5 (CramMD5)  
+Обычная (General)  
 
 Описание:
 
